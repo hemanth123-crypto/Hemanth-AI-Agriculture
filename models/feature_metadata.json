@@ -1,0 +1,57 @@
+{
+  "categorical_features": [
+    "Crop",
+    "Season",
+    "State"
+  ],
+  "numeric_features": [
+    "N",
+    "P",
+    "K",
+    "pH",
+    "Temperature",
+    "Rainfall",
+    "Humidity",
+    "Fertilizer",
+    "Pesticide"
+  ],
+  "crops": [
+    "Barley",
+    "Chickpea",
+    "Cotton",
+    "Groundnut",
+    "Jute",
+    "Maize",
+    "Millets",
+    "Mustard",
+    "Rice",
+    "Soybean",
+    "Sugarcane",
+    "Wheat"
+  ],
+  "states": [
+    "Andhra Pradesh",
+    "Assam",
+    "Bihar",
+    "Gujarat",
+    "Haryana",
+    "Karnataka",
+    "Madhya Pradesh",
+    "Maharashtra",
+    "Odisha",
+    "Punjab",
+    "Rajasthan",
+    "Tamil Nadu",
+    "Telangana",
+    "Uttar Pradesh",
+    "West Bengal"
+  ],
+  "seasons": [
+    "Kharif",
+    "Rabi",
+    "Summer",
+    "Whole Year"
+  ],
+  "training_samples": 1200,
+  "test_samples": 300
+}

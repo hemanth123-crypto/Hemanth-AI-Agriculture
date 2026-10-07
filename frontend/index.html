@@ -1,0 +1,1752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI-Powered Agriculture Crop Advisory Assistant</title>
+  <meta name="description" content="Smarter insights for better crops, better decisions. Hybrid AI agricultural decision-support system unifying RAG, ML Yield Prediction, and Agronomic Guardrails.">
+  
+  <!-- Modern Typography: Outfit & Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Application Stylesheet -->
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+  <!-- Global Atmospheric Nighttime Agricultural Backdrop & Flying Fireflies -->
+  <div class="global-night-backdrop" aria-hidden="true"></div>
+  <svg class="global-crops-silhouette" viewBox="0 0 1440 120" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M0,120 L0,90 Q120,60 240,85 T480,75 T720,90 T960,65 T1200,80 T1440,70 L1440,120 Z" fill="#04120a" opacity="0.5"/>
+    <path d="M0,120 L0,100 Q180,80 360,95 T720,85 T1080,100 T1440,88 L1440,120 Z" fill="#020805" opacity="0.8"/>
+  </svg>
+  <canvas id="fireflyCanvas" class="global-firefly-canvas" aria-hidden="true"></canvas>
+
+  <!-- ========================================================================= -->
+  <!-- 1. LANDING & LOGIN EXPERIENCE                                             -->
+  <!-- ========================================================================= -->
+  <div id="loginView" class="auth-wrapper">
+    <div class="auth-container">
+      
+      <!-- Left Visual & Branding Hero Panel -->
+      <div class="auth-hero">
+        <div class="auth-hero-backdrop"></div>
+        <div class="auth-hero-content">
+          <div class="brand-badge">
+            <span class="badge-dot"></span>
+            <span>CropShield AI &bull; Decision Intelligence</span>
+          </div>
+
+          <div class="hero-logo-row">
+            <div class="hero-logo-icon">
+              <!-- Agriculture Crop Sprout Leaf Logo -->
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22V10" stroke="#39D98A" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M12 10C12 5 17 4 20 4C20 7 19 12 12 12" fill="#22C55E" stroke="#39D98A" stroke-width="1.8"/>
+                <path d="M12 14C12 9 7 8 4 8C4 11 5 16 12 16" fill="#15803D" stroke="#34D399" stroke-width="1.8"/>
+              </svg>
+            </div>
+            <div class="hero-title-group">
+              <span class="hero-kicker">CropShield AI Platform</span>
+              <h1 class="hero-title">AI Agriculture Advisory Assistant</h1>
+            </div>
+          </div>
+
+          <p class="hero-tagline">“Intelligent Agricultural Decision Intelligence for High-Yield Farming”</p>
+
+          <p class="hero-description">
+            Empowering agronomists, extension officers, and farming professionals with hybrid RAG retrieval across 1,500+ verified historical cases, Machine Learning yield predictions, and evidence-grounded multi-agent advisory.
+          </p>
+
+          <!-- Agriculture & AI Landscape Illustration -->
+          <div class="auth-illustration" aria-hidden="true">
+            <svg viewBox="0 0 340 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="ill-svg">
+              <defs>
+                <linearGradient id="glowStem" x1="0%" y1="100%" x2="0%" y2="0%">
+                  <stop offset="0%" stop-color="#062e1c" />
+                  <stop offset="50%" stop-color="#16a34a" />
+                  <stop offset="100%" stop-color="#22c55e" />
+                </linearGradient>
+                <linearGradient id="glowLeafLeft" x1="100%" y1="100%" x2="0%" y2="0%">
+                  <stop offset="0%" stop-color="#0b3820" />
+                  <stop offset="100%" stop-color="#34d399" />
+                </linearGradient>
+                <linearGradient id="glowLeafRight" x1="0%" y1="100%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#0b3820" />
+                  <stop offset="100%" stop-color="#34d399" />
+                </linearGradient>
+                <radialGradient id="pedestalGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#ffd65a" stop-opacity="0.5" />
+                  <stop offset="45%" stop-color="#22c55e" stop-opacity="0.3" />
+                  <stop offset="100%" stop-color="#062318" stop-opacity="0" />
+                </radialGradient>
+              </defs>
+
+              <!-- Glowing Pedestal / Soil Base -->
+              <ellipse cx="170" cy="150" rx="95" ry="12" fill="url(#pedestalGlow)" />
+              <ellipse cx="170" cy="150" rx="70" ry="6" fill="#144a32" opacity="0.6" stroke="#22c55e" stroke-width="0.8" stroke-dasharray="3 3"/>
+
+              <!-- Central Sprout Stem & Leaves -->
+              <path d="M170 150 C170 115, 170 75, 170 50" stroke="url(#glowStem)" stroke-width="4.5" stroke-linecap="round"/>
+              <path d="M170 115 C145 98, 125 105, 110 118 C128 126, 155 125, 170 115 Z" fill="url(#glowLeafLeft)" opacity="0.95"/>
+              <path d="M170 95 C195 78, 215 85, 230 98 C212 106, 185 105, 170 95 Z" fill="url(#glowLeafRight)" opacity="0.95"/>
+
+              <!-- Flanking Subtle Shoots -->
+              <path d="M90 150 C90 120, 75 95, 60 85 C78 100, 88 125, 90 150 Z" fill="#16a34a" opacity="0.5"/>
+              <path d="M250 150 C250 120, 265 95, 280 85 C262 100, 252 125, 250 150 Z" fill="#16a34a" opacity="0.5"/>
+
+              <!-- Luminous Constellation Arcs & Dotted Data Connections -->
+              <path d="M60 85 Q110 118 170 50" stroke="#34d399" stroke-width="1.6" stroke-dasharray="3 3" opacity="0.85"/>
+              <path d="M170 50 Q230 98 280 85" stroke="#ffd65a" stroke-width="1.6" stroke-dasharray="3 3" opacity="0.85"/>
+              <path d="M110 118 Q170 95 230 98" stroke="#34d399" stroke-width="1.2" stroke-dasharray="2 2" opacity="0.6"/>
+
+              <!-- Glowing Constellation Nodes -->
+              <!-- Left Base Node -->
+              <circle cx="60" cy="85" r="4.5" fill="#10b981" stroke="#ffffff" stroke-width="1.5" />
+              <!-- Left Leaf Tip Node -->
+              <circle cx="110" cy="118" r="5.5" fill="#34d399" stroke="#ffffff" stroke-width="1.8" />
+              <!-- Top Apical Gold Node -->
+              <circle cx="170" cy="50" r="7" fill="#ffd65a" stroke="#ffffff" stroke-width="2" />
+              <circle cx="170" cy="50" r="14" fill="#ffd65a" opacity="0.25" />
+              <!-- Right Leaf Tip Node -->
+              <circle cx="230" cy="98" r="5.5" fill="#34d399" stroke="#ffffff" stroke-width="1.8" />
+              <!-- Right Base Node -->
+              <circle cx="280" cy="85" r="4.5" fill="#10b981" stroke="#ffffff" stroke-width="1.5" />
+            </svg>
+          </div>
+
+          <!-- Feature Highlights Tags -->
+          <div class="hero-feature-tags">
+            <div class="feat-badge-box">
+              <span class="feat-badge-icon">🛡️</span>
+              <span class="feat-badge-label">Yield<br>Protection</span>
+            </div>
+            <div class="feat-badge-box">
+              <span class="feat-badge-icon">🐛</span>
+              <span class="feat-badge-label">Pest<br>Early Warning</span>
+            </div>
+            <div class="feat-badge-box">
+              <span class="feat-badge-icon">🌦️</span>
+              <span class="feat-badge-label">Real-Time<br>Soil & Weather</span>
+            </div>
+            <div class="feat-badge-box">
+              <span class="feat-badge-icon">📊</span>
+              <span class="feat-badge-label">High Precision<br>Risk Forecasting</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Login Card -->
+      <div class="auth-card">
+        <div class="auth-card-header">
+          <div class="mobile-brand-pill">
+            <span class="pill-dot"></span>
+            <span>CropShield AI Platform</span>
+          </div>
+          <h2 id="authCardTitle">Welcome Back</h2>
+          <p id="authCardSubtitle">Log in to access CropShield AI agricultural decision platform.</p>
+        </div>
+
+        <!-- Alert Banner for Authentication Errors / Messages -->
+        <div id="authAlert" class="auth-alert hidden" role="alert">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span id="authAlertText">Invalid email or password.</span>
+        </div>
+
+        <!-- Authentication Form -->
+        <form id="loginForm" onsubmit="handleLoginSubmit(event)" novalidate>
+          
+          <!-- Name Field (Visible only in Sign Up mode) -->
+          <div id="nameFieldGroup" class="form-group hidden">
+            <label for="regName">Full Name</label>
+            <div class="input-with-icon">
+              <svg class="field-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              <input type="text" id="regName" placeholder="Dr. Rajesh Patel" autocomplete="name">
+            </div>
+            <span id="nameError" class="field-error"></span>
+          </div>
+
+          <!-- Email Field -->
+          <div class="form-group">
+            <label for="loginEmail">Email Address</label>
+            <div class="input-with-icon" id="emailInputWrapper">
+              <svg class="field-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+              <input 
+                type="email" 
+                id="loginEmail" 
+                placeholder="officer@agriadvisor.ai" 
+                required 
+                autocomplete="email"
+                oninput="handleInputClearError('email')"
+              >
+            </div>
+            <span id="emailError" class="field-error"></span>
+          </div>
+
+          <!-- Password Field with Show/Hide Toggle -->
+          <div class="form-group">
+            <div class="label-row">
+              <label for="loginPassword">Password</label>
+              <a href="#" id="forgotPasswordBtn" class="link-small" onclick="handleForgotPassword(event)">Forgot Password?</a>
+            </div>
+            <div class="input-with-icon" id="passwordInputWrapper">
+              <svg class="field-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+              </svg>
+              <input 
+                type="password" 
+                id="loginPassword" 
+                placeholder="Enter your password" 
+                required 
+                autocomplete="current-password"
+                oninput="handleInputClearError('password')"
+              >
+              <button 
+                type="button" 
+                id="togglePasswordBtn" 
+                class="btn-toggle-pw" 
+                onclick="togglePasswordVisibility()" 
+                title="Show password" 
+                aria-label="Toggle password visibility"
+              >
+                <svg id="eyeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+              </button>
+            </div>
+            <span id="passwordError" class="field-error"></span>
+          </div>
+
+          <!-- Remember Me Checkbox -->
+          <div class="form-row-remember">
+            <label class="checkbox-label" for="rememberMe">
+              <input type="checkbox" id="rememberMe" checked>
+              <span>Remember me for 30 days</span>
+            </label>
+          </div>
+
+          <!-- Dedicated Login Button -->
+          <button type="submit" id="submitAuthBtn" class="btn-primary-auth">
+            <span id="submitBtnText">Login to Dashboard</span>
+          </button>
+        </form>
+
+        <!-- Quick One-Click Demo Access Box -->
+        <div class="demo-box" onclick="fillDemoCredentials()" title="Click to auto-fill panel evaluation credentials">
+          <div class="demo-header-row">
+            <span class="demo-badge">QUICK DEMO ACCESS</span>
+            <span class="demo-click-hint">Click to Auto-fill</span>
+          </div>
+          <p class="demo-credentials-text">
+            <strong>demo@agriadvisor.ai</strong> &bull; <strong>AgriTech2026!</strong>
+          </p>
+        </div>
+
+        <!-- Card Footer with Toggle Link -->
+        <div class="auth-footer">
+          <p id="toggleAuthModeText">
+            Don't have an account? <a href="#" id="signupLink" onclick="toggleAuthMode(event)">Create Account / Sign Up</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Forgot Password Recovery Modal -->
+  <div id="forgotPwModal" class="modal-backdrop hidden" onclick="closeForgotPwModal(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-icon-wrap">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M12 8v8"/>
+            <path d="M8 12h8"/>
+          </svg>
+        </div>
+        <div>
+          <h3>Password Recovery Assistance</h3>
+          <p class="modal-sub">AI-Powered Agriculture Crop Advisory Assistant</p>
+        </div>
+      </div>
+      <div class="modal-body">
+        <p>In this local capstone demonstration environment, access is automated. You can instantly proceed with official evaluator credentials:</p>
+        <div class="modal-cred-box">
+          <div><span>Email:</span> <strong>demo@agriadvisor.ai</strong></div>
+          <div><span>Password:</span> <strong>AgriTech2026!</strong></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" onclick="closeForgotPwModal()">Close</button>
+        <button type="button" class="btn-modal-primary" onclick="useDemoCredentialsAndClose()">Auto-fill & Proceed</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ========================================================================= -->
+  <!-- 2. MAIN APPLICATION & DASHBOARD VIEW                                      -->
+  <!-- ========================================================================= -->
+  <div id="dashboardView" class="app-layout hidden">
+    
+    <!-- Top Navigation Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="header-logo-icon" title="AI Agriculture Advisory">
+          <!-- Clear Agriculture Plant / Crop Sprout Logo -->
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22V10" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M12 10C12 5 17 4 20 4C20 7 19 12 12 12" fill="#52b788" stroke="#ffffff" stroke-width="1.8"/>
+            <path d="M12 14C12 9 7 8 4 8C4 11 5 16 12 16" fill="#34d399" stroke="#ffffff" stroke-width="1.8"/>
+          </svg>
+        </div>
+        <div class="header-brand">
+          <h2>AI Agriculture Advisory</h2>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs (Requested: Dashboard, Crop Advisory, Historical Cases, Crop Recommendations, Yield Prediction, Risk Analysis, Query History, Feedback) -->
+      <div class="nav-tabs-wrapper">
+        <nav class="nav-tabs">
+          <button class="nav-tab active" onclick="switchNavTab('dashboard')">
+            <span class="tab-icon">🏠</span>
+            <span>Dashboard</span>
+          </button>
+          <button class="nav-tab" onclick="switchNavTab('advisory')">
+            <span class="tab-icon">🌾</span>
+            <span>Crop Advisory</span>
+          </button>
+          <button class="nav-tab" onclick="switchNavTab('cases')">
+            <span class="tab-icon">📚</span>
+            <span>Historical Cases</span>
+          </button>
+          <button class="nav-tab" onclick="switchNavTab('recommendations')">
+            <span class="tab-icon">🌱</span>
+            <span>Crop Recommendations</span>
+          </button>
+          <button class="nav-tab" onclick="switchNavTab('yield')">
+            <span class="tab-icon">📊</span>
+            <span>Yield Prediction</span>
+          </button>
+          <button class="nav-tab" onclick="switchNavTab('risk')">
+            <span class="tab-icon">⚠️</span>
+            <span>Risk Analysis</span>
+          </button>
+          <button class="nav-tab" onclick="switchNavTab('history')">
+            <span class="tab-icon">🕒</span>
+            <span>Query History</span>
+          </button>
+          <button class="nav-tab" onclick="switchNavTab('feedback')">
+            <span class="tab-icon">⭐</span>
+            <span>Feedback & Metrics</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- User Profile & System Status -->
+      <div class="header-right">
+        <div class="system-status-indicator" title="Backend Health Status">
+          <span class="status-dot"></span>
+          <span id="backendStatusText">RAG & ML Ready</span>
+        </div>
+        <div class="user-profile-menu">
+          <div class="user-avatar" id="userInitials">DP</div>
+          <span class="user-name" id="userEmailLabel">demo@agriadvisor.ai</span>
+          <button class="btn-logout" onclick="handleLogout()" title="Log out">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+              <polyline points="16 17 21 12 16 7"/>
+              <line x1="21" y1="12" x2="9" y2="12"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Container Content Panes -->
+    <main class="main-content">
+
+      <!-- ===================================================================== -->
+      <!-- TAB 1: MAIN DASHBOARD                                                 -->
+      <!-- ===================================================================== -->
+      <section id="pane-dashboard" class="tab-pane active">
+        
+        <!-- Hero Section with Natural Language Search -->
+        <div class="query-hero-card">
+          <div class="query-hero-header">
+            <div class="hero-subtitle-badge">
+              <span>🌾 Natural Language Crop Advisory</span>
+            </div>
+            <h2>What would you like to know about your crops?</h2>
+            <p>Ask in plain language about suitable crops, historical similar cases, alternative crops, or yield forecasts.</p>
+          </div>
+
+          <!-- Query Input Bar with Speech Microphone Icon -->
+          <form id="queryForm" onsubmit="handleQuerySubmit(event)" class="query-bar-container">
+            <div class="search-input-wrapper">
+              <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              <input 
+                type="text" 
+                id="queryInput" 
+                placeholder="e.g. Which crops performed well under similar rainfall and soil conditions in Punjab?" 
+                required 
+                autocomplete="off"
+              >
+              <div class="search-actions-right">
+                <button type="button" id="micBtn" class="btn-mic" onclick="toggleVoiceSpeechInput()" title="Voice search with microphone" aria-label="Voice input">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                    <line x1="12" y1="19" x2="12" y2="23"/>
+                    <line x1="8" y1="23" x2="16" y2="23"/>
+                  </svg>
+                </button>
+                <button type="button" class="btn-clear-query" onclick="document.getElementById('queryInput').value=''" title="Clear query">✕</button>
+              </div>
+            </div>
+            <button type="submit" id="searchBtn" class="btn-submit-query">
+              <span id="searchBtnText">Consult AI Advisor</span>
+            </button>
+          </form>
+
+          <!-- Guardrail Warning Alert Banner (Input Scope & Safety Boundary) -->
+          <div id="guardrailAlertBanner" class="guardrail-alert hidden" role="alert">
+            <div class="guardrail-alert-icon">🛡️</div>
+            <div class="guardrail-alert-content">
+              <div class="guardrail-alert-header">
+                <strong>Input Guardrail Triggered</strong>
+                <span class="guardrail-tag">Domain Scope Boundary</span>
+              </div>
+              <p id="guardrailAlertMessage" class="guardrail-alert-text"></p>
+              <div class="guardrail-alert-hint">
+                💡 <strong>Agricultural Guidance:</strong> This assistant is strictly dedicated to agricultural intelligence. Please ask about specific crops (e.g. Rice, Cotton, Wheat), state/region (e.g. Punjab, Gujarat), soil nutrients (N-P-K, pH), or rainfall/weather conditions.
+              </div>
+            </div>
+            <button type="button" class="btn-close-guardrail" onclick="dismissGuardrailAlert()" title="Dismiss alert">✕</button>
+          </div>
+
+          <!-- Example Query Suggestion Chips -->
+          <div class="example-chips">
+            <span class="chip-label">Suggestions:</span>
+            <button type="button" class="chip" onclick="applyExamplePrompt(this)">Which crops performed well in Andhra Pradesh during Kharif with pH 6.5 and high rainfall?</button>
+            <button type="button" class="chip" onclick="applyExamplePrompt(this)">I have N=80, P=40, K=35 and pH=6.5. Which crops are suitable?</button>
+            <button type="button" class="chip" onclick="applyExamplePrompt(this)">Suggest alternative crops for Cotton in Gujarat with lower water demand.</button>
+            <button type="button" class="chip" onclick="applyExamplePrompt(this)">Predict expected yield for Rice in West Bengal during Kharif with rainfall 1600 mm.</button>
+          </div>
+
+          <!-- Recent Queries Bar -->
+          <div class="recent-queries-bar" id="recentQueriesBar">
+            <span class="recent-label">Recent:</span>
+            <div id="recentChipsList" style="display: flex; gap: 8px;">
+              <span class="recent-chip" onclick="applyExamplePrompt(this)">Punjab Kharif Rice</span>
+              <span class="recent-chip" onclick="applyExamplePrompt(this)">Gujarat Sandy Loam Cotton</span>
+              <span class="recent-chip" onclick="applyExamplePrompt(this)">Karnataka Millets drought resistance</span>
+            </div>
+          </div>
+
+          <!-- Collapsible Agronomic Overrides Drawer -->
+          <div class="filter-drawer-toggle" onclick="toggleFilterDrawer()">
+            <span>⚙️ Optional Agronomic Overrides (Soil, Weather, State, Season)</span>
+            <span id="filterChevron">▼</span>
+          </div>
+
+          <div id="filterDrawer" class="filter-drawer hidden">
+            <div class="filter-grid">
+              <div class="filter-item">
+                <label>Target Crop</label>
+                <select id="filterCrop">
+                  <option value="">(Auto-detect from query)</option>
+                </select>
+              </div>
+              <div class="filter-item">
+                <label>State / Region</label>
+                <select id="filterState">
+                  <option value="">(Auto-detect from query)</option>
+                </select>
+              </div>
+              <div class="filter-item">
+                <label>Cultivation Season</label>
+                <select id="filterSeason">
+                  <option value="">(Auto-detect from query)</option>
+                </select>
+              </div>
+              <div class="filter-item">
+                <label>Soil pH (0 - 14)</label>
+                <input type="number" id="filterPH" step="0.1" placeholder="e.g. 6.5">
+              </div>
+              <div class="filter-item">
+                <label>Rainfall (mm)</label>
+                <input type="number" id="filterRain" step="10" placeholder="e.g. 1100">
+              </div>
+              <div class="filter-item">
+                <label>Temperature (°C)</label>
+                <input type="number" id="filterTemp" step="0.5" placeholder="e.g. 28">
+              </div>
+              <div class="filter-item">
+                <label>Nitrogen N (kg/ha)</label>
+                <input type="number" id="filterN" placeholder="e.g. 80">
+              </div>
+              <div class="filter-item">
+                <label>Phosphorus P (kg/ha)</label>
+                <input type="number" id="filterP" placeholder="e.g. 40">
+              </div>
+              <div class="filter-item">
+                <label>Potassium K (kg/ha)</label>
+                <input type="number" id="filterK" placeholder="e.g. 35">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Statistics Cards -->
+        <div class="stats-grid">
+          <div class="stat-metric-card">
+            <div class="stat-icon-wrapper stat-icon-green">🌾</div>
+            <div class="stat-metric-info">
+              <div class="stat-metric-label">Agricultural Cases</div>
+              <div class="stat-metric-value" id="statCasesCount">1,500</div>
+              <div class="stat-metric-sub">
+                <span class="sub-tag-good">100% Verified</span> historical records
+              </div>
+            </div>
+          </div>
+
+          <div class="stat-metric-card">
+            <div class="stat-icon-wrapper stat-icon-earth">🌱</div>
+            <div class="stat-metric-info">
+              <div class="stat-metric-label">Monitored Crops</div>
+              <div class="stat-metric-value" id="statCropsCount">12</div>
+              <div class="stat-metric-sub">Major Indian staples & cash crops</div>
+            </div>
+          </div>
+
+          <div class="stat-metric-card">
+            <div class="stat-icon-wrapper stat-icon-gold">📊</div>
+            <div class="stat-metric-info">
+              <div class="stat-metric-label">Average Yield</div>
+              <div class="stat-metric-value">4.25 <span style="font-size: 1rem; font-weight: 500; color: var(--text-muted);">t/ha</span></div>
+              <div class="stat-metric-sub">
+                <span class="sub-tag-good">R² = 0.9876</span> ML accuracy
+              </div>
+            </div>
+          </div>
+
+          <div class="stat-metric-card">
+            <div class="stat-icon-wrapper stat-icon-blue">⚠️</div>
+            <div class="stat-metric-info">
+              <div class="stat-metric-label">Risk Governance</div>
+              <div class="stat-metric-value" style="font-size: 1.55rem; color: var(--leaf-green);">Low - Mod</div>
+              <div class="stat-metric-sub">Real-time biological guardrails</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Multi-Stage Loading Experience Animation -->
+        <div id="loadingExperience" class="loading-experience-card hidden">
+          <div class="seedling-anim-wrap">
+            <div class="seedling-pulse-ring"></div>
+            <!-- Animated Sprout SVG -->
+            <svg class="seedling-svg" viewBox="0 0 24 24" fill="none" stroke="#2e7d4e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22v-9"/>
+              <path d="M9 15c-3-1-4-4-4-7a7 7 0 0 1 7-7 7 7 0 0 1 7 7c0 3-1 6-4 7"/>
+              <path d="M12 13a4 4 0 0 0 4-4"/>
+            </svg>
+          </div>
+          <h3 class="loading-title">Analyzing Agricultural Intelligence</h3>
+          <p id="loadingStageMessage" class="loading-stage-text">Analyzing agricultural conditions...</p>
+          <div class="loading-dots">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+        </div>
+
+        <!-- AI Agricultural Advisory Dynamic Results View -->
+        <div id="resultsWrapper" class="results-wrapper hidden">
+          
+          <!-- Summary Header Banner -->
+          <div class="results-banner">
+            <div class="banner-intent-group">
+              <span class="card-icon" style="font-size: 1.6rem;">🌾</span>
+              <div>
+                <span class="banner-kicker">Multi-Agent Advisory System</span>
+                <h3 class="banner-title">AI Agricultural Advisory</h3>
+              </div>
+              <span class="banner-badge" id="detectedIntentBadge">Crop Recommendation</span>
+            </div>
+            <div class="banner-meta">
+              <span class="banner-exec-time" id="execTimeBadge">Processed in 78ms</span>
+            </div>
+          </div>
+
+          <!-- 1. Understanding of the Query & Interpreted Conditions -->
+          <div class="banner-conditions-box" id="interpretedConditionsBox">
+            <span class="conditions-icon">🔍</span>
+            <div>
+              <strong>1. Query Understanding & Interpreted Conditions: </strong>
+              <span id="interpretedConditionsText">Derived from regional historical profile</span>
+            </div>
+          </div>
+
+          <!-- Grid of Core Results -->
+          <div class="results-columns">
+            
+            <!-- Left Column: Recommendations & Historical Cases -->
+            <div class="col-main">
+              
+              <!-- 2. Recommended Crops -->
+              <div class="card result-card">
+                <div class="card-header">
+                  <div class="card-title-group">
+                    <span class="card-icon">🌱</span>
+                    <h4>2. Recommended Crops (Suitability & Evidence)</h4>
+                  </div>
+                  <span class="card-badge" id="recCountBadge">3 Candidate Crops</span>
+                </div>
+                <div id="recommendedCropsGrid" class="crops-grid">
+                  <!-- Dynamic Crop Cards Injected Here -->
+                </div>
+              </div>
+
+              <!-- 3. Supporting Historical Cases Table -->
+              <div class="card result-card">
+                <div class="card-header">
+                  <div class="card-title-group">
+                    <span class="card-icon">📚</span>
+                    <h4>3. Supporting Historical Cases (FAISS + TF-IDF Hybrid)</h4>
+                  </div>
+                  <span class="card-badge">Section 15 Prioritized</span>
+                </div>
+                <div class="table-responsive">
+                  <table class="data-table" id="casesTable">
+                    <thead>
+                      <tr>
+                        <th>Case ID</th>
+                        <th>Crop</th>
+                        <th>State</th>
+                        <th>Season</th>
+                        <th>Yield (t/ha)</th>
+                        <th>Rainfall</th>
+                        <th>Soil pH</th>
+                        <th>Similarity</th>
+                      </tr>
+                    </thead>
+                    <tbody id="casesTableBody">
+                      <!-- Dynamic rows -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- 7. Section 45 Standard Advisory Report & Recommended Next Steps -->
+              <div class="card result-card">
+                <div class="card-header">
+                  <div class="card-title-group">
+                    <span class="card-icon">📋</span>
+                    <h4>7. Official Advisory Report & Recommended Next Steps</h4>
+                  </div>
+                  <button type="button" class="btn-copy" onclick="copyAdvisoryReport()">Copy Report</button>
+                </div>
+                <pre class="advisory-pre" id="advisoryTextPre"></pre>
+              </div>
+
+            </div>
+
+            <!-- Right Column: ML Yield, Risk & Impact -->
+            <div class="col-side">
+              
+              <!-- 5. Expected Yield ML Card -->
+              <div class="card stat-card" id="yieldPredictionCard">
+                <div class="stat-header">
+                  <span>5. Expected Yield Forecast</span>
+                  <span class="pill-green">RandomForestRegressor</span>
+                </div>
+                <div class="yield-display">
+                  <span class="yield-number" id="predYieldNumber">3.85</span>
+                  <span class="yield-unit">tonnes/ha</span>
+                </div>
+                <div class="yield-range" id="predYieldRange">Expected Range: 3.40 - 4.30 t/ha (80% CI)</div>
+                <div class="key-factors-list" id="yieldFactorsList"></div>
+                <p class="stat-disclaimer">Estimates are empirical and bounded by historical evidence.</p>
+              </div>
+
+              <!-- 6. Comprehensive Risk Assessment -->
+              <div class="card stat-card" id="riskCard">
+                <div class="stat-header">
+                  <span>6. Risk Assessment</span>
+                  <span id="riskBadge" class="pill-risk pill-low">Low Risk</span>
+                </div>
+                <ul class="risk-list" id="riskFactorsList"></ul>
+                <div class="mitigation-box">
+                  <strong>Recommended Mitigations:</strong>
+                  <p id="mitigationText">Follow balanced NPK schedule and regional irrigation guidelines.</p>
+                </div>
+              </div>
+
+              <!-- 4. Soil & Weather Scientific Reasoning / Feature Importance -->
+              <div class="card stat-card">
+                <div class="stat-header">
+                  <span>4. Soil & Climate Reasoning</span>
+                  <span class="pill-neutral">Empirical Importance</span>
+                </div>
+                <div id="featureImportanceBars" class="importance-bars"></div>
+                <p class="impact-notes" id="scientificNotesText"></p>
+              </div>
+
+              <!-- Evidence Grounding & Validation Guardrail -->
+              <div class="card stat-card">
+                <div class="stat-header">
+                  <span>Validation & Grounding Audit</span>
+                  <span class="pill-green" id="judgeScoreBadge">0.96 / 1.00</span>
+                </div>
+                <div class="judge-metric-row">
+                  <span>Evidence Groundedness:</span>
+                  <strong id="judgeGroundednessVal">0.96</strong>
+                </div>
+                <div class="judge-metric-row">
+                  <span>Recommendation Quality:</span>
+                  <strong id="judgeQualityVal">0.94</strong>
+                </div>
+                <div class="judge-metric-row">
+                  <span>Safety Guardrail:</span>
+                  <strong class="text-green">PASS (Zero Hallucination)</strong>
+                </div>
+                <p class="judge-reason" id="judgeReasonText"></p>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================================== -->
+      <!-- TAB 2: DEDICATED CROP ADVISORY PAGE                                   -->
+      <!-- ===================================================================== -->
+      <section id="pane-advisory" class="tab-pane hidden">
+        <div class="page-hero-header">
+          <h3>Interactive Crop Advisory Studio</h3>
+          <p>Configure regional soil chemistry, weather conditions, and seasonal parameters for personalized agronomic recommendations.</p>
+        </div>
+
+        <div class="advisory-builder-grid">
+          <!-- Form Card -->
+          <div class="advisory-form-card">
+            <!-- Quick Presets -->
+            <div class="presets-row">
+              <span class="chip-label">Agronomic Presets:</span>
+              <button type="button" class="preset-chip" onclick="applyAdvisoryPreset('paddy_kharif')">🌾 Kharif Paddy (High Rain)</button>
+              <button type="button" class="preset-chip" onclick="applyAdvisoryPreset('wheat_rabi')">🌿 Rabi Wheat (Moderate Rain)</button>
+              <button type="button" class="preset-chip" onclick="applyAdvisoryPreset('cotton_semiarid')">🌱 Semi-Arid Cotton</button>
+              <button type="button" class="preset-chip" onclick="applyAdvisoryPreset('millets_dry')">🌾 Dryland Millets</button>
+            </div>
+
+            <form onsubmit="handleAdvisoryFormSubmit(event)">
+              <div class="form-two-cols">
+                <div class="form-group custom-select-wrap">
+                  <label for="advCrop">Target Crop (Optional)</label>
+                  <select id="advCrop">
+                    <option value="">Any Suitable Crop</option>
+                  </select>
+                </div>
+                <div class="form-group custom-select-wrap">
+                  <label for="advState">State / Region</label>
+                  <select id="advState" required>
+                    <option value="">Select State</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-two-cols">
+                <div class="form-group custom-select-wrap">
+                  <label for="advSeason">Cultivation Season</label>
+                  <select id="advSeason" required>
+                    <option value="">Select Season</option>
+                  </select>
+                </div>
+                <div class="form-group custom-select-wrap">
+                  <label for="advSoil">Soil Type</label>
+                  <select id="advSoil">
+                    <option value="Alluvial">Alluvial Soil</option>
+                    <option value="Black">Black Soil (Regur)</option>
+                    <option value="Red">Red & Yellow Soil</option>
+                    <option value="Sandy">Sandy Loam</option>
+                    <option value="Laterite">Laterite Soil</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-three-cols">
+                <div class="form-group custom-input-wrap">
+                  <label for="advPH">Soil pH (0 - 14)</label>
+                  <input type="number" id="advPH" step="0.1" value="6.5" min="3" max="10" required>
+                </div>
+                <div class="form-group custom-input-wrap">
+                  <label for="advTemp">Temperature (°C)</label>
+                  <input type="number" id="advTemp" step="0.5" value="27.5" min="10" max="50" required>
+                </div>
+                <div class="form-group custom-input-wrap">
+                  <label for="advRain">Rainfall (mm)</label>
+                  <input type="number" id="advRain" step="10" value="1150" min="50" max="4000" required>
+                </div>
+              </div>
+
+              <div class="form-three-cols">
+                <div class="form-group custom-input-wrap">
+                  <label for="advHumidity">Humidity (%)</label>
+                  <input type="number" id="advHumidity" step="1" value="70" min="10" max="100">
+                </div>
+                <div class="form-group custom-input-wrap">
+                  <label for="advN">Nitrogen N (kg/ha)</label>
+                  <input type="number" id="advN" value="85" min="0" max="300">
+                </div>
+                <div class="form-group custom-input-wrap">
+                  <label for="advPK">P : K (kg/ha)</label>
+                  <input type="text" id="advPK" value="40 : 35">
+                </div>
+              </div>
+
+              <button type="submit" class="btn-primary-auth" style="margin-top: 1rem;">
+                <span>Generate Precision Crop Advisory</span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Preview & Result Output -->
+          <div id="advisoryOutputCard" class="card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-icon">✨</span>
+                <h4>Recommendation Preview</h4>
+              </div>
+              <span class="pill-green">Real-time Simulation</span>
+            </div>
+            <div id="advOutputContent">
+              <div class="empty-state" style="padding: 2.5rem 1rem;">
+                <div class="empty-state-icon">🌾</div>
+                <h4>Configure Farming Conditions</h4>
+                <p>Select your state, season, and soil properties on the left to receive precision agronomic guidance.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dedicated Full Multi-Agent Advisory Dossier (Inside Crop Advisory Tab) -->
+        <div id="advisoryStudioDossierWrapper" class="results-wrapper hidden" style="margin-top: 2.5rem;">
+          <!-- 1. Header Banner -->
+          <div class="results-banner">
+            <div class="banner-intent-group">
+              <span class="card-icon" style="font-size: 1.6rem;">🌾</span>
+              <div>
+                <span class="banner-kicker">Multi-Agent Advisory System</span>
+                <h3 class="banner-title">Precision Crop Advisory Dossier</h3>
+              </div>
+              <span class="banner-badge" id="advStudioIntentBadge">Crop Recommendation</span>
+            </div>
+            <div class="banner-meta">
+              <span class="banner-exec-time" id="advStudioExecTime">Processed</span>
+            </div>
+          </div>
+
+          <!-- Interpreted Conditions Box -->
+          <div class="banner-conditions-box">
+            <span class="conditions-icon">🔍</span>
+            <div>
+              <strong>Agronomic Parameters: </strong>
+              <span id="advStudioConditionsText">Derived from field inputs</span>
+            </div>
+          </div>
+
+          <!-- Grid of Core Results -->
+          <div class="results-columns">
+            <!-- Left Column: Recommendations & Historical Cases -->
+            <div class="col-main">
+              <!-- Recommended Crops Section -->
+              <div class="card result-card">
+                <div class="card-header">
+                  <div class="card-title-group">
+                    <span class="card-icon">🌱</span>
+                    <h4>Recommended Crops (Suitability & Evidence)</h4>
+                  </div>
+                  <span class="card-badge" id="advStudioRecCountBadge">Candidates</span>
+                </div>
+                <div id="advStudioCropsGrid" class="crops-grid"></div>
+              </div>
+
+              <!-- Supporting Historical Cases Table -->
+              <div class="card result-card">
+                <div class="card-header">
+                  <div class="card-title-group">
+                    <span class="card-icon">📚</span>
+                    <h4>Supporting Historical Cases (FAISS + TF-IDF Hybrid)</h4>
+                  </div>
+                  <span class="card-badge">Empirical Evidence</span>
+                </div>
+                <div class="table-responsive">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>Case ID</th>
+                        <th>Crop</th>
+                        <th>State</th>
+                        <th>Season</th>
+                        <th>Yield (t/ha)</th>
+                        <th>Rainfall</th>
+                        <th>Soil pH</th>
+                        <th>Similarity</th>
+                      </tr>
+                    </thead>
+                    <tbody id="advStudioCasesTableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Section 45 Advisory Report -->
+              <div class="card result-card">
+                <div class="card-header">
+                  <div class="card-title-group">
+                    <span class="card-icon">📋</span>
+                    <h4>Official Agronomic Advisory Report</h4>
+                  </div>
+                  <button type="button" class="btn-copy" onclick="copyAdvisoryReportById('advStudioReportPre')">Copy Report</button>
+                </div>
+                <pre class="advisory-pre" id="advStudioReportPre"></pre>
+              </div>
+            </div>
+
+            <!-- Right Column: ML Yield, Risk & Impact -->
+            <div class="col-side">
+              <!-- Yield Forecast -->
+              <div class="card stat-card">
+                <div class="stat-header">
+                  <span>ML Yield Forecast</span>
+                  <span class="pill-green">RandomForestRegressor</span>
+                </div>
+                <div class="yield-display">
+                  <span class="yield-number" id="advStudioYieldNumber">3.85</span>
+                  <span class="yield-unit">tonnes/ha</span>
+                </div>
+                <div class="yield-range" id="advStudioYieldRange">Expected Range (80% CI)</div>
+                <div class="key-factors-list" id="advStudioYieldFactors"></div>
+                <p class="stat-disclaimer">Empirical statistical estimation.</p>
+              </div>
+
+              <!-- Risk Assessment -->
+              <div class="card stat-card">
+                <div class="stat-header">
+                  <span>Risk Assessment</span>
+                  <span id="advStudioRiskBadge" class="pill-risk pill-low">Low Risk</span>
+                </div>
+                <ul class="risk-list" id="advStudioRiskFactors"></ul>
+                <div class="mitigation-box">
+                  <strong>Recommended Mitigations:</strong>
+                  <p id="advStudioMitigationText">Follow balanced NPK schedule and regional irrigation guidelines.</p>
+                </div>
+              </div>
+
+              <!-- Soil & Climate Reasoning -->
+              <div class="card stat-card">
+                <div class="stat-header">
+                  <span>Soil & Climate Feature Importance</span>
+                  <span class="pill-neutral">Feature Weights</span>
+                </div>
+                <div id="advStudioImpactBars" class="importance-bars"></div>
+                <p class="impact-notes" id="advStudioScientificNotes"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ===================================================================== -->
+      <!-- TAB 3: HISTORICAL CASE EXPLORER                                       -->
+      <!-- ===================================================================== -->
+      <section id="pane-cases" class="tab-pane hidden">
+        <div class="page-hero-header">
+          <h3>Historical Agricultural Case Explorer</h3>
+          <p>Search and audit 1,500 empirical agricultural records spanning major Indian states, cropping seasons, soil chemistry, and recorded yields.</p>
+        </div>
+
+        <div class="card">
+          <div class="explorer-header-row">
+            <div class="explorer-search-box">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+              </svg>
+              <input type="text" id="explorerSearchInput" placeholder="Filter by Crop, State, Season..." oninput="handleExplorerFilter()">
+            </div>
+
+            <!-- Quick Filter Chips -->
+            <div class="explorer-chips-filter">
+              <button type="button" class="filter-chip-btn active" onclick="setExplorerFilterTag('all', this)">All Crops</button>
+              <button type="button" class="filter-chip-btn" onclick="setExplorerFilterTag('Rice', this)">Rice</button>
+              <button type="button" class="filter-chip-btn" onclick="setExplorerFilterTag('Wheat', this)">Wheat</button>
+              <button type="button" class="filter-chip-btn" onclick="setExplorerFilterTag('Cotton', this)">Cotton</button>
+              <button type="button" class="filter-chip-btn" onclick="setExplorerFilterTag('Maize', this)">Maize</button>
+              <button type="button" class="filter-chip-btn" onclick="setExplorerFilterTag('Sugarcane', this)">Sugarcane</button>
+            </div>
+          </div>
+
+          <div class="table-responsive" style="max-height: 580px;">
+            <table class="data-table" id="explorerFullTable">
+              <thead>
+                <tr>
+                  <th>Case ID</th>
+                  <th>Crop</th>
+                  <th>State</th>
+                  <th>Season</th>
+                  <th>Year</th>
+                  <th>N : P : K</th>
+                  <th>pH</th>
+                  <th>Temp (°C)</th>
+                  <th>Rain (mm)</th>
+                  <th>Humidity</th>
+                  <th>Yield (t/ha)</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="explorerFullTableBody">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ===================================================================== -->
+      <!-- TAB 4: CROP RECOMMENDATIONS SHOWCASE                                  -->
+      <!-- ===================================================================== -->
+      <section id="pane-recommendations" class="tab-pane hidden">
+        <div class="page-hero-header">
+          <h3>Top Recommended Crops</h3>
+          <p>Curated agronomic profiles and empirical suitability metrics for Indian agricultural staples and high-value cash crops.</p>
+        </div>
+
+        <div class="crops-showcase-grid" id="cropsShowcaseGrid">
+          <!-- Populated dynamically with large cards -->
+        </div>
+      </section>
+
+
+      <!-- ===================================================================== -->
+      <!-- TAB 5: YIELD PREDICTION ANALYTICS                                     -->
+      <!-- ===================================================================== -->
+      <section id="pane-yield" class="tab-pane hidden">
+        <div class="page-hero-header">
+          <h3>Machine Learning Yield Prediction &amp; Farm Economics Studio</h3>
+          <p>RandomForestRegressor (R² = 0.988) providing bounded yield forecasts with tree-variance 80% confidence intervals (ŷ ± 1.28σ) &amp; interactive farm revenue economics.</p>
+        </div>
+
+        <div class="analytics-grid">
+          <!-- Predictor Form & Confidence Card -->
+          <div class="chart-card">
+            <h4 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 1rem; color: var(--primary-forest);">Interactive Field &amp; Agronomic Parameters</h4>
+            <div class="form-two-cols">
+              <div class="form-group custom-select-wrap">
+                <label for="ypCrop">Crop Selection</label>
+                <select id="ypCrop" onchange="runLiveYieldEstimate()">
+                  <option value="Rice">Rice (Staple)</option>
+                  <option value="Wheat">Wheat (Rabi Cereal)</option>
+                  <option value="Maize">Maize (C4 Grain)</option>
+                  <option value="Cotton">Cotton (Cash Crop)</option>
+                  <option value="Sugarcane">Sugarcane (Commercial)</option>
+                  <option value="Chickpea">Chickpea (Pulses)</option>
+                  <option value="Groundnut">Groundnut (Oilseed)</option>
+                  <option value="Soybean">Soybean (Oilseed)</option>
+                  <option value="Mustard">Mustard (Oilseed)</option>
+                  <option value="Barley">Barley (Cereal)</option>
+                  <option value="Millets">Millets (Climate Resilient)</option>
+                  <option value="Jute">Jute (Fiber)</option>
+                </select>
+              </div>
+              <div class="form-group custom-select-wrap">
+                <label for="ypState">State / Agro-Climatic Zone</label>
+                <select id="ypState" onchange="runLiveYieldEstimate()">
+                  <option value="Punjab">Punjab</option>
+                  <option value="Andhra Pradesh">Andhra Pradesh</option>
+                  <option value="West Bengal">West Bengal</option>
+                  <option value="Uttar Pradesh">Uttar Pradesh</option>
+                  <option value="Maharashtra">Maharashtra</option>
+                  <option value="Karnataka">Karnataka</option>
+                  <option value="Gujarat">Gujarat</option>
+                  <option value="Tamil Nadu">Tamil Nadu</option>
+                  <option value="Madhya Pradesh">Madhya Pradesh</option>
+                  <option value="Rajasthan">Rajasthan</option>
+                  <option value="Haryana">Haryana</option>
+                  <option value="Bihar">Bihar</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-two-cols">
+              <div class="form-group custom-input-wrap">
+                <label for="ypFarmArea">Farm Cultivation Land Area</label>
+                <div style="display: flex; gap: 8px;">
+                  <input type="number" id="ypFarmArea" value="5" min="0.5" max="500" step="0.5" oninput="runLiveYieldEstimate()" style="flex: 1;">
+                  <select id="ypAreaUnit" onchange="runLiveYieldEstimate()" style="width: 110px; padding: 8px 10px; border-radius: var(--radius-md); border: 1px solid var(--border-light); background: var(--bg-surface);">
+                    <option value="acres">Acres</option>
+                    <option value="hectares">Hectares</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group custom-input-wrap">
+                <label for="ypMarketPrice">Market Price / Mandi MSP (₹/Tonne)</label>
+                <input type="number" id="ypMarketPrice" value="23000" step="500" min="1000" oninput="runLiveYieldEstimate()">
+              </div>
+            </div>
+
+            <div class="form-two-cols">
+              <div class="form-group custom-input-wrap">
+                <label for="ypRain">Seasonal Rainfall (mm)</label>
+                <input type="range" id="ypRain" min="300" max="2500" value="1200" step="50" oninput="updateRangeLabel('ypRainVal', this.value, ' mm'); runLiveYieldEstimate();">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                  <span style="font-size: 0.76rem; color: var(--text-muted);">Dry (300mm)</span>
+                  <span id="ypRainVal" style="font-size: 0.84rem; font-weight: 700; color: var(--leaf-green);">1200 mm</span>
+                  <span style="font-size: 0.76rem; color: var(--text-muted);">Heavy (2500mm)</span>
+                </div>
+              </div>
+              <div class="form-group custom-input-wrap">
+                <label for="ypPH">Soil pH Level</label>
+                <input type="range" id="ypPH" min="4.5" max="8.5" value="6.5" step="0.1" oninput="updateRangeLabel('ypPHVal', this.value, ''); runLiveYieldEstimate();">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                  <span style="font-size: 0.76rem; color: var(--text-muted);">Acidic (4.5)</span>
+                  <span id="ypPHVal" style="font-size: 0.84rem; font-weight: 700; color: var(--leaf-green);">6.5</span>
+                  <span style="font-size: 0.76rem; color: var(--text-muted);">Alkaline (8.5)</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="background: var(--bg-muted); border-radius: var(--radius-lg); padding: 1.5rem; text-align: center; margin-top: 1.25rem; border: 1px solid var(--border-subtle);">
+              <span style="font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); font-weight: 700;">Forecasted Expected Yield</span>
+              <div class="yield-number" id="ypOutputNumber" style="font-size: 3rem; margin: 0.5rem 0;">4.12 <span style="font-size: 1.1rem; color: var(--text-muted);">t/ha</span></div>
+              <div id="ypOutputRange" style="font-size: 0.88rem; color: var(--leaf-green); font-weight: 600;">80% Confidence Interval: 3.65 - 4.59 t/ha</div>
+            </div>
+          </div>
+
+          <!-- Comparison Analytics Bars -->
+          <div class="chart-card">
+            <h4 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--primary-forest);">Comparative Yield Benchmarks</h4>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Estimated yield compared against regional historical distributions &amp; agronomic baselines.</p>
+
+            <div class="chart-bars-wrap">
+              <div class="chart-bar-item">
+                <div class="chart-bar-label">
+                  <span>ML Predicted Yield</span>
+                  <strong id="barPredLabel">4.12 t/ha</strong>
+                </div>
+                <div class="chart-track">
+                  <div class="chart-fill-green" id="barPredFill" style="width: 82%;"></div>
+                </div>
+              </div>
+
+              <div class="chart-bar-item">
+                <div class="chart-bar-label">
+                  <span>State Historical Average</span>
+                  <strong id="barStateLabel">3.75 t/ha</strong>
+                </div>
+                <div class="chart-track">
+                  <div class="chart-fill-gold" id="barStateFill" style="width: 75%;"></div>
+                </div>
+              </div>
+
+              <div class="chart-bar-item">
+                <div class="chart-bar-label">
+                  <span>High-Input Irrigated Benchmark</span>
+                  <strong id="barHighLabel">4.80 t/ha</strong>
+                </div>
+                <div class="chart-track">
+                  <div class="chart-fill-blue" id="barHighFill" style="width: 96%;"></div>
+                </div>
+              </div>
+
+              <div class="chart-bar-item">
+                <div class="chart-bar-label">
+                  <span>Dryland / Rainfed Baseline</span>
+                  <strong id="barDryLabel">2.60 t/ha</strong>
+                </div>
+                <div class="chart-track">
+                  <div class="chart-fill-gold" id="barDryFill" style="width: 52%; opacity: 0.6;"></div>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border-light);">
+              <h5 style="font-size: 0.92rem; color: var(--primary-forest); margin-bottom: 0.75rem;">Agronomic Sensitivity Factors</h5>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.82rem;">
+                <div style="background: var(--bg-surface-alt); padding: 8px 12px; border-radius: var(--radius-md);">
+                  <span style="color: var(--text-muted);">Rainfall Efficiency:</span>
+                  <strong id="calcRainEff" style="color: var(--leaf-green); float: right;">+4.2%</strong>
+                </div>
+                <div style="background: var(--bg-surface-alt); padding: 8px 12px; border-radius: var(--radius-md);">
+                  <span style="color: var(--text-muted);">Soil pH Suitability:</span>
+                  <strong id="calcPHEff" style="color: var(--leaf-green); float: right;">98.5%</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Farm Economics & Revenue Metrics (6 Calculated KPI Cards) -->
+        <div class="yield-calc-section">
+          <div class="card-header" style="margin-bottom: 1rem;">
+            <div class="card-title-group">
+              <span class="card-icon">💰</span>
+              <h4 style="font-family: var(--font-display); font-size: 1.25rem; color: var(--primary-forest);">Farm Economics &amp; Profitability Calculator</h4>
+            </div>
+            <span class="pill-green" id="econAreaBadge">5.0 Acres (2.02 ha)</span>
+          </div>
+
+          <div class="calc-kpi-grid">
+            <div class="calc-kpi-card">
+              <div class="calc-kpi-label">🌾 Total Harvest</div>
+              <div class="calc-kpi-val" id="kpiTotalHarvest">8.32 <span style="font-size: 1rem; font-weight: 500; color: var(--text-muted);">Tonnes</span></div>
+              <div class="calc-kpi-sub" id="kpiHarvestQuintal">83.2 Quintals</div>
+            </div>
+
+            <div class="calc-kpi-card highlight-rev">
+              <div class="calc-kpi-label">📈 Gross Revenue</div>
+              <div class="calc-kpi-val" id="kpiGrossRevenue">₹1,91,360</div>
+              <div class="calc-kpi-sub" id="kpiRevenuePerAcre">₹38,272 / acre</div>
+            </div>
+
+            <div class="calc-kpi-card">
+              <div class="calc-kpi-label">🧾 Cultivation Cost</div>
+              <div class="calc-kpi-val" id="kpiTotalCost">₹52,924</div>
+              <div class="calc-kpi-sub" id="kpiCostPerAcre">₹10,585 / acre</div>
+            </div>
+
+            <div class="calc-kpi-card highlight-profit">
+              <div class="calc-kpi-label">💵 Net Farmer Profit</div>
+              <div class="calc-kpi-val" id="kpiNetProfit" style="color: var(--leaf-green);">+₹1,38,436</div>
+              <div class="calc-kpi-sub" id="kpiProfitPerAcre">+₹27,687 / acre</div>
+            </div>
+
+            <div class="calc-kpi-card">
+              <div class="calc-kpi-label">📊 Return on Investment (ROI)</div>
+              <div class="calc-kpi-val" id="kpiROI" style="color: #059669;">261.6%</div>
+              <div class="calc-kpi-sub">Net Profit / Total Cost</div>
+            </div>
+
+            <div class="calc-kpi-card">
+              <div class="calc-kpi-label">🛡️ Break-Even Yield</div>
+              <div class="calc-kpi-val" id="kpiBreakEven">1.14 <span style="font-size: 1rem; font-weight: 500; color: var(--text-muted);">t/ha</span></div>
+              <div class="calc-kpi-sub" id="kpiSafetyMargin">+261% Safety Margin</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: What-If Agronomic Sensitivity Simulator -->
+        <div class="card" style="margin-top: 2rem;">
+          <div class="card-header">
+            <div class="card-title-group">
+              <span class="card-icon">🧪</span>
+              <h4 style="font-family: var(--font-display); font-size: 1.2rem; color: var(--primary-forest);">What-If Agronomic Sensitivity Simulator</h4>
+            </div>
+            <span class="pill-mod">Live Simulation</span>
+          </div>
+          <p style="font-size: 0.86rem; color: var(--text-secondary); margin-bottom: 1.25rem;">Simulate climate stress, monsoon surplus, or fertilizer intensification to see the projected impact on harvest yield and net farm earnings.</p>
+
+          <div class="form-three-cols">
+            <div class="form-group custom-input-wrap">
+              <label for="simRainDelta">Monsoon Rainfall Shift (%)</label>
+              <input type="range" id="simRainDelta" min="-40" max="40" value="0" step="5" oninput="updateRangeLabel('simRainDeltaVal', this.value, '%');">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                <span style="font-size: 0.76rem; color: #dc2626;">Drought (-40%)</span>
+                <span id="simRainDeltaVal" style="font-size: 0.84rem; font-weight: 700; color: var(--leaf-green);">0%</span>
+                <span style="font-size: 0.76rem; color: var(--primary-forest);">Excess (+40%)</span>
+              </div>
+            </div>
+
+            <div class="form-group custom-input-wrap">
+              <label for="simFertBoost">Nitrogen (N) Boost (kg/ha)</label>
+              <input type="range" id="simFertBoost" min="0" max="60" value="0" step="5" oninput="updateRangeLabel('simFertBoostVal', this.value, ' kg/ha');">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                <span style="font-size: 0.76rem; color: var(--text-muted);">Standard (0)</span>
+                <span id="simFertBoostVal" style="font-size: 0.84rem; font-weight: 700; color: var(--leaf-green);">0 kg/ha</span>
+                <span style="font-size: 0.76rem; color: var(--text-muted);">High (+60 kg)</span>
+              </div>
+            </div>
+
+            <div class="form-group custom-select-wrap">
+              <label for="simIrrigationType">Irrigation Management</label>
+              <select id="simIrrigationType">
+                <option value="rainfed">Natural Rainfed Baseline (1.0x)</option>
+                <option value="drip">Precision Drip Irrigation (+18% Yield)</option>
+                <option value="canal">Canal / Flooding Irrigation (+10% Yield)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Calculate + Reset Button Row -->
+          <div style="display: flex; gap: 10px; margin-top: 0.75rem; margin-bottom: 0.5rem;">
+            <button type="button" id="yieldCalcBtn" onclick="runYieldCalculationWithAnimation()" style="display: flex; align-items: center; gap: 8px; padding: 10px 22px; background: linear-gradient(135deg, var(--primary-forest), var(--leaf-green)); color: #fff; border: none; border-radius: var(--radius-md); font-family: var(--font-display); font-size: 0.92rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 14px rgba(46,125,78,0.35); transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(46,125,78,0.5)'" onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 14px rgba(46,125,78,0.35)'">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              Calculate Yield &amp; Economics
+            </button>
+            <button type="button" onclick="resetSensitivitySliders()" style="padding: 10px 18px; background: var(--bg-surface-alt); color: var(--text-secondary); border: 1px solid var(--border-light); border-radius: var(--radius-md); font-size: 0.86rem; cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.borderColor='var(--leaf-green)'" onmouseout="this.style.borderColor='var(--border-light)'">↺ Reset Sliders</button>
+          </div>
+
+          <div style="background: var(--bg-surface-alt); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 1rem 1.25rem; margin-top: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <span style="font-size: 0.78rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Simulated Yield Impact</span>
+              <div id="simDeltaYieldText" style="font-size: 1.15rem; font-weight: 800; color: var(--leaf-green);">+0.00 t/ha (Baseline)</div>
+            </div>
+            <div>
+              <span style="font-size: 0.78rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Simulated Net Profit Change</span>
+              <div id="simDeltaProfitText" style="font-size: 1.15rem; font-weight: 800; color: var(--leaf-green);">₹0</div>
+            </div>
+            <div>
+              <button type="button" class="btn-secondary" style="padding: 6px 14px; font-size: 0.82rem;" onclick="resetSensitivitySliders()">Reset Simulation</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 4: Multi-Crop Profitability Comparison Matrix -->
+        <div class="card" style="margin-top: 2rem;">
+          <div class="card-header">
+            <div class="card-title-group">
+              <span class="card-icon">📊</span>
+              <h4 style="font-family: var(--font-display); font-size: 1.2rem; color: var(--primary-forest);">Multi-Crop Profitability Comparison Matrix</h4>
+            </div>
+            <span class="pill-green">Sorted by Net Profit</span>
+          </div>
+          <p style="font-size: 0.86rem; color: var(--text-secondary); margin-bottom: 1.25rem;">Live economic ranking of all crops evaluated under your specific soil pH, rainfall, and farm size parameters.</p>
+
+          <div class="table-responsive">
+            <table class="comparison-matrix-table">
+              <thead>
+                <tr>
+                  <th>Crop</th>
+                  <th>Predicted Yield</th>
+                  <th>Total Harvest</th>
+                  <th>Market Price</th>
+                  <th>Est. Cost</th>
+                  <th>Gross Revenue</th>
+                  <th>Net Profit</th>
+                  <th>ROI (%)</th>
+                </tr>
+              </thead>
+              <tbody id="cropComparisonTableBody">
+                <!-- Dynamically populated rows -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ===================================================================== -->
+      <!-- TAB 6: RISK ANALYSIS PAGE                                             -->
+      <!-- ===================================================================== -->
+      <section id="pane-risk" class="tab-pane hidden">
+        <div class="page-hero-header">
+          <h3>Environmental &amp; Agronomic Risk Analysis Engine</h3>
+          <p>Multi-dimensional auditing of crop vulnerability, weather stress, nutrient deficiencies, and quantitative Composite Agronomic Risk Index (CARI) computation.</p>
+        </div>
+
+        <!-- 4 Top Live KPI Cards -->
+        <div class="stats-grid">
+          <div class="stat-metric-card">
+            <div class="stat-icon-wrapper stat-icon-green" id="riskOverallIcon">🌿</div>
+            <div class="stat-metric-info">
+              <div class="stat-metric-label">Composite Risk Index (CARI)</div>
+              <div class="stat-metric-value" id="riskOverallValue" style="color: var(--leaf-green); font-size: 1.55rem;">LOW RISK (22/100)</div>
+              <div class="stat-metric-sub" id="riskOverallSub">Optimal biological safety margin</div>
+            </div>
+          </div>
+
+          <div class="stat-metric-card">
+            <div class="stat-icon-wrapper stat-icon-blue">🌧️</div>
+            <div class="stat-metric-info">
+              <div class="stat-metric-label">Moisture &amp; Weather Stress</div>
+              <div class="stat-metric-value" id="riskWeatherValue" style="color: #2563eb; font-size: 1.55rem;">18 / 100</div>
+              <div class="stat-metric-sub" id="riskWeatherSub">Adequate rainfall coverage</div>
+            </div>
+          </div>
+
+          <div class="stat-metric-card">
+            <div class="stat-icon-wrapper stat-icon-earth">🌱</div>
+            <div class="stat-metric-info">
+              <div class="stat-metric-label">Soil Acidity / pH Hazard</div>
+              <div class="stat-metric-value" id="riskPHValue" style="color: var(--leaf-green); font-size: 1.55rem;">12 / 100</div>
+              <div class="stat-metric-sub" id="riskPHSub">pH in optimal nutrient band</div>
+            </div>
+          </div>
+
+          <div class="stat-metric-card">
+            <div class="stat-icon-wrapper stat-icon-gold">⚠️</div>
+            <div class="stat-metric-info">
+              <div class="stat-metric-label">Nutrient Imbalance Penalty</div>
+              <div class="stat-metric-value" id="riskNPKValue" style="color: var(--harvest-gold); font-size: 1.55rem;">25 / 100</div>
+              <div class="stat-metric-sub" id="riskNPKSub">Balanced N:P:K ratio</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 1: Interactive Parameter Simulator & Formula Breakdown Grid -->
+        <div class="risk-calc-grid" style="margin-top: 1.5rem;">
+          
+          <!-- Left: Parameter Adjustment Studio -->
+          <div class="chart-card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-icon">⚙️</span>
+                <h4 style="font-family: var(--font-display); font-size: 1.2rem; color: var(--primary-forest);">Agronomic Environmental Simulator</h4>
+              </div>
+              <span class="pill-green">Interactive Controls</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.25rem;">Adjust environmental parameters below to observe real-time recalculation of the Composite Agronomic Risk Index.</p>
+
+            <div class="form-two-cols">
+              <div class="form-group custom-select-wrap">
+                <label for="rcCrop">Target Crop</label>
+                <select id="rcCrop">
+                  <option value="Rice">Rice (Staple)</option>
+                  <option value="Wheat">Wheat (Cereal)</option>
+                  <option value="Cotton">Cotton (Cash Crop)</option>
+                  <option value="Maize">Maize (Grain)</option>
+                  <option value="Sugarcane">Sugarcane (Commercial)</option>
+                  <option value="Chickpea">Chickpea (Pulses)</option>
+                  <option value="Groundnut">Groundnut (Oilseed)</option>
+                  <option value="Soybean">Soybean (Oilseed)</option>
+                  <option value="Mustard">Mustard (Oilseed)</option>
+                  <option value="Millets">Millets (Drought Resilient)</option>
+                </select>
+              </div>
+              <div class="form-group custom-select-wrap">
+                <label for="rcPestPressure">Pest &amp; Disease Incidence</label>
+                <select id="rcPestPressure">
+                  <option value="low">Low Pest Pressure (Managed)</option>
+                  <option value="moderate">Moderate Incidence (Seasonal)</option>
+                  <option value="high">High Infestation Alert</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-two-cols">
+              <div class="form-group custom-input-wrap">
+                <label for="rcRain">Seasonal Rainfall (mm)</label>
+                <input type="range" id="rcRain" min="200" max="2800" value="1200" step="50" oninput="updateRangeLabel('rcRainVal', this.value, ' mm')">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                  <span style="font-size: 0.74rem; color: #dc2626;">Drought (200mm)</span>
+                  <span id="rcRainVal" style="font-size: 0.84rem; font-weight: 700; color: var(--leaf-green);">1200 mm</span>
+                  <span style="font-size: 0.74rem; color: var(--primary-forest);">Flood (2800mm)</span>
+                </div>
+              </div>
+              <div class="form-group custom-input-wrap">
+                <label for="rcPH">Soil pH Level</label>
+                <input type="range" id="rcPH" min="4.0" max="9.0" value="6.5" step="0.1" oninput="updateRangeLabel('rcPHVal', this.value, '')">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                  <span style="font-size: 0.74rem; color: #dc2626;">Acidic (4.0)</span>
+                  <span id="rcPHVal" style="font-size: 0.84rem; font-weight: 700; color: var(--leaf-green);">6.5</span>
+                  <span style="font-size: 0.74rem; color: var(--text-muted);">Alkaline (9.0)</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-two-cols">
+              <div class="form-group custom-input-wrap">
+                <label for="rcTemp">Ambient Temperature (°C)</label>
+                <input type="range" id="rcTemp" min="8" max="46" value="28" step="1" oninput="updateRangeLabel('rcTempVal', this.value, '°C')">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                  <span style="font-size: 0.74rem; color: #3b82f6;">Frost (8°C)</span>
+                  <span id="rcTempVal" style="font-size: 0.84rem; font-weight: 700; color: var(--leaf-green);">28°C</span>
+                  <span style="font-size: 0.74rem; color: #ef4444;">Heatwave (46°C)</span>
+                </div>
+              </div>
+              <div class="form-group custom-input-wrap">
+                <label for="rcN">Soil Nitrogen N (kg/ha)</label>
+                <input type="range" id="rcN" min="10" max="200" value="85" step="5" oninput="updateRangeLabel('rcNVal', this.value, ' kg/ha')">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                  <span style="font-size: 0.74rem; color: var(--text-muted);">Deficient (10)</span>
+                  <span id="rcNVal" style="font-size: 0.84rem; font-weight: 700; color: var(--leaf-green);">85 kg/ha</span>
+                  <span style="font-size: 0.74rem; color: var(--text-muted);">Surplus (200)</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 1rem; flex-wrap: wrap;">
+              <button type="button" onclick="resetRiskSimulator()" style="padding: 9px 16px; background: var(--bg-surface-alt); color: var(--text-secondary); border: 1px solid var(--border-light); border-radius: var(--radius-md); font-size: 0.84rem; cursor: pointer; transition: all 0.2s ease;" onmouseover="this.style.borderColor='var(--leaf-green)'" onmouseout="this.style.borderColor='var(--border-light)'">↺ Reset Defaults</button>
+              <button type="button" id="riskCalcBtn" onclick="runRiskCalculationWithAnimation()" style="display: flex; align-items: center; gap: 8px; padding: 9px 22px; background: linear-gradient(135deg, #1e3a5f, #2563eb); color: #fff; border: none; border-radius: var(--radius-md); font-family: var(--font-display); font-size: 0.9rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 14px rgba(37,99,235,0.35); transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(37,99,235,0.5)'" onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 14px rgba(37,99,235,0.35)'">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                Calculate Risk Index (CARI)
+              </button>
+            </div>
+          </div>
+
+          <!-- Right: Mathematical CARI Formula & Weighted Sub-Index Breakdown -->
+          <div class="chart-card">
+            <div class="card-header">
+              <div class="card-title-group">
+                <span class="card-icon">📐</span>
+                <h4 style="font-family: var(--font-display); font-size: 1.2rem; color: var(--primary-forest);">Mathematical CARI Breakdown</h4>
+              </div>
+              <span class="pill-green">Quantitative Index</span>
+            </div>
+
+            <div class="math-formula-box">
+              <div class="math-formula-title">Composite Agronomic Risk Formula</div>
+              <div class="math-formula-code">CARI = 0.30·R_rain + 0.25·R_pH + 0.20·R_temp + 0.15·R_npk + 0.10·R_pest</div>
+              <div style="font-size: 0.78rem; color: #94a3b8; line-height: 1.4;">
+                Where each sub-index \(R_i \in [0, 100]\) quantifies biological variance from optimal crop tolerances. Overall risk: <strong>&le;35 Low</strong>, <strong>36–69 Moderate</strong>, <strong>&ge;70 High</strong>.
+              </div>
+            </div>
+
+            <!-- Sub-Indices Progress Bars -->
+            <div class="sub-index-item">
+              <div class="sub-index-header">
+                <span>🌧️ Moisture Stress (\(R_{\text{rain}}\)) &bull; <strong>Weight: 30%</strong></span>
+                <strong id="subRainScore">18 / 100</strong>
+              </div>
+              <div class="sub-index-track">
+                <div class="sub-index-fill" id="subRainFill" style="width: 18%; background: var(--leaf-green);"></div>
+              </div>
+            </div>
+
+            <div class="sub-index-item">
+              <div class="sub-index-header">
+                <span>🌱 Soil pH Discrepancy (\(R_{\text{pH}}\)) &bull; <strong>Weight: 25%</strong></span>
+                <strong id="subPHScore">12 / 100</strong>
+              </div>
+              <div class="sub-index-track">
+                <div class="sub-index-fill" id="subPHFill" style="width: 12%; background: var(--leaf-green);"></div>
+              </div>
+            </div>
+
+            <div class="sub-index-item">
+              <div class="sub-index-header">
+                <span>☀️ Thermal Stress (\(R_{\text{temp}}\)) &bull; <strong>Weight: 20%</strong></span>
+                <strong id="subTempScore">15 / 100</strong>
+              </div>
+              <div class="sub-index-track">
+                <div class="sub-index-fill" id="subTempFill" style="width: 15%; background: var(--leaf-green);"></div>
+              </div>
+            </div>
+
+            <div class="sub-index-item">
+              <div class="sub-index-header">
+                <span>🧪 Nutrient Deficit (\(R_{\text{npk}}\)) &bull; <strong>Weight: 15%</strong></span>
+                <strong id="subNPKScore">25 / 100</strong>
+              </div>
+              <div class="sub-index-track">
+                <div class="sub-index-fill" id="subNPKFill" style="width: 25%; background: var(--harvest-gold);"></div>
+              </div>
+            </div>
+
+            <div class="sub-index-item">
+              <div class="sub-index-header">
+                <span>🐛 Biological / Pest Exposure (\(R_{\text{pest}}\)) &bull; <strong>Weight: 10%</strong></span>
+                <strong id="subPestScore">10 / 100</strong>
+              </div>
+              <div class="sub-index-track">
+                <div class="sub-index-fill" id="subPestFill" style="width: 10%; background: var(--leaf-green);"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Dynamic Actionable Agronomic Mitigations -->
+        <div class="card" style="margin-top: 1.5rem;">
+          <div class="card-header">
+            <div class="card-title-group">
+              <span class="card-icon">🛡️</span>
+              <h4 style="font-family: var(--font-display); font-size: 1.25rem; color: var(--primary-forest);">Actionable Agronomic Mitigation Protocols</h4>
+            </div>
+            <span class="pill-green" id="mitigationCountBadge">Dynamic Protocols Active</span>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.25rem;">Prescriptive field interventions calculated automatically based on identified environmental stress vectors.</p>
+
+          <div id="dynamicMitigationsGrid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem;">
+            <!-- Dynamically populated mitigation cards -->
+          </div>
+        </div>
+
+        <!-- Section 3: Reviewer Viva & Evaluation Methodology Explanation -->
+        <div class="risk-methodology-card">
+          <div class="card-header" style="margin-bottom: 1rem;">
+            <div class="card-title-group">
+              <span class="card-icon">🎓</span>
+              <h4 style="font-family: var(--font-display); font-size: 1.2rem; color: var(--primary-forest);">Reviewer FAQ: How is Risk Analysis Formulated &amp; Computed?</h4>
+            </div>
+            <span class="pill-green">Academic Viva Guide</span>
+          </div>
+
+          <div class="methodology-step">
+            <div class="methodology-step-num">1</div>
+            <div>
+              <strong style="color: var(--primary-forest);">Multi-Agent Guardrail Architecture:</strong>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 4px 0 0 0;">
+                The <code>RiskAnalysisAgent</code> performs non-linear boundary checking against empirical crop physiological tolerance curves (pH thresholds, drought/flood limits, heat/frost extremes) and guarantees safety sanitization.
+              </p>
+            </div>
+          </div>
+
+          <div class="methodology-step">
+            <div class="methodology-step-num">2</div>
+            <div>
+              <strong style="color: var(--primary-forest);">Liebig's Law of the Minimum for Nutrients:</strong>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 4px 0 0 0;">
+                Crop yield and health are bounded by the scarcest nutrient resource (N, P, or K). The deficit index penalizes sub-optimal soil concentrations proportionally before yield regression.
+              </p>
+            </div>
+          </div>
+
+          <div class="methodology-step">
+            <div class="methodology-step-num">3</div>
+            <div>
+              <strong style="color: var(--primary-forest);">Grounding with Historical Evidence:</strong>
+              <p style="font-size: 0.85rem; color: var(--text-secondary); margin: 4px 0 0 0;">
+                Risk scores are corroborated with the 1,500 historical empirical records in FAISS. If similar past cases experienced crop failure under the same conditions, the risk classification is elevated to prevent hallucination.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <!-- ===================================================================== -->
+      <!-- TAB 7: QUERY HISTORY                                                  -->
+      <!-- ===================================================================== -->
+      <section id="pane-history" class="tab-pane hidden">
+        <div class="page-hero-header" style="display: flex; justify-content: space-between; align-items: flex-end;">
+          <div>
+            <h3>Consultation Query History</h3>
+            <p>Archive of natural language inquiries and evidence-grounded recommendations performed in this session.</p>
+          </div>
+          <button type="button" class="btn-secondary" onclick="clearQueryHistory()">Clear History</button>
+        </div>
+
+        <div id="queryHistoryList" style="display: flex; flex-direction: column; gap: 14px;">
+          <!-- Injected via JavaScript -->
+        </div>
+      </section>
+
+
+      <!-- ===================================================================== -->
+      <!-- TAB 8: FEEDBACK & SYSTEM EVALUATION                                   -->
+      <!-- ===================================================================== -->
+      <section id="pane-feedback" class="tab-pane hidden">
+        <div class="page-hero-header" style="display: flex; justify-content: space-between; align-items: flex-end;">
+          <div>
+            <h3>Continuous Quality Feedback & Benchmark Evaluation</h3>
+            <p>Evaluate system precision, retrieval hit rates, and submit qualitative specialist feedback.</p>
+          </div>
+          <button type="button" class="btn-primary-auth" style="width: auto; padding: 10px 22px;" onclick="triggerRunEvaluation(event)">
+            <span>⚡ Run Automated Benchmark</span>
+          </button>
+        </div>
+
+        <!-- Evaluation Grid -->
+        <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr);">
+          <div class="card">
+            <div class="stat-header">
+              <span>Retrieval Quality (Hybrid RAG)</span>
+              <span class="pill-green">EMPIRICAL</span>
+            </div>
+            <div class="judge-metric-row"><span>Precision@1:</span> <strong id="evalP1">0.90</strong></div>
+            <div class="judge-metric-row"><span>Precision@3:</span> <strong id="evalP3">0.85</strong></div>
+            <div class="judge-metric-row"><span>Precision@5:</span> <strong id="evalP5">0.83</strong></div>
+            <div class="judge-metric-row"><span>Recall@5:</span> <strong id="evalRecall5">0.42</strong></div>
+            <div class="judge-metric-row"><span>Mean Reciprocal Rank (MRR):</span> <strong id="evalMRR">0.925</strong></div>
+            <div class="judge-metric-row"><span>Hit Rate@5:</span> <strong id="evalHitRate">0.950</strong></div>
+          </div>
+
+          <div class="card">
+            <div class="stat-header">
+              <span>Machine Learning Accuracy</span>
+              <span class="pill-green">CALCULATED</span>
+            </div>
+            <div class="judge-metric-row"><span>Yield Model R²:</span> <strong id="evalYieldR2">0.9876</strong></div>
+            <div class="judge-metric-row"><span>Mean Absolute Error:</span> <strong id="evalYieldMAE">0.499 t/ha</strong></div>
+            <div class="judge-metric-row"><span>Root Mean Sq Error:</span> <strong id="evalYieldRMSE">1.686 t/ha</strong></div>
+            <div class="judge-metric-row"><span>Suitability Accuracy:</span> <strong id="evalSuitAcc">0.553</strong></div>
+            <div class="judge-metric-row"><span>Weighted F1 Score:</span> <strong id="evalSuitF1">0.474</strong></div>
+          </div>
+
+          <div class="card">
+            <div class="stat-header">
+              <span>Security & Latency</span>
+              <span class="pill-green">ACTIVE</span>
+            </div>
+            <div class="judge-metric-row"><span>Guardrail Accuracy:</span> <strong id="evalGuardrailRate">100.0%</strong></div>
+            <div class="judge-metric-row"><span>Injection Defense:</span> <strong id="evalInjectionRate">100.0%</strong></div>
+            <div class="judge-metric-row"><span>Average Latency:</span> <strong id="evalLatency">83 ms</strong></div>
+            <div class="judge-metric-row"><span>Success Rate:</span> <strong id="evalSuccessRate">100.0%</strong></div>
+            <div class="judge-metric-row"><span>Benchmark Queries:</span> <strong id="evalTotalQueries">20</strong></div>
+          </div>
+        </div>
+
+        <!-- Feedback Form -->
+        <div class="card feedback-card" style="margin-top: 2rem; max-width: 680px;">
+          <h4 style="font-family: var(--font-display); font-size: 1.2rem; color: var(--primary-forest); margin-bottom: 0.5rem;">Agronomist Feedback Submission</h4>
+          <p class="feedback-sub">Help improve the recommendation engine and empirical index accuracy.</p>
+          
+          <div class="thumbs-row">
+            <button type="button" class="btn-thumb active" id="thumbUpBtn" onclick="selectThumb('up')">👍 Highly Accurate & Grounded</button>
+            <button type="button" class="btn-thumb" id="thumbDownBtn" onclick="selectThumb('down')">👎 Inaccurate or Incomplete</button>
+          </div>
+
+          <div class="star-rating-row">
+            <span>Overall Advisory Rating:</span>
+            <div class="stars">
+              <span class="star active" onclick="setStarRating(1)">★</span>
+              <span class="star active" onclick="setStarRating(2)">★</span>
+              <span class="star active" onclick="setStarRating(3)">★</span>
+              <span class="star active" onclick="setStarRating(4)">★</span>
+              <span class="star active" onclick="setStarRating(5)">★</span>
+            </div>
+          </div>
+
+          <textarea id="feedbackComment" placeholder="Provide qualitative comments regarding crop suitability, regional considerations, or yield boundaries..."></textarea>
+          <button type="button" class="btn-send-feedback" onclick="submitUserFeedback()">Submit Advisory Feedback</button>
+          <div id="feedbackAck" class="feedback-ack hidden">Thank you for your feedback! Data saved to persistent registry.</div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Detail Modal for Historical Case Inspection -->
+  <div id="caseDetailModal" class="modal-backdrop hidden" onclick="closeCaseDetailModal(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-icon-wrap">📚</div>
+        <div>
+          <h3 id="modalCaseTitle">Historical Farming Case</h3>
+          <p class="modal-sub" id="modalCaseSubtitle">Empirical Agronomic Record</p>
+        </div>
+      </div>
+      <div class="modal-body" id="modalCaseBody">
+        <!-- Injected details -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-modal-primary" onclick="closeCaseDetailModal()">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Logic -->
+  <script src="/static/app.js"></script>
+</body>
+</html>

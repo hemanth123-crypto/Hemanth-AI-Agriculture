@@ -1,0 +1,55 @@
+{
+  "status": "SUCCESS",
+  "validation": {
+    "source_file": "C:\\Users\\HEMANTH\\Desktop\\project-3\\data\\sample\\sample_crop_data.csv",
+    "initial_rows": 1500,
+    "initial_columns": 16,
+    "is_synthetic": true
+  },
+  "cleaning": {
+    "duplicate_rows_removed": 0,
+    "missing_values_imputed": {},
+    "boundary_corrections": {
+      "pH_out_of_bounds": 0,
+      "temperature_out_of_bounds": 0,
+      "rainfall_negative": 0,
+      "humidity_out_of_bounds": 0,
+      "npk_negative": 0
+    },
+    "outliers_detected_iqr": {
+      "Yield": 123,
+      "Rainfall": 107,
+      "Temperature": 0,
+      "Fertilizer": 75,
+      "Pesticide": 210
+    },
+    "final_rows": 1500,
+    "unique_crops": 12,
+    "unique_states": 15,
+    "unique_seasons": 4
+  },
+  "feature_columns": [
+    "Crop",
+    "Crop_Year",
+    "Season",
+    "State",
+    "Area",
+    "Production",
+    "Yield",
+    "Fertilizer",
+    "Pesticide",
+    "N",
+    "P",
+    "K",
+    "pH",
+    "Temperature",
+    "Rainfall",
+    "Humidity",
+    "NPK_Total",
+    "NPK_Ratio_N",
+    "NPK_Ratio_P",
+    "NPK_Ratio_K",
+    "Rain_Temp_Ratio",
+    "Fertilizer_Per_Area"
+  ]
+}

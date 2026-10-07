@@ -1,0 +1,215 @@
+[
+  {
+    "feedback_id": "FB_48cf9691",
+    "timestamp": "2026-10-05T21:29:06.859685+00:00",
+    "query": "Rice in AP",
+    "recommendation": "Rice",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": "Accurate recommendation."
+  },
+  {
+    "feedback_id": "FB_d7b83425",
+    "timestamp": "2026-10-05T21:55:33.749241+00:00",
+    "query": "Rice in AP",
+    "recommendation": "Rice",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": "Accurate recommendation."
+  },
+  {
+    "feedback_id": "FB_60436550",
+    "timestamp": "2026-10-05T21:59:24.349489+00:00",
+    "query": "Rice in AP",
+    "recommendation": "Rice",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": "Accurate recommendation."
+  },
+  {
+    "feedback_id": "FB_9cb5b893",
+    "timestamp": "2026-10-05T22:03:56.792591+00:00",
+    "query": "Which crops performed well in Andhra Pradesh during Kharif under high rainfall and pH around 6.5?",
+    "recommendation": "Jute, Cotton, Sugarcane, Soybean",
+    "retrieved_cases": [
+      "CASE_1025",
+      "CASE_0735",
+      "CASE_1021",
+      "CASE_0701",
+      "CASE_1217"
+    ],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": ""
+  },
+  {
+    "feedback_id": "FB_1c589d5f",
+    "timestamp": "2026-10-05T22:09:50.844387+00:00",
+    "query": "Rice in AP",
+    "recommendation": "Rice",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": "Accurate recommendation."
+  },
+  {
+    "feedback_id": "FB_04d182e5",
+    "timestamp": "2026-10-05T22:20:41.425287+00:00",
+    "query": "Rice in AP",
+    "recommendation": "Rice",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": "Accurate recommendation."
+  },
+  {
+    "feedback_id": "FB_d5c8210c",
+    "timestamp": "2026-10-05T22:22:32.086410+00:00",
+    "query": "Rice in AP",
+    "recommendation": "Rice",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": "Accurate recommendation."
+  },
+  {
+    "feedback_id": "FB_93e2a2e9",
+    "timestamp": "2026-10-05T23:02:32.823480+00:00",
+    "query": "Rice in AP",
+    "recommendation": "Rice",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": "Accurate recommendation."
+  },
+  {
+    "feedback_id": "FB_ac423f21",
+    "timestamp": "2026-10-05T23:06:46.700182+00:00",
+    "query": "What are the best soil conditions and expected yield for Wheat?",
+    "recommendation": "Wheat",
+    "retrieved_cases": [
+      "CASE_1082",
+      "CASE_1005",
+      "CASE_1395",
+      "CASE_1498",
+      "CASE_1326"
+    ],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": "Specialist confirmed accuracy."
+  },
+  {
+    "feedback_id": "FB_fc485efb",
+    "timestamp": "2026-10-05T23:16:11.175953+00:00",
+    "query": "Rice in AP",
+    "recommendation": "Rice",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": "Accurate recommendation."
+  },
+  {
+    "feedback_id": "FB_d3b48eab",
+    "timestamp": "2026-10-05T23:20:02.968449+00:00",
+    "query": "Rice in AP",
+    "recommendation": "Rice",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": "Accurate recommendation."
+  },
+  {
+    "feedback_id": "FB_8f9384b7",
+    "timestamp": "2026-10-05T23:22:46.990998+00:00",
+    "query": "Rice in AP",
+    "recommendation": "Rice",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": "Accurate recommendation."
+  },
+  {
+    "feedback_id": "FB_49207329",
+    "timestamp": "2026-10-05T23:30:00.925498+00:00",
+    "query": "Rice in AP",
+    "recommendation": "Rice",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": "Accurate recommendation."
+  },
+  {
+    "feedback_id": "FB_d71e0786",
+    "timestamp": "2026-10-05T23:38:19.660071+00:00",
+    "query": "Rice in AP",
+    "recommendation": "Rice",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": "Accurate recommendation."
+  },
+  {
+    "feedback_id": "FB_ef5d867b",
+    "timestamp": "2026-10-05T23:44:50.499056+00:00",
+    "query": "Rice in AP",
+    "recommendation": "Rice",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": "Accurate recommendation."
+  },
+  {
+    "feedback_id": "FB_43a4c650",
+    "timestamp": "2026-10-05T23:54:07.979073+00:00",
+    "query": "Rice in AP",
+    "recommendation": "Rice",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": "Accurate recommendation."
+  },
+  {
+    "feedback_id": "FB_f5820844",
+    "timestamp": "2026-10-06T00:00:23.722166+00:00",
+    "query": "What are the best soil conditions and expected yield for Millets?",
+    "recommendation": "Millets",
+    "retrieved_cases": [
+      "CASE_0746",
+      "CASE_0298",
+      "CASE_0443",
+      "CASE_0292",
+      "CASE_0387"
+    ],
+    "rating": 2,
+    "thumbs": "down",
+    "comments": "Specialist confirmed accuracy."
+  },
+  {
+    "feedback_id": "FB_8d116804",
+    "timestamp": "2026-10-06T00:11:38.180608+00:00",
+    "query": "Rice in AP",
+    "recommendation": "Rice",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": "Accurate recommendation."
+  },
+  {
+    "feedback_id": "FB_f5f21fed",
+    "timestamp": "2026-10-06T00:20:51.068094+00:00",
+    "query": "Recommend crops and predict yield for Millets in Rajasthan during Kharif season with soil pH 7.5 and rainfall 320 mm.",
+    "recommendation": "Mustard, Soybean, Groundnut, Millets",
+    "retrieved_cases": [
+      "CASE_0577",
+      "CASE_1420",
+      "CASE_1452",
+      "CASE_0792"
+    ],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": "Specialist confirmed accuracy."
+  }
+]

@@ -1,0 +1,182 @@
+[
+  {
+    "id": "Q01",
+    "query": "Which crops performed well in Andhra Pradesh during Kharif under high rainfall and pH around 6.5?",
+    "expected_intent": "CROP_RECOMMENDATION",
+    "expected_crop": "Rice",
+    "expected_state": "Andhra Pradesh",
+    "expected_season": "Kharif",
+    "relevant_crops": ["Rice", "Maize", "Cotton", "Groundnut"]
+  },
+  {
+    "id": "Q02",
+    "query": "I have N=80, P=40, K=35 and pH=6.5. Which crops are suitable?",
+    "expected_intent": "CROP_RECOMMENDATION",
+    "expected_crop": null,
+    "expected_state": null,
+    "expected_season": null,
+    "relevant_crops": ["Rice", "Maize", "Wheat"]
+  },
+  {
+    "id": "Q03",
+    "query": "Which historical farming cases are most similar to my conditions in Punjab with Wheat during Rabi?",
+    "expected_intent": "CASE_SIMILARITY",
+    "expected_crop": "Wheat",
+    "expected_state": "Punjab",
+    "expected_season": "Rabi",
+    "relevant_crops": ["Wheat", "Barley", "Mustard"]
+  },
+  {
+    "id": "Q04",
+    "query": "Why did the same crop produce different yields under different conditions in Uttar Pradesh?",
+    "expected_intent": "YIELD_ANALYSIS",
+    "expected_crop": null,
+    "expected_state": "Uttar Pradesh",
+    "expected_season": null,
+    "relevant_crops": ["Sugarcane", "Wheat", "Rice"]
+  },
+  {
+    "id": "Q05",
+    "query": "Suggest alternative crops for this season instead of Cotton in Gujarat.",
+    "expected_intent": "ALTERNATIVE_CROP",
+    "expected_crop": "Cotton",
+    "expected_state": "Gujarat",
+    "expected_season": "Kharif",
+    "relevant_crops": ["Groundnut", "Millets", "Maize", "Soybean"]
+  },
+  {
+    "id": "Q06",
+    "query": "Predict expected yield for Rice in West Bengal during Kharif season with rainfall 1600 mm and pH 6.0.",
+    "expected_intent": "YIELD_PREDICTION",
+    "expected_crop": "Rice",
+    "expected_state": "West Bengal",
+    "expected_season": "Kharif",
+    "relevant_crops": ["Rice", "Jute"]
+  },
+  {
+    "id": "Q07",
+    "query": "Is Chickpea suitable in Madhya Pradesh during Rabi season with low rainfall and pH 7.2?",
+    "expected_intent": "CROP_SUITABILITY",
+    "expected_crop": "Chickpea",
+    "expected_state": "Madhya Pradesh",
+    "expected_season": "Rabi",
+    "relevant_crops": ["Chickpea", "Wheat", "Mustard"]
+  },
+  {
+    "id": "Q08",
+    "query": "What crops grow best in Karnataka with N=90, P=50, K=40 during Kharif?",
+    "expected_intent": "CROP_RECOMMENDATION",
+    "expected_crop": null,
+    "expected_state": "Karnataka",
+    "expected_season": "Kharif",
+    "relevant_crops": ["Maize", "Cotton", "Groundnut", "Sugarcane"]
+  },
+  {
+    "id": "Q09",
+    "query": "Show me similar cases for Sugarcane cultivation in Maharashtra with Whole Year season.",
+    "expected_intent": "CASE_SIMILARITY",
+    "expected_crop": "Sugarcane",
+    "expected_state": "Maharashtra",
+    "expected_season": "Whole Year",
+    "relevant_crops": ["Sugarcane", "Cotton", "Soybean"]
+  },
+  {
+    "id": "Q10",
+    "query": "Analyze soil nutrient requirements for Mustard in Rajasthan during Rabi season.",
+    "expected_intent": "SOIL_ANALYSIS",
+    "expected_crop": "Mustard",
+    "expected_state": "Rajasthan",
+    "expected_season": "Rabi",
+    "relevant_crops": ["Mustard", "Barley", "Wheat"]
+  },
+  {
+    "id": "Q11",
+    "query": "Can I grow Millets in Rajasthan under arid conditions with rainfall 350 mm and high temperature 32°C?",
+    "expected_intent": "CROP_SUITABILITY",
+    "expected_crop": "Millets",
+    "expected_state": "Rajasthan",
+    "expected_season": "Kharif",
+    "relevant_crops": ["Millets", "Chickpea"]
+  },
+  {
+    "id": "Q12",
+    "query": "What are good alternative crops for Rice in Bihar with rainfall around 1100 mm?",
+    "expected_intent": "ALTERNATIVE_CROP",
+    "expected_crop": "Rice",
+    "expected_state": "Bihar",
+    "expected_season": "Kharif",
+    "relevant_crops": ["Maize", "Jute", "Sugarcane"]
+  },
+  {
+    "id": "Q13",
+    "query": "Forecast crop yield for Groundnut in Tamil Nadu with pH 6.8 and rainfall 750 mm.",
+    "expected_intent": "YIELD_PREDICTION",
+    "expected_crop": "Groundnut",
+    "expected_state": "Tamil Nadu",
+    "expected_season": "Kharif",
+    "relevant_crops": ["Groundnut", "Rice"]
+  },
+  {
+    "id": "Q14",
+    "query": "How does temperature affect Wheat yield in Haryana during Rabi?",
+    "expected_intent": "WEATHER_ANALYSIS",
+    "expected_crop": "Wheat",
+    "expected_state": "Haryana",
+    "expected_season": "Rabi",
+    "relevant_crops": ["Wheat", "Mustard", "Barley"]
+  },
+  {
+    "id": "Q15",
+    "query": "Which crops are suitable for Assam during Kharif with rainfall 1800 mm?",
+    "expected_intent": "CROP_RECOMMENDATION",
+    "expected_crop": null,
+    "expected_state": "Assam",
+    "expected_season": "Kharif",
+    "relevant_crops": ["Rice", "Jute"]
+  },
+  {
+    "id": "Q16",
+    "query": "Evaluate Soybean suitability in Maharashtra during Kharif season with N=30, P=50, K=35.",
+    "expected_intent": "CROP_SUITABILITY",
+    "expected_crop": "Soybean",
+    "expected_state": "Maharashtra",
+    "expected_season": "Kharif",
+    "relevant_crops": ["Soybean", "Cotton"]
+  },
+  {
+    "id": "Q17",
+    "query": "Find historical cases of Barley in Uttar Pradesh during Rabi.",
+    "expected_intent": "CASE_SIMILARITY",
+    "expected_crop": "Barley",
+    "expected_state": "Uttar Pradesh",
+    "expected_season": "Rabi",
+    "relevant_crops": ["Barley", "Wheat"]
+  },
+  {
+    "id": "Q18",
+    "query": "What is the expected yield for Maize in Andhra Pradesh under Kharif season?",
+    "expected_intent": "YIELD_PREDICTION",
+    "expected_crop": "Maize",
+    "expected_state": "Andhra Pradesh",
+    "expected_season": "Kharif",
+    "relevant_crops": ["Maize", "Rice", "Cotton"]
+  },
+  {
+    "id": "Q19",
+    "query": "Suggest alternative crops for Sugarcane in Tamil Nadu with lower water requirement.",
+    "expected_intent": "ALTERNATIVE_CROP",
+    "expected_crop": "Sugarcane",
+    "expected_state": "Tamil Nadu",
+    "expected_season": "Whole Year",
+    "relevant_crops": ["Groundnut", "Millets", "Maize"]
+  },
+  {
+    "id": "Q20",
+    "query": "Identify high-yield rice cases in Odisha during Kharif with rainfall above 1200 mm.",
+    "expected_intent": "CASE_SIMILARITY",
+    "expected_crop": "Rice",
+    "expected_state": "Odisha",
+    "expected_season": "Kharif",
+    "relevant_crops": ["Rice", "Jute"]
+  }
+]

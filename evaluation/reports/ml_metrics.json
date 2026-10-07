@@ -1,0 +1,97 @@
+{
+  "suitability_classifier": {
+    "model_type": "RandomForestClassifier",
+    "classes": [
+      "High Risk",
+      "Moderately Suitable",
+      "Suitable"
+    ],
+    "accuracy": 0.5533,
+    "precision": 0.5086,
+    "recall": 0.5533,
+    "f1_score": 0.4737,
+    "confusion_matrix": [
+      [
+        40,
+        1,
+        52
+      ],
+      [
+        17,
+        1,
+        51
+      ],
+      [
+        12,
+        1,
+        125
+      ]
+    ],
+    "test_samples": 300
+  },
+  "yield_regressor": {
+    "model_type": "RandomForestRegressor",
+    "mae": 0.4992,
+    "rmse": 1.6865,
+    "r2_score": 0.9876,
+    "test_samples": 300
+  },
+  "training_data_records": 1500,
+  "features": {
+    "categorical_features": [
+      "Crop",
+      "Season",
+      "State"
+    ],
+    "numeric_features": [
+      "N",
+      "P",
+      "K",
+      "pH",
+      "Temperature",
+      "Rainfall",
+      "Humidity",
+      "Fertilizer",
+      "Pesticide"
+    ],
+    "crops": [
+      "Barley",
+      "Chickpea",
+      "Cotton",
+      "Groundnut",
+      "Jute",
+      "Maize",
+      "Millets",
+      "Mustard",
+      "Rice",
+      "Soybean",
+      "Sugarcane",
+      "Wheat"
+    ],
+    "states": [
+      "Andhra Pradesh",
+      "Assam",
+      "Bihar",
+      "Gujarat",
+      "Haryana",
+      "Karnataka",
+      "Madhya Pradesh",
+      "Maharashtra",
+      "Odisha",
+      "Punjab",
+      "Rajasthan",
+      "Tamil Nadu",
+      "Telangana",
+      "Uttar Pradesh",
+      "West Bengal"
+    ],
+    "seasons": [
+      "Kharif",
+      "Rabi",
+      "Summer",
+      "Whole Year"
+    ],
+    "training_samples": 1200,
+    "test_samples": 300
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "benchmark_metadata": {
+    "version": "1.0",
+    "total_queries": 20,
+    "domain": "Indian Agricultural Historical Dataset",
+    "purpose": "Evaluation of RAG Hybrid Retrieval, Intent Extraction, and Recommendation Accuracy"
+  },
+  "intent_distribution": {
+    "CROP_RECOMMENDATION": 5,
+    "CASE_SIMILARITY": 5,
+    "ALTERNATIVE_CROP": 3,
+    "YIELD_PREDICTION": 3,
+    "CROP_SUITABILITY": 2,
+    "SOIL_ANALYSIS": 1,
+    "WEATHER_ANALYSIS": 1
+  }
+}
