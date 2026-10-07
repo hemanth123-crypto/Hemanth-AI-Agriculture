@@ -211,5 +211,25 @@
     "rating": 5,
     "thumbs": "up",
     "comments": "Specialist confirmed accuracy."
+  },
+  {
+    "feedback_id": "FB_45419d97",
+    "timestamp": "2026-10-07T14:16:57.993029+00:00",
+    "query": "rice is good",
+    "recommendation": "",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": ""
+  },
+  {
+    "feedback_id": "FB_daf1acaf",
+    "timestamp": "2026-10-07T14:17:21.208797+00:00",
+    "query": "rice is good",
+    "recommendation": "",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": ""
   }
 ]

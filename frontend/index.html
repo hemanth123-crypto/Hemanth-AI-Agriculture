@@ -1035,16 +1035,149 @@
 
 
       <!-- ===================================================================== -->
-      <!-- TAB 4: CROP RECOMMENDATIONS SHOWCASE                                  -->
+      <!-- TAB 4: CROP RECOMMENDATIONS STUDIO                                    -->
       <!-- ===================================================================== -->
       <section id="pane-recommendations" class="tab-pane hidden">
         <div class="page-hero-header">
-          <h3>Top Recommended Crops</h3>
-          <p>Curated agronomic profiles and empirical suitability metrics for Indian agricultural staples and high-value cash crops.</p>
+          <h3>🌱 AI Crop Recommendation Engine</h3>
+          <p>Multi-parameter agronomic matching powered by trained Random Forest classification &amp; hybrid RAG historical case ranking.</p>
         </div>
 
-        <div class="crops-showcase-grid" id="cropsShowcaseGrid">
-          <!-- Populated dynamically with large cards -->
+        <!-- Agronomic Quick Presets -->
+        <div class="presets-row" style="margin-bottom: 1.25rem;">
+          <span class="chip-label">Agronomic Presets:</span>
+          <button type="button" class="preset-chip" onclick="applyRecPreset('ap_kharif')">🌾 AP Kharif (High Rain / Rice)</button>
+          <button type="button" class="preset-chip" onclick="applyRecPreset('punjab_rabi')">🌿 Punjab Rabi (Loam / Wheat)</button>
+          <button type="button" class="preset-chip" onclick="applyRecPreset('gujarat_kharif')">🌱 Gujarat Kharif (Cotton / Black Soil)</button>
+          <button type="button" class="preset-chip" onclick="applyRecPreset('mp_rabi')">🧆 MP Rabi (Pulses / Low Rain)</button>
+        </div>
+
+        <div class="advisory-builder-grid">
+          <!-- Form Card -->
+          <div class="card" style="padding: 1.75rem;">
+            <div class="card-header" style="margin-bottom: 1.25rem;">
+              <div class="card-title-group">
+                <span class="card-icon">🎛️</span>
+                <h4 style="font-family: var(--font-display); font-size: 1.2rem; color: var(--primary-forest);">Field &amp; Environmental Conditions</h4>
+              </div>
+              <span class="pill-green">ML-Driven</span>
+            </div>
+
+            <form id="cropRecForm" onsubmit="handleCropRecSubmit(event)">
+              <div class="form-two-cols">
+                <div class="form-group custom-select-wrap">
+                  <label for="recState">State / Agro-Climatic Region</label>
+                  <select id="recState" required>
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    <option value="Assam">Assam</option>
+                    <option value="Bihar">Bihar</option>
+                    <option value="Chhattisgarh">Chhattisgarh</option>
+                    <option value="Gujarat">Gujarat</option>
+                    <option value="Haryana">Haryana</option>
+                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                    <option value="Jharkhand">Jharkhand</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Manipur">Manipur</option>
+                    <option value="Meghalaya">Meghalaya</option>
+                    <option value="Odisha">Odisha</option>
+                    <option value="Punjab">Punjab</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="Tamil Nadu">Tamil Nadu</option>
+                    <option value="Telangana">Telangana</option>
+                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    <option value="Uttarakhand">Uttarakhand</option>
+                    <option value="West Bengal">West Bengal</option>
+                  </select>
+                </div>
+                <div class="form-group custom-select-wrap">
+                  <label for="recSeason">Cultivation Season</label>
+                  <select id="recSeason" required>
+                    <option value="Kharif">Kharif (Monsoon)</option>
+                    <option value="Rabi">Rabi (Winter)</option>
+                    <option value="Whole Year">Whole Year</option>
+                    <option value="Summer">Summer / Zaid</option>
+                    <option value="Winter">Winter</option>
+                    <option value="Autumn">Autumn</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style="margin-top: 1rem; margin-bottom: 0.5rem;">
+                <label style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Soil Nutrients (kg/ha)</label>
+              </div>
+              <div class="form-three-cols">
+                <div class="form-group custom-input-wrap">
+                  <label for="recN">Nitrogen (N)</label>
+                  <input type="number" id="recN" min="0" max="500" step="1" value="120" required>
+                </div>
+                <div class="form-group custom-input-wrap">
+                  <label for="recP">Phosphorus (P)</label>
+                  <input type="number" id="recP" min="0" max="500" step="1" value="60" required>
+                </div>
+                <div class="form-group custom-input-wrap">
+                  <label for="recK">Potassium (K)</label>
+                  <input type="number" id="recK" min="0" max="500" step="1" value="40" required>
+                </div>
+              </div>
+
+              <div style="margin-top: 1rem; margin-bottom: 0.5rem;">
+                <label style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Climate &amp; Soil Parameters</label>
+              </div>
+              <div class="form-three-cols">
+                <div class="form-group custom-input-wrap">
+                  <label for="recPH">Soil pH (3.0 - 11.0)</label>
+                  <input type="number" id="recPH" min="3.0" max="11.0" step="0.1" value="6.5" required>
+                </div>
+                <div class="form-group custom-input-wrap">
+                  <label for="recRain">Rainfall (mm)</label>
+                  <input type="number" id="recRain" min="0" max="3500" step="10" value="850" required>
+                </div>
+                <div class="form-group custom-input-wrap">
+                  <label for="recTemp">Temperature (°C)</label>
+                  <input type="number" id="recTemp" min="5" max="50" step="0.5" value="26.5" required>
+                </div>
+              </div>
+
+              <div style="margin-top: 1.5rem;">
+                <button type="submit" id="recSubmitBtn" class="btn-primary-auth" style="width: 100%; padding: 12px 24px; font-size: 1rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                  <span>🌱 Run ML Crop Recommendation</span>
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Dynamic Results Container -->
+          <div class="card" style="padding: 1.75rem;">
+            <div class="card-header" style="margin-bottom: 1rem;">
+              <div class="card-title-group">
+                <span class="card-icon">🏆</span>
+                <h4 style="font-family: var(--font-display); font-size: 1.2rem; color: var(--primary-forest);">Ranked Crop Candidates</h4>
+              </div>
+              <span class="pill-mod" id="recCountBadge">0 Candidates</span>
+            </div>
+
+            <div id="recResultsContent">
+              <div class="empty-state" style="text-align: center; padding: 2.5rem 1rem;">
+                <div style="font-size: 2.8rem; margin-bottom: 0.75rem;">🌾</div>
+                <h4 style="font-family: var(--font-display); color: var(--primary-forest); margin-bottom: 0.5rem;">Awaiting Recommendation Request</h4>
+                <p style="color: var(--text-muted); font-size: 0.88rem; max-width: 380px; margin: 0 auto;">Select your region, season, soil N-P-K nutrients, and climate values, then click "Run ML Crop Recommendation".</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Curated Staples Showcase (Kept for instant reference) -->
+        <div style="margin-top: 2.5rem;">
+          <div class="page-hero-header" style="margin-bottom: 1rem;">
+            <h4>Reference Crop Knowledge Base</h4>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Empirical baseline characteristics of prominent agricultural staples across India.</p>
+          </div>
+          <div class="crops-showcase-grid" id="cropsShowcaseGrid">
+            <!-- Populated dynamically with large cards -->
+          </div>
         </div>
       </section>
 
@@ -1137,10 +1270,63 @@
               </div>
             </div>
 
-            <div style="background: var(--bg-muted); border-radius: var(--radius-lg); padding: 1.5rem; text-align: center; margin-top: 1.25rem; border: 1px solid var(--border-subtle);">
+            <div class="form-two-cols">
+              <div class="form-group custom-select-wrap">
+                <label for="ypSeason">Cultivation Season</label>
+                <select id="ypSeason" onchange="runLiveYieldEstimate()">
+                  <option value="Kharif">Kharif (Monsoon)</option>
+                  <option value="Rabi">Rabi (Winter)</option>
+                  <option value="Whole Year">Whole Year</option>
+                  <option value="Summer">Summer / Zaid</option>
+                </select>
+              </div>
+              <div class="form-group custom-input-wrap">
+                <label for="ypTemp">Temperature (°C)</label>
+                <input type="number" id="ypTemp" value="27.0" min="5" max="50" step="0.5" oninput="runLiveYieldEstimate()">
+              </div>
+            </div>
+
+            <!-- Nutrients Row -->
+            <div class="form-three-cols" style="margin-top: 0.5rem;">
+              <div class="form-group custom-input-wrap">
+                <label for="ypN">Nitrogen (N)</label>
+                <input type="number" id="ypN" value="100" min="0" max="500" step="1" oninput="runLiveYieldEstimate()">
+              </div>
+              <div class="form-group custom-input-wrap">
+                <label for="ypP">Phosphorus (P)</label>
+                <input type="number" id="ypP" value="50" min="0" max="500" step="1" oninput="runLiveYieldEstimate()">
+              </div>
+              <div class="form-group custom-input-wrap">
+                <label for="ypK">Potassium (K)</label>
+                <input type="number" id="ypK" value="50" min="0" max="500" step="1" oninput="runLiveYieldEstimate()">
+              </div>
+            </div>
+
+            <div class="form-three-cols" style="margin-top: 0.5rem;">
+              <div class="form-group custom-input-wrap">
+                <label for="ypHumidity">Humidity (%)</label>
+                <input type="number" id="ypHumidity" value="65" min="10" max="100" step="1" oninput="runLiveYieldEstimate()">
+              </div>
+              <div class="form-group custom-input-wrap">
+                <label for="ypFert">Fertilizer (kg/ha)</label>
+                <input type="number" id="ypFert" value="200" min="0" max="1000" step="5" oninput="runLiveYieldEstimate()">
+              </div>
+              <div class="form-group custom-input-wrap">
+                <label for="ypPest">Pesticide (kg/ha)</label>
+                <input type="number" id="ypPest" value="10" min="0" max="100" step="0.5" oninput="runLiveYieldEstimate()">
+              </div>
+            </div>
+
+            <div style="background: var(--bg-muted); border-radius: var(--radius-lg); padding: 1.5rem; text-align: center; margin-top: 1.25rem; border: 1px solid var(--border-subtle); position: relative;">
+              <div style="display: inline-flex; align-items: center; gap: 6px; background: rgba(57, 217, 138, 0.12); border: 1px solid rgba(57, 217, 138, 0.3); border-radius: 20px; padding: 4px 12px; font-size: 0.76rem; color: var(--leaf-green); font-weight: 700; margin-bottom: 8px;">
+                <span>⚡</span>
+                <span id="ypModelBadge">RandomForestRegressor (R² = 0.988)</span>
+              </div>
+              <br>
               <span style="font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); font-weight: 700;">Forecasted Expected Yield</span>
               <div class="yield-number" id="ypOutputNumber" style="font-size: 3rem; margin: 0.5rem 0;">4.12 <span style="font-size: 1.1rem; color: var(--text-muted);">t/ha</span></div>
               <div id="ypOutputRange" style="font-size: 0.88rem; color: var(--leaf-green); font-weight: 600;">80% Confidence Interval: 3.65 - 4.59 t/ha</div>
+              <div id="ypFactorsList" style="display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 12px;"></div>
             </div>
           </div>
 

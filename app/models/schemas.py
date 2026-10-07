@@ -6,7 +6,7 @@ retrieval cases, ML predictions, evaluation metrics, and advisory responses.
 
 from enum import Enum
 from typing import List, Dict, Any, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 class QueryIntent(str, Enum):
     CASE_SIMILARITY = "CASE_SIMILARITY"
@@ -91,6 +91,17 @@ class YieldPredictionResult(BaseModel):
     important_factors: List[str]
     model_name: str
     r2_score: float
+    expected_range_80_ci: Optional[List[float]] = None
+    standard_deviation: Optional[float] = None
+    top_feature_importances: Optional[Dict[str, float]] = None
+
+    @model_validator(mode="after")
+    def populate_prediction_extras(self):
+        if not self.expected_range_80_ci:
+            self.expected_range_80_ci = [self.lower_bound, self.upper_bound]
+        if self.standard_deviation is None:
+            self.standard_deviation = round(abs(self.upper_bound - self.lower_bound) / 2.56, 2)
+        return self
 
 class RiskAnalysisResult(BaseModel):
     overall_risk: str

@@ -14,6 +14,7 @@ logger = get_logger("routes_recommendation")
 router = APIRouter(prefix="/api", tags=["Crop Recommendation"])
 
 @router.post("/recommend", response_model=RecommendationResponse)
+@router.post("/recommendation", response_model=RecommendationResponse)
 def get_crop_recommendations(request: RecommendationRequest):
     """
     Recommends suitable crops based on user-provided soil, weather, and regional parameters.

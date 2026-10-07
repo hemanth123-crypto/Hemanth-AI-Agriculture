@@ -1,8 +1,8 @@
 {
-  "evaluation_timestamp": "2026-10-07 13:32:36 UTC",
+  "evaluation_timestamp": "2026-10-07 14:03:18 UTC",
   "total_benchmark_queries": 20,
   "system_performance": {
-    "average_latency_ms": 125.46,
+    "average_latency_ms": 122.82,
     "error_rate": 0.0,
     "success_rate": 1.0,
     "total_queries_executed": 20
@@ -323,7 +323,7 @@
       "intent": "CROP_RECOMMENDATION",
       "recommendations_count": 4,
       "cases_count": 5,
-      "latency_ms": 638.23,
+      "latency_ms": 334.89,
       "judge_score": 0.975
     },
     {
@@ -332,7 +332,7 @@
       "intent": "CROP_SUITABILITY",
       "recommendations_count": 3,
       "cases_count": 5,
-      "latency_ms": 156.51,
+      "latency_ms": 216.15,
       "judge_score": 0.975
     },
     {
@@ -341,7 +341,7 @@
       "intent": "CASE_SIMILARITY",
       "recommendations_count": 1,
       "cases_count": 5,
-      "latency_ms": 108.58,
+      "latency_ms": 90.08,
       "judge_score": 0.975
     },
     {
@@ -350,7 +350,7 @@
       "intent": "YIELD_ANALYSIS",
       "recommendations_count": 3,
       "cases_count": 5,
-      "latency_ms": 118.79,
+      "latency_ms": 124.86,
       "judge_score": 0.975
     },
     {
@@ -359,7 +359,7 @@
       "intent": "ALTERNATIVE_CROP",
       "recommendations_count": 0,
       "cases_count": 5,
-      "latency_ms": 73.39,
+      "latency_ms": 63.97,
       "judge_score": 0.945
     }
   ]

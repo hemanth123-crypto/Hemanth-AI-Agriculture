@@ -1,6 +1,6 @@
 # AI-Powered Agriculture Crop Advisory Assistant - Automated Evaluation Report
 
-**Generated:** 2026-10-07 13:32:36 UTC  
+**Generated:** 2026-10-07 14:03:18 UTC  
 **Total Benchmark Queries:** 20  
 **Evaluation Protocol:** End-to-End System Evaluation (Section 28)
 
@@ -9,7 +9,7 @@
 ## 1. System Performance Summary
 | Metric | Value |
 |---|---|
-| **Average Latency** | `125.46 ms` |
+| **Average Latency** | `122.82 ms` |
 | **Success Rate** | `100.0%` |
 | **Error Rate** | `0.0%` |
 | **Benchmark Queries Executed** | `20` |

@@ -15,6 +15,7 @@ logger = get_logger("routes_prediction")
 router = APIRouter(prefix="/api", tags=["ML Predictions"])
 
 @router.post("/predict-yield", response_model=YieldPredictionResult)
+@router.post("/prediction", response_model=YieldPredictionResult)
 def predict_crop_yield(request: PredictionRequest):
     """
     Predicts expected crop yield (tonnes/ha) with confidence intervals
