@@ -1,8 +1,8 @@
 {
-  "evaluation_timestamp": "2026-10-07 14:03:18 UTC",
+  "evaluation_timestamp": "2026-10-08 14:14:15 UTC",
   "total_benchmark_queries": 20,
   "system_performance": {
-    "average_latency_ms": 122.82,
+    "average_latency_ms": 170.0,
     "error_rate": 0.0,
     "success_rate": 1.0,
     "total_queries_executed": 20
@@ -57,15 +57,6 @@
         "hit": true
       }
     ]
-  },
-  "rag_and_deepeval_metrics": {
-    "status": "NOT AVAILABLE",
-    "reason": "DeepEval requires active OPENAI_API_KEY and DEEPEVAL_ENABLED=True in .env",
-    "faithfulness": "NOT AVAILABLE",
-    "answer_relevancy": "NOT AVAILABLE",
-    "contextual_relevancy": "NOT AVAILABLE",
-    "contextual_precision": "NOT AVAILABLE",
-    "contextual_recall": "NOT AVAILABLE"
   },
   "ml_model_metrics": {
     "suitability_classifier": {
@@ -323,7 +314,7 @@
       "intent": "CROP_RECOMMENDATION",
       "recommendations_count": 4,
       "cases_count": 5,
-      "latency_ms": 334.89,
+      "latency_ms": 517.19,
       "judge_score": 0.975
     },
     {
@@ -332,7 +323,7 @@
       "intent": "CROP_SUITABILITY",
       "recommendations_count": 3,
       "cases_count": 5,
-      "latency_ms": 216.15,
+      "latency_ms": 246.41,
       "judge_score": 0.975
     },
     {
@@ -341,7 +332,7 @@
       "intent": "CASE_SIMILARITY",
       "recommendations_count": 1,
       "cases_count": 5,
-      "latency_ms": 90.08,
+      "latency_ms": 148.63,
       "judge_score": 0.975
     },
     {
@@ -350,7 +341,7 @@
       "intent": "YIELD_ANALYSIS",
       "recommendations_count": 3,
       "cases_count": 5,
-      "latency_ms": 124.86,
+      "latency_ms": 431.58,
       "judge_score": 0.975
     },
     {
@@ -359,7 +350,7 @@
       "intent": "ALTERNATIVE_CROP",
       "recommendations_count": 0,
       "cases_count": 5,
-      "latency_ms": 63.97,
+      "latency_ms": 149.61,
       "judge_score": 0.945
     }
   ]

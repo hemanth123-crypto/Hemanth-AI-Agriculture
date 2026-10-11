@@ -428,7 +428,7 @@ def make_evaluation_pdf(out_path: Path):
 
     story += [
         Paragraph("AI-Powered Agriculture Crop Advisory Assistant", S["AGDocTitle"]),
-        Paragraph("Evaluation Report — DeepEval / RAGAS / Custom Benchmarks", S["AGDocSubtitle"]),
+        Paragraph("Evaluation Report — Labeled Retrieval / ML / Guardrail Benchmarks", S["AGDocSubtitle"]),
         hr(), sp(10),
     ]
 
@@ -436,12 +436,8 @@ def make_evaluation_pdf(out_path: Path):
         Paragraph("1. Information Retrieval Metrics (RAG Engine)", S["AGSectionHead"]),
     ]
     ir_data = [
-        ["Metric",          "Score",  "Target", "Status"],
-        ["Precision@5",     "0.83",   "> 0.80", "PASS"],
-        ["Recall@5",        "0.78",   "> 0.75", "PASS"],
-        ["Mean Reciprocal Rank (MRR)", "0.925", "> 0.90", "PASS"],
-        ["Hit Rate@5",      "0.95",   "> 0.95", "PASS"],
-        ["Avg Retrieval Latency", "1.8 ms", "< 5 ms", "PASS"],
+        ["Metric", "Score", "Source", "Status"],
+        ["Precision@1/3/5, Recall@5, MRR, Hit Rate@5", "See saved retrieval report", "Run Admin evaluation"],
     ]
     t = Table(ir_data, colWidths=[6*cm, 3*cm, 3*cm, 4.5*cm])
     t.setStyle(table_style_dark())
@@ -449,13 +445,8 @@ def make_evaluation_pdf(out_path: Path):
 
     story += [Paragraph("2. ML Model Performance", S["AGSectionHead"])]
     ml_data = [
-        ["Metric",             "Score",   "Target",  "Status"],
-        ["Yield R² (Test Set)","0.9876",  "> 0.98",  "PASS"],
-        ["Yield MAE",          "0.31 t/ha","< 0.45", "PASS"],
-        ["Yield RMSE",         "0.44 t/ha","< 0.60", "PASS"],
-        ["Suitability Accuracy","94.7%",  "> 90%",   "PASS"],
-        ["Suitability F1",     "0.943",   "> 0.90",  "PASS"],
-        ["Inference Latency",  "< 5 ms",  "< 10 ms", "PASS"],
+        ["Metric", "Score", "Source", "Status"],
+        ["ML evaluation", "Not embedded", "See saved ML report", "Run required"],
     ]
     t2 = Table(ml_data, colWidths=[5.5*cm, 3.5*cm, 3*cm, 4.5*cm])
     t2.setStyle(table_style_dark())
@@ -463,11 +454,8 @@ def make_evaluation_pdf(out_path: Path):
 
     story += [Paragraph("3. Guardrail Evaluation", S["AGSectionHead"])]
     guard_data = [
-        ["Test Category",           "Pass Rate", "Target", "Status"],
-        ["Injection Detection",     "100%",      "100%",   "PASS"],
-        ["Domain Scope Filter",     "98.6%",     "> 98%",  "PASS"],
-        ["Agronomic Range Check",   "100%",      "100%",   "PASS"],
-        ["Disclaimer Present",      "100%",      "100%",   "PASS"],
+        ["Test Category", "Pass Rate", "Source", "Status"],
+        ["Guardrail benchmark", "Not embedded", "Run test suite", "Run required"],
     ]
     t3 = Table(guard_data, colWidths=[6*cm, 3*cm, 3*cm, 4.5*cm])
     t3.setStyle(table_style_dark())
@@ -475,26 +463,17 @@ def make_evaluation_pdf(out_path: Path):
 
     story += [Paragraph("4. LLM-as-a-Judge Results", S["AGSectionHead"])]
     judge_data = [
-        ["Dimension",    "Score",  "Target",  "Status"],
-        ["Relevance",    "0.96",   "> 0.90",  "PASS"],
-        ["Groundedness", "0.98",   "> 0.95",  "PASS"],
-        ["Completeness", "1.00",   "= 1.00",  "PASS"],
-        ["Safety",       "1.00",   "= 1.00",  "PASS"],
+        ["Dimension", "Score", "Source", "Status"],
+        ["LLM judge results", "Not embedded", "Generated per query", "Run required"],
     ]
     t4 = Table(judge_data, colWidths=[5*cm, 3.5*cm, 3*cm, 5*cm])
     t4.setStyle(table_style_dark())
     story += [t4, sp(10)]
 
     story += [
-        Paragraph("5. DeepEval RAG Metrics (Online Mode)", S["AGSectionHead"]),
-        Paragraph("• Faithfulness: 0.97 — All generated claims traceable to retrieved cases", S["AGBullet"]),
-        Paragraph("• Answer Relevancy: 0.95 — Advisory directly addresses query intent", S["AGBullet"]),
-        Paragraph("• Contextual Relevancy: 0.89 — Retrieved context signal-to-noise ratio", S["AGBullet"]),
-        Paragraph("• Contextual Precision: 0.91 — Top cases contain most informative content", S["AGBullet"]),
-        Paragraph("• Contextual Recall: 0.93 — Retrieved context covers all necessary evidence", S["AGBullet"]),
-        sp(8),
-        Paragraph("Note: DeepEval metrics requiring OpenAI API display as NOT AVAILABLE (Offline Mode) "
-                  "when running without API key. All deterministic metrics execute fully offline.", S["AGBody"]),
+        Paragraph("5. Labeled Retrieval Results", S["AGSectionHead"]),
+        Paragraph("Run Admin → RAG Evaluation and attach evaluation/reports/retrieval_evaluation_report.json "
+                  "before generating this submission report. The admin report records locally calculated labeled-crop retrieval results.", S["AGBody"]),
     ]
 
     doc.build(story)
@@ -579,7 +558,7 @@ def make_presentation_pptx(out_path: Path):
           "Search:     TF-IDF Inverted Index + Reciprocal Rank Fusion",
           "ML Engine:  scikit-learn RandomForest (Regressor + Classifier)",
           "Frontend:   Streamlit + Vanilla HTML/CSS/JS SPA",
-          "Evaluation: DeepEval + Custom LLM Judge + RAGAS Metrics"]),
+          "Evaluation: Local Retrieval Metrics + ML / Guardrail Benchmarks"]),
 
         ("RAG Architecture",
          ["Hybrid Retrieval: Dense (FAISS semantic) + Sparse (TF-IDF keyword)",
@@ -589,10 +568,9 @@ def make_presentation_pptx(out_path: Path):
           "Result: Top-K historically verified cases grounding every recommendation"]),
 
         ("ML Models",
-         ["Crop Suitability: RandomForestClassifier — 94.7% accuracy, F1 = 0.943",
-          "Yield Prediction:  RandomForestRegressor  — R² = 0.9876, MAE = 0.31 t/ha",
-          "Confidence Interval: ŷ ± 1.28σ_trees (empirical 80% CI from tree ensemble)",
-          "Feature Importance: Rainfall (32%), Temperature (25%), Nitrogen (18%)",
+         ["Crop Suitability: RandomForestClassifier for soil and weather features",
+          "Yield Prediction: RandomForestRegressor with empirical confidence interval",
+          "Feature Importance: Computed from the fitted model",
           "Training Data: 1,500 cases, 13 features, 80/20 train-test split"]),
 
         ("8-Agent Pipeline",
@@ -606,12 +584,11 @@ def make_presentation_pptx(out_path: Path):
           "8. LLM Judge Validator  — Groundedness + relevance + safety check"]),
 
         ("Evaluation Results",
-         ["Information Retrieval:  Precision@5 = 0.83 | Recall@5 = 0.78 | MRR = 0.925",
-          "Yield Model:            R² = 0.9876 | MAE = 0.31 t/ha | RMSE = 0.44 t/ha",
-          "Guardrails:             Injection Detection = 100% | Domain Filter = 98.6%",
-          "LLM Judge:              Relevance = 0.96 | Groundedness = 0.98 | Safety = 1.00",
-          "DeepEval Faithfulness:  0.97 | Answer Relevancy: 0.95",
-          "E2E Response Latency:   < 60 ms average"]),
+         ["Retrieval and ML:       Attach metrics from completed benchmark reports",
+          "Guardrails:             Report only measured test suite results",
+          "LLM Judge:              Use scores generated from actual advisory runs",
+          "Retrieval metrics:       Run Admin > RAG Evaluation and attach JSON output",
+          "Evaluation scores:      No example scores are presented as measured results"]),
 
         ("Key Features & Demo",
          ["Interactive Crop Advisory: Natural language queries → structured advisory",

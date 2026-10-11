@@ -4,6 +4,10 @@ uvicorn>=0.28.0
 pydantic>=2.6.0
 python-dotenv>=1.0.0
 requests>=2.31.0
+streamlit>=1.38.0,<2.0.0
+reportlab>=4.2,<6.0
+ragas>=0.3.4,<1.0
+deepeval>=3.0,<5.0
 
 # Data Science & Machine Learning
 numpy>=1.26.0
@@ -17,8 +21,7 @@ faiss-cpu>=1.8.0
 
 # Testing & Evaluation
 pytest>=8.0.0
+openai>=1.55.0,<3.0.0
 
 # Optional packages (Installed when using advanced LLM-as-a-Judge cloud APIs or GPU Embeddings)
 # sentence-transformers>=2.5.0
-# deepeval>=0.21.0
-# openai>=1.12.0

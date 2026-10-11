@@ -18,7 +18,6 @@ class ReportGenerator:
     def generate_markdown(eval_data: Dict[str, Any]) -> str:
         sys_perf = eval_data.get("system_performance", {})
         ret_metrics = eval_data.get("retrieval_metrics", {})
-        rag_metrics = eval_data.get("rag_and_deepeval_metrics", {})
         ml_metrics = eval_data.get("ml_model_metrics", {})
         judge_metrics = eval_data.get("llm_judge_metrics", {})
         gr_metrics = eval_data.get("guardrail_metrics", {})
@@ -58,20 +57,7 @@ class ReportGenerator:
 
 ---
 
-## 3. RAG Quality & DeepEval Metrics
-| Metric | Status / Score | Description |
-|---|---|---|
-| **Faithfulness** | `{rag_metrics.get('faithfulness', 'NOT AVAILABLE')}` | Grounding of recommendations in historical evidence |
-| **Answer Relevancy** | `{rag_metrics.get('answer_relevancy', 'NOT AVAILABLE')}` | Directness in addressing user's agricultural query |
-| **Contextual Relevancy** | `{rag_metrics.get('contextual_relevancy', 'NOT AVAILABLE')}` | Noise-free retrieval of regional weather/soil records |
-| **Contextual Precision** | `{rag_metrics.get('contextual_precision', 'NOT AVAILABLE')}` | Signal-to-noise ratio in retrieved context |
-| **Contextual Recall** | `{rag_metrics.get('contextual_recall', 'NOT AVAILABLE')}` | Comprehensiveness of retrieved historical cases |
-
-> *Note: External DeepEval metrics requiring commercial OpenAI API keys are explicitly noted as `NOT AVAILABLE` when running completely offline per Section 28 rules.*
-
----
-
-## 4. Machine Learning Model Evaluation
+## 3. Machine Learning Model Evaluation
 ### A. Crop Suitability Classifier (RandomForestClassifier)
 - **Accuracy:** `{suitability.get('accuracy', 'N/A')}`
 - **Precision (Weighted):** `{suitability.get('precision', 'N/A')}`
@@ -88,7 +74,7 @@ class ReportGenerator:
 
 ---
 
-## 5. LLM-as-a-Judge Evaluation
+## 4. LLM-as-a-Judge Evaluation
 *Evaluates groundedness, safety compliance, and recommendation clarity.*
 
 | Dimension | Score (0.00 - 1.00) |
@@ -99,7 +85,7 @@ class ReportGenerator:
 
 ---
 
-## 6. Guardrail & Security Evaluation
+## 5. Guardrail & Security Evaluation
 *Tested against adversarial prompt injections, negative rainfall, extreme pH, and domain boundary deviations.*
 
 | Security Check | Result |
@@ -111,7 +97,7 @@ class ReportGenerator:
 
 ---
 
-## 7. Conclusion & Governance
+## 6. Conclusion & Governance
 All metrics in this report represent empirically evaluated tests on local benchmark queries and offline dataset splits.
 No evaluation scores or historical cases were artificially fabricated.
 """

@@ -21,6 +21,11 @@ wheels/
 .installed.cfg
 *.egg
 .pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+test-results/
 
 # Virtual Environments
 venv/
@@ -41,3 +46,8 @@ ENV/
 *.log
 scratch/
 .system_generated/
+.deepeval/
+data/*.db
+data/*.sqlite*
+~$*.pptx
+~$*.docx

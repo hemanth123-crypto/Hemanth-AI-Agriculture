@@ -27,7 +27,7 @@
 > 2. **Indexing Layer:** Generates 300-dimensional normalized embeddings stored in an in-memory FAISS `IndexFlatIP`, alongside a sparse lexical inverted index.
 > 3. **Machine Learning Layer:** Serialized Random Forest models providing suitability probabilities and yield bounds.
 > 4. **Multi-Agent Pipeline:** Governed by our Orchestrator via FastAPI.
-> 5. **Presentation & Evaluation Layer:** A modern Single Page Application dashboard paired with DeepEval and automated benchmark reporting."*
+> 5. **Presentation & Evaluation Layer:** A modern Single Page Application dashboard paired with local retrieval benchmarks and evaluation reporting."*
 
 ### Minute 4–5: RAG & Hybrid Retrieval
 > *"Agricultural queries contain both conceptual descriptions and exact technical tokens. For example, a query mentioning 'pH 6.5, Kharif season in Andhra Pradesh' requires exact filtering on administrative and chemical tokens, while matching semantic concepts of high-rainfall rice cultivation.
@@ -157,15 +157,15 @@ This weights both textual relevance and agronomic proximity.
 
 ---
 
-### Topic 5: Evaluation Metrics & DeepEval
+### Topic 5: Retrieval Evaluation Metrics
 #### Q21: What is the difference between Precision@5 and Recall@5 in RAG retrieval?
 **Answer:** Precision@5 measures what fraction of the 5 retrieved cases are genuinely relevant. Recall@5 measures what fraction of all existing relevant cases in the database were retrieved within those top 5 slots.
 
 #### Q22: What is Mean Reciprocal Rank (MRR), and why is it important for search?
 **Answer:** MRR evaluates where the first relevant document is located ($1/\text{rank}$). If the first result is relevant, reciprocal rank is $1.0$; if it is second, $0.5$. In agricultural search, farmers need relevant precedents immediately at position 1. Our system achieves an MRR of $0.925$.
 
-#### Q23: What are the DeepEval metrics, and how are they handled in offline environments?
-**Answer:** DeepEval evaluates Faithfulness, Answer Relevancy, and Contextual Precision using LLM evaluation benchmarks. In offline environments without OpenAI API keys, our system gracefully flags DeepEval metrics as `NOT AVAILABLE (Offline Mode)` while executing local deterministic benchmark equivalents.
+#### Q23: Which evaluation metrics are available without an external LLM provider?
+**Answer:** The admin retrieval benchmark calculates Precision@1/3/5, Recall@5, Mean Reciprocal Rank, and Hit Rate@5 locally from the labeled crop relevance in `evaluation/test_queries.json`.
 
 #### Q24: What is the difference between MAE and RMSE in yield prediction?
 **Answer:** Mean Absolute Error (MAE) treats all errors linearly. Root Mean Squared Error (RMSE) squares errors before averaging, heavily penalizing large outliers. Reporting both reveals whether error distribution is uniform or skewed by rare extreme mispredictions.

@@ -18,7 +18,8 @@ class LLMJudge:
         query: str,
         recommendations: List[CropRecommendationItem],
         retrieved_cases: List[HistoricalCase],
-        advisory_text: str
+        advisory_text: str,
+        allow_remote: bool = True,
     ) -> LLMJudgeResult:
         """
         Evaluates the generated advisory response across 5 critical dimensions:
@@ -29,7 +30,7 @@ class LLMJudge:
         5. Overall: Harmonic/weighted aggregate.
         """
         # If OpenAI is configured, attempt cloud LLM judge
-        if settings.has_openai():
+        if allow_remote and settings.has_openai():
             try:
                 import requests
                 headers = {

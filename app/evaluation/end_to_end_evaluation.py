@@ -18,7 +18,6 @@ from app.agents.orchestrator import orchestrator
 from app.evaluation.retrieval_metrics import retrieval_evaluator
 from app.evaluation.ml_evaluation import ml_evaluator
 from app.evaluation.guardrail_evaluation import guardrail_evaluator
-from app.evaluation.deepeval_config import deepeval_evaluator
 
 logger = get_logger("end_to_end_eval")
 
@@ -80,9 +79,6 @@ class EndToEndEvaluator:
         # 3. Guardrail Metrics
         guardrail_res = guardrail_evaluator.evaluate_guardrails()
 
-        # 4. DeepEval Metrics
-        deepeval_res = deepeval_evaluator.run_deepeval_benchmark()
-
         full_evaluation = {
             "evaluation_timestamp": time.strftime("%Y-%m-%d %H:%M:%S UTC", time.gmtime()),
             "total_benchmark_queries": len(test_queries),
@@ -93,7 +89,6 @@ class EndToEndEvaluator:
                 "total_queries_executed": len(test_queries)
             },
             "retrieval_metrics": retrieval_res,
-            "rag_and_deepeval_metrics": deepeval_res,
             "ml_model_metrics": ml_res,
             "llm_judge_metrics": {
                 "average_overall_score": avg_judge,

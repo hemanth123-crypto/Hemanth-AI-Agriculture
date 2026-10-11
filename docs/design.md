@@ -64,14 +64,14 @@ The **AI-Powered Agriculture Crop Advisory Assistant** bridges this divide throu
 - **Agronomic Boundary Checking:** Rejects biologically impossible inputs (e.g., negative rainfall, pH of 19.0, or 10,000 kg/ha nitrogen fertilizer).
 - **Output Safety & Disclaimers:** Ensures no guarantee of crop output is made, preventing legal liabilities from microclimatic anomalies or natural disasters.
 
-### 2.9 Why LLM-as-a-Judge and DeepEval?
+### 2.9 Why labeled retrieval evaluation?
 - **Automated Quality Governance:** Traditional unit tests verify code execution, but cannot verify whether synthesized advice faithfully reflects retrieved evidence.
-- **Offline-Safe Deterministic LLM Judge:** Evaluates responses across 4 dimensions:
+- **Offline-Safe Deterministic Validator:** Checks responses across 4 dimensions:
   1. *Relevance:* Did the response answer the user's explicit question?
   2. *Groundedness:* Are all mentioned crops present in the retrieved historical cases?
   3. *Quality:* Does the response contain structured advice, risks, and next steps?
   4. *Safety:* Are proper disclaimers and boundaries respected?
-- **DeepEval Integration:** Configured for automated CI/CD evaluation benchmarks using G-Eval faithfulness and contextual precision metrics.
+- **Labeled retrieval metrics:** The administrator can run the benchmark against the local hybrid retriever. Precision@K, Recall@5, MRR, and Hit Rate@5 are calculated using the benchmark's relevant crop labels and saved for review. No external LLM provider is needed.
 
 ### 2.10 Why User Feedback Loop?
 - Continuous model and RAG improvement requires capturing real-world utility. The system stores user ratings (1–5 stars), categorical tags, and qualitative feedback in `data/feedback/feedback.json`, allowing the offline pipeline to identify low-performing query classes and re-tune index weights.

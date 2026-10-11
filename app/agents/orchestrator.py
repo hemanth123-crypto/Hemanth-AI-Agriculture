@@ -27,7 +27,7 @@ from app.evaluation.llm_judge import llm_judge
 logger = get_logger("orchestrator")
 
 class MultiAgentOrchestrator:
-    def process_query(self, req: AdvisoryRequest) -> AdvisoryResponse:
+    def process_query(self, req: AdvisoryRequest, allow_remote_judge: bool = True) -> AdvisoryResponse:
         start_time = time.time()
         logger.info(f"Starting multi-agent workflow for query: '{req.query}'")
 
@@ -131,7 +131,8 @@ class MultiAgentOrchestrator:
             query=req.query,
             recommendations=recommendations,
             retrieved_cases=retrieved_cases,
-            advisory_text=draft_advisory
+            advisory_text=draft_advisory,
+            allow_remote=allow_remote_judge,
         )
 
         # Re-assemble final advisory with judge scores included

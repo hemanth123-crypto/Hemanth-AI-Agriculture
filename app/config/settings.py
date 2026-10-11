@@ -40,7 +40,6 @@ class Settings:
 
     # Evaluation & Guardrails
     LLM_JUDGE_MIN_SCORE: float = float(os.getenv("LLM_JUDGE_MIN_SCORE", "0.70"))
-    DEEPEVAL_ENABLED: bool = os.getenv("DEEPEVAL_ENABLED", "False").lower() in ("true", "1", "yes")
     GUARDRAIL_STRICT_MODE: bool = os.getenv("GUARDRAIL_STRICT_MODE", "True").lower() in ("true", "1", "yes")
 
     # Storage Paths

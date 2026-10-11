@@ -1,0 +1,56 @@
+{
+  "evaluation_timestamp": "2026-10-09 18:49:30 UTC",
+  "evaluation_duration_seconds": 1.02,
+  "total_benchmark_queries": 20,
+  "retrieval_metrics": {
+    "total_benchmark_queries": 20,
+    "precision_at_1": 0.9,
+    "precision_at_3": 0.85,
+    "precision_at_5": 0.83,
+    "recall_at_5": 0.4183,
+    "mrr": 0.925,
+    "hit_rate_at_5": 0.95,
+    "details": [
+      {
+        "id": "Q01",
+        "query": "Which crops performed well in Andhra Pradesh during Kharif under high rainfall and pH around 6.5?",
+        "retrieved_count": 5,
+        "precision_at_5": 0.4,
+        "reciprocal_rank": 1.0,
+        "hit": true
+      },
+      {
+        "id": "Q02",
+        "query": "I have N=80, P=40, K=35 and pH=6.5. Which crops are suitable?",
+        "retrieved_count": 5,
+        "precision_at_5": 0.0,
+        "reciprocal_rank": 0.0,
+        "hit": false
+      },
+      {
+        "id": "Q03",
+        "query": "Which historical farming cases are most similar to my conditions in Punjab with Wheat during Rabi?",
+        "retrieved_count": 5,
+        "precision_at_5": 1.0,
+        "reciprocal_rank": 1.0,
+        "hit": true
+      },
+      {
+        "id": "Q04",
+        "query": "Why did the same crop produce different yields under different conditions in Uttar Pradesh?",
+        "retrieved_count": 5,
+        "precision_at_5": 0.6,
+        "reciprocal_rank": 1.0,
+        "hit": true
+      },
+      {
+        "id": "Q05",
+        "query": "Suggest alternative crops for this season instead of Cotton in Gujarat.",
+        "retrieved_count": 5,
+        "precision_at_5": 1.0,
+        "reciprocal_rank": 1.0,
+        "hit": true
+      }
+    ]
+  }
+}

@@ -9,15 +9,13 @@ import streamlit as st
 import requests
 import json
 import time
+import os
 from datetime import datetime
 
 # ─────────────────────────────────────────────
 # CONFIG
 # ─────────────────────────────────────────────
-API_BASE = "http://localhost:8000"
-
-DEMO_EMAIL = "demo@agriadvisor.ai"
-DEMO_PASSWORD = "AgriTech2026!"
+API_BASE = os.getenv("CROPSHIELD_API_URL", "http://localhost:8000").rstrip("/")
 
 CURATED_CROPS = [
     {"name": "Rice",      "emoji": "🌾", "suitability": 92, "yieldAvg": 4.35, "risk": "Low",      "season": "Kharif",        "water": "High",     "soil": "Clayey / Alluvial"},
@@ -204,37 +202,23 @@ def page_login():
 
         st.markdown("<br>", unsafe_allow_html=True)
 
-        mode = st.radio("Mode", ["Sign In", "Quick Demo"], horizontal=True, label_visibility="collapsed")
-
         with st.form("login_form"):
-            if mode == "Quick Demo":
-                st.info(f"Demo credentials: `{DEMO_EMAIL}` / `{DEMO_PASSWORD}`")
-                email    = DEMO_EMAIL
-                password = DEMO_PASSWORD
-            else:
-                email    = st.text_input("Email Address", placeholder="agronomist@example.com")
-                password = st.text_input("Password", type="password", placeholder="Min. 6 characters")
+            email = st.text_input("Email Address", placeholder="agronomist@example.com")
+            password = st.text_input("Password", type="password", placeholder="Your account password")
 
             submitted = st.form_submit_button("🚀 Login to Dashboard", use_container_width=True)
 
         if submitted:
-            e = email.strip().lower()
-            ok, name = False, "Agricultural Specialist"
-            if e == DEMO_EMAIL.lower() and password == DEMO_PASSWORD:
-                ok, name = True, "Agricultural Specialist"
-            elif e == "officer@agriadvisor.ai" and password == DEMO_PASSWORD:
-                ok, name = True, "Extension Officer"
-            elif len(password) >= 6:
-                ok, name = True, email.split("@")[0].title()
-
-            if ok:
+            result, error = api_post("/api/auth/login", {"email": email.strip(), "password": password})
+            if result:
                 st.session_state.logged_in  = True
-                st.session_state.user_email = email.strip()
-                st.session_state.user_name  = name
+                st.session_state.user_email = result["user"]["email"]
+                st.session_state.user_name  = result["user"]["name"]
+                st.session_state.auth_token = result["token"]
                 st.session_state.page       = "Dashboard"
                 st.rerun()
             else:
-                st.error("Invalid credentials. Use demo credentials or a password >= 6 characters.")
+                st.error(error or "Invalid email or password. Create an account from the main application if needed.")
 
         st.markdown("<br>", unsafe_allow_html=True)
         c1, c2, c3, c4 = st.columns(4)

@@ -23,6 +23,11 @@
     <path d="M0,120 L0,100 Q180,80 360,95 T720,85 T1080,100 T1440,88 L1440,120 Z" fill="#020805" opacity="0.8"/>
   </svg>
   <canvas id="fireflyCanvas" class="global-firefly-canvas" aria-hidden="true"></canvas>
+  <div class="login-field-grass" aria-hidden="true">
+    <span class="login-grass-layer login-grass-layer-back"></span>
+    <span class="login-grass-layer login-grass-layer-mid"></span>
+    <span class="login-grass-layer login-grass-layer-front"></span>
+  </div>
 
   <!-- ========================================================================= -->
   <!-- 1. LANDING & LOGIN EXPERIENCE                                             -->
@@ -60,60 +65,72 @@
             Empowering agronomists, extension officers, and farming professionals with hybrid RAG retrieval across 1,500+ verified historical cases, Machine Learning yield predictions, and evidence-grounded multi-agent advisory.
           </p>
 
-          <!-- Agriculture & AI Landscape Illustration -->
+          <!-- Agriculture & AI Landscape Illustration (Picture 1 Upright Radiant Plant & Constellation) -->
           <div class="auth-illustration" aria-hidden="true">
             <svg viewBox="0 0 340 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="ill-svg">
               <defs>
                 <linearGradient id="glowStem" x1="0%" y1="100%" x2="0%" y2="0%">
-                  <stop offset="0%" stop-color="#062e1c" />
-                  <stop offset="50%" stop-color="#16a34a" />
-                  <stop offset="100%" stop-color="#22c55e" />
+                  <stop offset="0%" stop-color="#15803d" />
+                  <stop offset="40%" stop-color="#22c55e" />
+                  <stop offset="100%" stop-color="#4ade80" />
                 </linearGradient>
                 <linearGradient id="glowLeafLeft" x1="100%" y1="100%" x2="0%" y2="0%">
-                  <stop offset="0%" stop-color="#0b3820" />
-                  <stop offset="100%" stop-color="#34d399" />
+                  <stop offset="0%" stop-color="#14532d" />
+                  <stop offset="60%" stop-color="#22c55e" />
+                  <stop offset="100%" stop-color="#4ade80" />
                 </linearGradient>
                 <linearGradient id="glowLeafRight" x1="0%" y1="100%" x2="100%" y2="0%">
-                  <stop offset="0%" stop-color="#0b3820" />
-                  <stop offset="100%" stop-color="#34d399" />
+                  <stop offset="0%" stop-color="#14532d" />
+                  <stop offset="60%" stop-color="#22c55e" />
+                  <stop offset="100%" stop-color="#4ade80" />
                 </linearGradient>
                 <radialGradient id="pedestalGlow" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stop-color="#ffd65a" stop-opacity="0.5" />
-                  <stop offset="45%" stop-color="#22c55e" stop-opacity="0.3" />
-                  <stop offset="100%" stop-color="#062318" stop-opacity="0" />
+                  <stop offset="0%" stop-color="#ffd65a" stop-opacity="0.6" />
+                  <stop offset="45%" stop-color="#22c55e" stop-opacity="0.35" />
+                  <stop offset="100%" stop-color="#041a10" stop-opacity="0" />
                 </radialGradient>
               </defs>
 
               <!-- Glowing Pedestal / Soil Base -->
-              <ellipse cx="170" cy="150" rx="95" ry="12" fill="url(#pedestalGlow)" />
-              <ellipse cx="170" cy="150" rx="70" ry="6" fill="#144a32" opacity="0.6" stroke="#22c55e" stroke-width="0.8" stroke-dasharray="3 3"/>
+              <ellipse cx="170" cy="150" rx="98" ry="14" fill="url(#pedestalGlow)" />
+              <ellipse cx="170" cy="150" rx="72" ry="7" fill="#103c27" opacity="0.75" stroke="#22c55e" stroke-width="1.2" stroke-dasharray="3 3"/>
 
-              <!-- Central Sprout Stem & Leaves -->
-              <path d="M170 150 C170 115, 170 75, 170 50" stroke="url(#glowStem)" stroke-width="4.5" stroke-linecap="round"/>
-              <path d="M170 115 C145 98, 125 105, 110 118 C128 126, 155 125, 170 115 Z" fill="url(#glowLeafLeft)" opacity="0.95"/>
-              <path d="M170 95 C195 78, 215 85, 230 98 C212 106, 185 105, 170 95 Z" fill="url(#glowLeafRight)" opacity="0.95"/>
+              <!-- Radiant Golden Soil & Seed Particles -->
+              <circle cx="115" cy="150" r="1.8" fill="#ffd65a" opacity="0.9" />
+              <circle cx="135" cy="152" r="2.0" fill="#34d399" opacity="0.95" />
+              <circle cx="152" cy="153" r="2.2" fill="#ffd65a" opacity="0.95" />
+              <circle cx="188" cy="153" r="2.2" fill="#ffd65a" opacity="0.95" />
+              <circle cx="205" cy="152" r="2.0" fill="#34d399" opacity="0.9" />
+              <circle cx="225" cy="150" r="1.8" fill="#ffd65a" opacity="0.85" />
 
               <!-- Flanking Subtle Shoots -->
-              <path d="M90 150 C90 120, 75 95, 60 85 C78 100, 88 125, 90 150 Z" fill="#16a34a" opacity="0.5"/>
-              <path d="M250 150 C250 120, 265 95, 280 85 C262 100, 252 125, 250 150 Z" fill="#16a34a" opacity="0.5"/>
+              <path d="M148 150 Q105 142 80 115 Q95 140 142 150 Z" fill="#22c55e" opacity="0.55"/>
+              <path d="M192 150 Q235 142 260 110 Q245 138 198 150 Z" fill="#22c55e" opacity="0.55"/>
 
-              <!-- Luminous Constellation Arcs & Dotted Data Connections -->
-              <path d="M60 85 Q110 118 170 50" stroke="#34d399" stroke-width="1.6" stroke-dasharray="3 3" opacity="0.85"/>
-              <path d="M170 50 Q230 98 280 85" stroke="#ffd65a" stroke-width="1.6" stroke-dasharray="3 3" opacity="0.85"/>
-              <path d="M110 118 Q170 95 230 98" stroke="#34d399" stroke-width="1.2" stroke-dasharray="2 2" opacity="0.6"/>
+              <!-- Central Sprout Stem (Prominent & Radiant) -->
+              <path d="M170 150 L170 52" fill="none" stroke="url(#glowStem)" stroke-width="5" stroke-linecap="round"/>
+
+              <!-- Lush Upward Pointing Leaves Attached to Central Stem -->
+              <path d="M170 112 C145 92, 115 95, 95 105 C115 120, 148 122, 170 112 Z" fill="url(#glowLeafLeft)" opacity="0.98"/>
+              <path d="M170 95 C195 76, 225 78, 245 92 C225 110, 192 108, 170 95 Z" fill="url(#glowLeafRight)" opacity="0.98"/>
+
+              <!-- Luminous Constellation Dotted Data Arcs -->
+              <path d="M65 115 L95 105 L170 50" fill="none" stroke="#34d399" stroke-width="1.6" stroke-dasharray="3 3" opacity="0.9"/>
+              <path d="M170 50 L245 92 L275 110" fill="none" stroke="#ffd65a" stroke-width="1.6" stroke-dasharray="3 3" opacity="0.9"/>
+              <path d="M95 105 Q170 82 245 92" fill="none" stroke="#34d399" stroke-width="1.3" stroke-dasharray="2 2" opacity="0.75"/>
 
               <!-- Glowing Constellation Nodes -->
               <!-- Left Base Node -->
-              <circle cx="60" cy="85" r="4.5" fill="#10b981" stroke="#ffffff" stroke-width="1.5" />
+              <circle cx="65" cy="115" r="4.5" fill="#10b981" stroke="#ffffff" stroke-width="1.8" />
               <!-- Left Leaf Tip Node -->
-              <circle cx="110" cy="118" r="5.5" fill="#34d399" stroke="#ffffff" stroke-width="1.8" />
-              <!-- Top Apical Gold Node -->
-              <circle cx="170" cy="50" r="7" fill="#ffd65a" stroke="#ffffff" stroke-width="2" />
-              <circle cx="170" cy="50" r="14" fill="#ffd65a" opacity="0.25" />
+              <circle cx="95" cy="105" r="5.5" fill="#34d399" stroke="#ffffff" stroke-width="2" />
+              <!-- Top Apical Gold Node (Sun / Flower Bud) -->
+              <circle cx="170" cy="50" r="16" fill="#ffd65a" opacity="0.25" />
+              <circle cx="170" cy="50" r="7.5" fill="#ffd65a" stroke="#ffffff" stroke-width="2.2" />
               <!-- Right Leaf Tip Node -->
-              <circle cx="230" cy="98" r="5.5" fill="#34d399" stroke="#ffffff" stroke-width="1.8" />
+              <circle cx="245" cy="92" r="5.5" fill="#34d399" stroke="#ffffff" stroke-width="2" />
               <!-- Right Base Node -->
-              <circle cx="280" cy="85" r="4.5" fill="#10b981" stroke="#ffffff" stroke-width="1.5" />
+              <circle cx="275" cy="110" r="4.5" fill="#10b981" stroke="#ffffff" stroke-width="1.8" />
             </svg>
           </div>
 
@@ -187,7 +204,7 @@
               <input 
                 type="email" 
                 id="loginEmail" 
-                placeholder="officer@agriadvisor.ai" 
+                placeholder="agronomist@example.com" 
                 required 
                 autocomplete="email"
                 oninput="handleInputClearError('email')"
@@ -246,17 +263,6 @@
           </button>
         </form>
 
-        <!-- Quick One-Click Demo Access Box -->
-        <div class="demo-box" onclick="fillDemoCredentials()" title="Click to auto-fill panel evaluation credentials">
-          <div class="demo-header-row">
-            <span class="demo-badge">QUICK DEMO ACCESS</span>
-            <span class="demo-click-hint">Click to Auto-fill</span>
-          </div>
-          <p class="demo-credentials-text">
-            <strong>demo@agriadvisor.ai</strong> &bull; <strong>AgriTech2026!</strong>
-          </p>
-        </div>
-
         <!-- Card Footer with Toggle Link -->
         <div class="auth-footer">
           <p id="toggleAuthModeText">
@@ -265,6 +271,7 @@
         </div>
       </div>
     </div>
+    <div class="login-copyright">&copy; 2026 CropShield AI. All rights reserved.</div>
   </div>
 
   <!-- Forgot Password Recovery Modal -->
@@ -283,16 +290,9 @@
           <p class="modal-sub">AI-Powered Agriculture Crop Advisory Assistant</p>
         </div>
       </div>
-      <div class="modal-body">
-        <p>In this local capstone demonstration environment, access is automated. You can instantly proceed with official evaluator credentials:</p>
-        <div class="modal-cred-box">
-          <div><span>Email:</span> <strong>demo@agriadvisor.ai</strong></div>
-          <div><span>Password:</span> <strong>AgriTech2026!</strong></div>
-        </div>
-      </div>
+      <div class="modal-body"><p>Password reset is managed by the system administrator. Please contact your project administrator for account recovery.</p></div>
       <div class="modal-footer">
         <button type="button" class="btn-secondary" onclick="closeForgotPwModal()">Close</button>
-        <button type="button" class="btn-modal-primary" onclick="useDemoCredentialsAndClose()">Auto-fill & Proceed</button>
       </div>
     </div>
   </div>
@@ -303,9 +303,12 @@
   <!-- ========================================================================= -->
   <div id="dashboardView" class="app-layout hidden">
     
-    <!-- Top Navigation Header -->
+    <!-- Fixed dashboard sidebar -->
     <header class="app-header">
       <div class="header-left">
+        <button type="button" id="dashboardSidebarToggle" class="sidebar-toggle" onclick="toggleDashboardSidebar()" aria-label="Collapse sidebar" aria-expanded="true" title="Collapse sidebar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
         <div class="header-logo-icon" title="AI Agriculture Advisory">
           <!-- Clear Agriculture Plant / Crop Sprout Logo -->
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -319,41 +322,16 @@
         </div>
       </div>
 
-      <!-- Navigation Tabs (Requested: Dashboard, Crop Advisory, Historical Cases, Crop Recommendations, Yield Prediction, Risk Analysis, Query History, Feedback) -->
+      <!-- Primary dashboard navigation -->
       <div class="nav-tabs-wrapper">
-        <nav class="nav-tabs">
-          <button class="nav-tab active" onclick="switchNavTab('dashboard')">
-            <span class="tab-icon">🏠</span>
-            <span>Dashboard</span>
-          </button>
-          <button class="nav-tab" onclick="switchNavTab('advisory')">
-            <span class="tab-icon">🌾</span>
-            <span>Crop Advisory</span>
-          </button>
-          <button class="nav-tab" onclick="switchNavTab('cases')">
-            <span class="tab-icon">📚</span>
-            <span>Historical Cases</span>
-          </button>
-          <button class="nav-tab" onclick="switchNavTab('recommendations')">
-            <span class="tab-icon">🌱</span>
-            <span>Crop Recommendations</span>
-          </button>
-          <button class="nav-tab" onclick="switchNavTab('yield')">
-            <span class="tab-icon">📊</span>
-            <span>Yield Prediction</span>
-          </button>
-          <button class="nav-tab" onclick="switchNavTab('risk')">
-            <span class="tab-icon">⚠️</span>
-            <span>Risk Analysis</span>
-          </button>
-          <button class="nav-tab" onclick="switchNavTab('history')">
-            <span class="tab-icon">🕒</span>
-            <span>Query History</span>
-          </button>
-          <button class="nav-tab" onclick="switchNavTab('feedback')">
-            <span class="tab-icon">⭐</span>
-            <span>Feedback & Metrics</span>
-          </button>
+        <nav class="nav-tabs" aria-label="Dashboard navigation">
+          <button class="nav-tab active" type="button" title="Dashboard" aria-current="page" onclick="switchNavTab('dashboard')"><span class="tab-icon" aria-hidden="true">&#127968;</span><span class="nav-tab-label">Dashboard</span></button>
+          <button class="nav-tab" type="button" title="Crop Advisory" onclick="switchNavTab('advisory')"><span class="tab-icon" aria-hidden="true">&#127806;</span><span class="nav-tab-label">Crop Advisory</span></button>
+          <button class="nav-tab" type="button" title="Historical Cases" onclick="switchNavTab('cases')"><span class="tab-icon" aria-hidden="true">&#128218;</span><span class="nav-tab-label">Historical Cases</span></button>
+          <button class="nav-tab" type="button" title="Crop Recommendations" onclick="switchNavTab('recommendations')"><span class="tab-icon" aria-hidden="true">&#127793;</span><span class="nav-tab-label">Crop Recommendations</span></button>
+          <button class="nav-tab" type="button" title="Yield Prediction" onclick="switchNavTab('yield')"><span class="tab-icon" aria-hidden="true">&#128202;</span><span class="nav-tab-label">Yield Prediction</span></button>
+          <button class="nav-tab" type="button" title="Risk Analysis" onclick="switchNavTab('risk')"><span class="tab-icon" aria-hidden="true">&#9888;&#65039;</span><span class="nav-tab-label">Risk Analysis</span></button>
+          <button class="nav-tab" type="button" title="Query History" onclick="switchNavTab('history')"><span class="tab-icon" aria-hidden="true">&#128337;</span><span class="nav-tab-label">Query History</span></button>
         </nav>
       </div>
 
@@ -363,9 +341,10 @@
           <span class="status-dot"></span>
           <span id="backendStatusText">RAG & ML Ready</span>
         </div>
+        <button type="button" id="adminPanelButton" class="btn-secondary hidden" onclick="openAdminPanel()">Admin Panel</button>
         <div class="user-profile-menu">
           <div class="user-avatar" id="userInitials">DP</div>
-          <span class="user-name" id="userEmailLabel">demo@agriadvisor.ai</span>
+          <span class="user-name" id="userEmailLabel">Signed in</span>
           <button class="btn-logout" onclick="handleLogout()" title="Log out">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
@@ -926,7 +905,10 @@
                     <span class="card-icon">📋</span>
                     <h4>Official Agronomic Advisory Report</h4>
                   </div>
-                  <button type="button" class="btn-copy" onclick="copyAdvisoryReportById('advStudioReportPre')">Copy Report</button>
+                  <div class="advisory-report-actions">
+                    <button type="button" class="btn-copy" onclick="copyAdvisoryReportById('advStudioReportPre')">Copy Report</button>
+                    <button type="button" class="btn-copy btn-download-report" onclick="downloadAdvisoryReportPdf('advStudioReportPre', this)">Download PDF</button>
+                  </div>
                 </div>
                 <pre class="advisory-pre" id="advStudioReportPre"></pre>
               </div>
@@ -1063,7 +1045,7 @@
               <span class="pill-green">ML-Driven</span>
             </div>
 
-            <form id="cropRecForm" onsubmit="handleCropRecSubmit(event)">
+            <form id="cropRecForm" onsubmit="event.preventDefault(); handleCropRecSubmit(event); return false;">
               <div class="form-two-cols">
                 <div class="form-group custom-select-wrap">
                   <label for="recState">State / Agro-Climatic Region</label>
@@ -1142,7 +1124,7 @@
               </div>
 
               <div style="margin-top: 1.5rem;">
-                <button type="submit" id="recSubmitBtn" class="btn-primary-auth" style="width: 100%; padding: 12px 24px; font-size: 1rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <button type="button" id="recSubmitBtn" onclick="handleCropRecSubmit(event)" class="btn-primary-auth" style="width: 100%; padding: 12px 24px; font-size: 1rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px;">
                   <span>🌱 Run ML Crop Recommendation</span>
                 </button>
               </div>
@@ -1160,10 +1142,11 @@
             </div>
 
             <div id="recResultsContent">
-              <div class="empty-state" style="text-align: center; padding: 2.5rem 1rem;">
-                <div style="font-size: 2.8rem; margin-bottom: 0.75rem;">🌾</div>
-                <h4 style="font-family: var(--font-display); color: var(--primary-forest); margin-bottom: 0.5rem;">Awaiting Recommendation Request</h4>
-                <p style="color: var(--text-muted); font-size: 0.88rem; max-width: 380px; margin: 0 auto;">Select your region, season, soil N-P-K nutrients, and climate values, then click "Run ML Crop Recommendation".</p>
+              <div class="empty-state" style="text-align: center; padding: 2rem 1rem;">
+                <div style="font-size: 2.6rem; margin-bottom: 0.6rem;">🌾</div>
+                <h4 style="font-family: var(--font-display); color: var(--primary-forest); margin-bottom: 0.4rem; font-size: 1.15rem;">Awaiting Recommendation Request</h4>
+                <p style="color: var(--text-muted); font-size: 0.86rem; max-width: 360px; margin: 0 auto 1.25rem;">Select your region, season, soil N-P-K nutrients, and climate values, then click "Run ML Crop Recommendation".</p>
+                <button type="button" class="btn-secondary" style="padding: 8px 18px; font-size: 0.84rem; cursor: pointer;" onclick="applyRecPreset('ap_kharif')">⚡ Quick Test: AP Kharif Rice</button>
               </div>
             </div>
           </div>
@@ -1192,9 +1175,16 @@
         </div>
 
         <div class="analytics-grid">
-          <!-- Predictor Form & Confidence Card -->
+          <!-- Left Column: Field & Agronomic Parameters with Calculate Button -->
           <div class="chart-card">
-            <h4 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 1rem; color: var(--primary-forest);">Interactive Field &amp; Agronomic Parameters</h4>
+            <div class="card-header" style="margin-bottom: 1.25rem;">
+              <div class="card-title-group">
+                <span class="card-icon">🎛️</span>
+                <h4 style="font-family: var(--font-display); font-size: 1.2rem; color: var(--primary-forest);">Interactive Field &amp; Agronomic Parameters</h4>
+              </div>
+              <span class="pill-green">ML Inputs</span>
+            </div>
+
             <div class="form-two-cols">
               <div class="form-group custom-select-wrap">
                 <label for="ypCrop">Crop Selection</label>
@@ -1233,44 +1223,6 @@
             </div>
 
             <div class="form-two-cols">
-              <div class="form-group custom-input-wrap">
-                <label for="ypFarmArea">Farm Cultivation Land Area</label>
-                <div style="display: flex; gap: 8px;">
-                  <input type="number" id="ypFarmArea" value="5" min="0.5" max="500" step="0.5" oninput="runLiveYieldEstimate()" style="flex: 1;">
-                  <select id="ypAreaUnit" onchange="runLiveYieldEstimate()" style="width: 110px; padding: 8px 10px; border-radius: var(--radius-md); border: 1px solid var(--border-light); background: var(--bg-surface);">
-                    <option value="acres">Acres</option>
-                    <option value="hectares">Hectares</option>
-                  </select>
-                </div>
-              </div>
-              <div class="form-group custom-input-wrap">
-                <label for="ypMarketPrice">Market Price / Mandi MSP (₹/Tonne)</label>
-                <input type="number" id="ypMarketPrice" value="23000" step="500" min="1000" oninput="runLiveYieldEstimate()">
-              </div>
-            </div>
-
-            <div class="form-two-cols">
-              <div class="form-group custom-input-wrap">
-                <label for="ypRain">Seasonal Rainfall (mm)</label>
-                <input type="range" id="ypRain" min="300" max="2500" value="1200" step="50" oninput="updateRangeLabel('ypRainVal', this.value, ' mm'); runLiveYieldEstimate();">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
-                  <span style="font-size: 0.76rem; color: var(--text-muted);">Dry (300mm)</span>
-                  <span id="ypRainVal" style="font-size: 0.84rem; font-weight: 700; color: var(--leaf-green);">1200 mm</span>
-                  <span style="font-size: 0.76rem; color: var(--text-muted);">Heavy (2500mm)</span>
-                </div>
-              </div>
-              <div class="form-group custom-input-wrap">
-                <label for="ypPH">Soil pH Level</label>
-                <input type="range" id="ypPH" min="4.5" max="8.5" value="6.5" step="0.1" oninput="updateRangeLabel('ypPHVal', this.value, ''); runLiveYieldEstimate();">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
-                  <span style="font-size: 0.76rem; color: var(--text-muted);">Acidic (4.5)</span>
-                  <span id="ypPHVal" style="font-size: 0.84rem; font-weight: 700; color: var(--leaf-green);">6.5</span>
-                  <span style="font-size: 0.76rem; color: var(--text-muted);">Alkaline (8.5)</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="form-two-cols">
               <div class="form-group custom-select-wrap">
                 <label for="ypSeason">Cultivation Season</label>
                 <select id="ypSeason" onchange="runLiveYieldEstimate()">
@@ -1281,8 +1233,46 @@
                 </select>
               </div>
               <div class="form-group custom-input-wrap">
+                <label for="ypFarmArea">Farm Cultivation Land Area</label>
+                <div style="display: flex; gap: 8px;">
+                  <input type="number" id="ypFarmArea" value="5" min="0.5" max="500" step="0.5" oninput="runLiveYieldEstimate()" style="flex: 1;">
+                  <select id="ypAreaUnit" onchange="runLiveYieldEstimate()" style="width: 110px; padding: 8px 10px; border-radius: var(--radius-md); border: 1px solid var(--border-light); background: var(--bg-surface);">
+                    <option value="acres">Acres</option>
+                    <option value="hectares">Hectares</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-two-cols">
+              <div class="form-group custom-input-wrap">
+                <label for="ypMarketPrice">Market Price / Mandi MSP (₹/Tonne)</label>
+                <input type="number" id="ypMarketPrice" value="23000" step="500" min="1000" oninput="runLiveYieldEstimate()">
+              </div>
+              <div class="form-group custom-input-wrap">
                 <label for="ypTemp">Temperature (°C)</label>
                 <input type="number" id="ypTemp" value="27.0" min="5" max="50" step="0.5" oninput="runLiveYieldEstimate()">
+              </div>
+            </div>
+
+            <div class="form-two-cols">
+              <div class="form-group custom-input-wrap">
+                <label for="ypRain">Seasonal Rainfall (mm)</label>
+                <input type="range" id="ypRain" min="300" max="2500" value="1200" step="50" oninput="updateRangeLabel('ypRainVal', this.value, ' mm'); runLiveYieldEstimate();">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                  <span style="font-size: 0.74rem; color: var(--text-muted);">Dry (300mm)</span>
+                  <span id="ypRainVal" style="font-size: 0.82rem; font-weight: 700; color: var(--leaf-green);">1200 mm</span>
+                  <span style="font-size: 0.74rem; color: var(--text-muted);">Heavy (2500mm)</span>
+                </div>
+              </div>
+              <div class="form-group custom-input-wrap">
+                <label for="ypPH">Soil pH Level</label>
+                <input type="range" id="ypPH" min="4.5" max="8.5" value="6.5" step="0.1" oninput="updateRangeLabel('ypPHVal', this.value, ''); runLiveYieldEstimate();">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+                  <span style="font-size: 0.74rem; color: var(--text-muted);">Acidic (4.5)</span>
+                  <span id="ypPHVal" style="font-size: 0.82rem; font-weight: 700; color: var(--leaf-green);">6.5</span>
+                  <span style="font-size: 0.74rem; color: var(--text-muted);">Alkaline (8.5)</span>
+                </div>
               </div>
             </div>
 
@@ -1317,29 +1307,45 @@
               </div>
             </div>
 
-            <div style="background: var(--bg-muted); border-radius: var(--radius-lg); padding: 1.5rem; text-align: center; margin-top: 1.25rem; border: 1px solid var(--border-subtle); position: relative;">
-              <div style="display: inline-flex; align-items: center; gap: 6px; background: rgba(57, 217, 138, 0.12); border: 1px solid rgba(57, 217, 138, 0.3); border-radius: 20px; padding: 4px 12px; font-size: 0.76rem; color: var(--leaf-green); font-weight: 700; margin-bottom: 8px;">
+            <!-- Prominent Primary Calculate & Predict Yield Button -->
+            <div style="margin-top: 1.25rem;">
+              <button type="button" id="yieldCalcBtn" onclick="runYieldCalculationWithAnimation(this)" class="btn-primary-auth" style="width: 100%; padding: 13px 20px; font-size: 1rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 4px 14px rgba(46,125,78,0.35); cursor: pointer;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                <span>📈 Calculate &amp; Predict ML Yield</span>
+              </button>
+              <p id="ypCalculationStatus" class="admin-status" aria-live="polite" style="margin: 0.6rem 0 0;"></p>
+            </div>
+          </div>
+
+          <!-- Right Column: Live ML Output Card & Benchmarks (Balanced & Zero Empty Space) -->
+          <div class="chart-card">
+            <!-- Forecasted Expected Yield Hero Box -->
+            <div style="background: rgba(6, 28, 18, 0.7); border-radius: var(--radius-lg); padding: 1.4rem 1.25rem; text-align: center; border: 1px solid rgba(57, 217, 138, 0.28); margin-bottom: 1.5rem; position: relative;">
+              <div style="display: inline-flex; align-items: center; gap: 6px; background: rgba(57, 217, 138, 0.15); border: 1px solid rgba(57, 217, 138, 0.35); border-radius: 20px; padding: 4px 12px; font-size: 0.76rem; color: var(--leaf-green); font-weight: 700; margin-bottom: 6px;">
                 <span>⚡</span>
                 <span id="ypModelBadge">RandomForestRegressor (R² = 0.988)</span>
               </div>
               <br>
-              <span style="font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); font-weight: 700;">Forecasted Expected Yield</span>
-              <div class="yield-number" id="ypOutputNumber" style="font-size: 3rem; margin: 0.5rem 0;">4.12 <span style="font-size: 1.1rem; color: var(--text-muted);">t/ha</span></div>
-              <div id="ypOutputRange" style="font-size: 0.88rem; color: var(--leaf-green); font-weight: 600;">80% Confidence Interval: 3.65 - 4.59 t/ha</div>
-              <div id="ypFactorsList" style="display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 12px;"></div>
+              <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); font-weight: 700;">Forecasted Expected Yield</span>
+              <div class="yield-number" id="ypOutputNumber" style="font-size: 3rem; margin: 0.3rem 0; font-weight: 800; color: #ffffff;">4.25 <span style="font-size: 1.1rem; color: var(--text-muted); font-weight: 500;">t/ha</span></div>
+              <div id="ypOutputRange" style="font-size: 0.9rem; color: var(--leaf-green); font-weight: 700;">80% Confidence Interval: 3.74 - 4.76 t/ha</div>
+              <div id="ypFactorsList" style="display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 10px;"></div>
             </div>
-          </div>
 
-          <!-- Comparison Analytics Bars -->
-          <div class="chart-card">
-            <h4 style="font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 0.5rem; color: var(--primary-forest);">Comparative Yield Benchmarks</h4>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Estimated yield compared against regional historical distributions &amp; agronomic baselines.</p>
+            <div class="card-header" style="margin-bottom: 0.5rem;">
+              <div class="card-title-group">
+                <span class="card-icon">📊</span>
+                <h4 style="font-family: var(--font-display); font-size: 1.15rem; color: var(--primary-forest);">Comparative Yield Benchmarks</h4>
+              </div>
+              <span class="pill-green">Regional Context</span>
+            </div>
+            <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 1rem;">Estimated yield compared against regional historical distributions &amp; agronomic baselines.</p>
 
-            <div class="chart-bars-wrap">
+            <div class="chart-bars-wrap" style="margin-top: 0.5rem;">
               <div class="chart-bar-item">
                 <div class="chart-bar-label">
                   <span>ML Predicted Yield</span>
-                  <strong id="barPredLabel">4.12 t/ha</strong>
+                  <strong id="barPredLabel" style="color: var(--leaf-green);">4.25 t/ha</strong>
                 </div>
                 <div class="chart-track">
                   <div class="chart-fill-green" id="barPredFill" style="width: 82%;"></div>
@@ -1377,16 +1383,16 @@
               </div>
             </div>
 
-            <div style="margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--border-light);">
-              <h5 style="font-size: 0.92rem; color: var(--primary-forest); margin-bottom: 0.75rem;">Agronomic Sensitivity Factors</h5>
+            <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border-light);">
+              <h5 style="font-size: 0.88rem; color: var(--primary-forest); margin-bottom: 0.6rem;">Agronomic Sensitivity Factors</h5>
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.82rem;">
-                <div style="background: var(--bg-surface-alt); padding: 8px 12px; border-radius: var(--radius-md);">
+                <div style="background: var(--bg-surface-alt); padding: 8px 12px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
                   <span style="color: var(--text-muted);">Rainfall Efficiency:</span>
-                  <strong id="calcRainEff" style="color: var(--leaf-green); float: right;">+4.2%</strong>
+                  <strong id="calcRainEff" style="color: var(--leaf-green); float: right;">+0.0%</strong>
                 </div>
-                <div style="background: var(--bg-surface-alt); padding: 8px 12px; border-radius: var(--radius-md);">
+                <div style="background: var(--bg-surface-alt); padding: 8px 12px; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
                   <span style="color: var(--text-muted);">Soil pH Suitability:</span>
-                  <strong id="calcPHEff" style="color: var(--leaf-green); float: right;">98.5%</strong>
+                  <strong id="calcPHEff" style="color: var(--leaf-green); float: right;">100.0%</strong>
                 </div>
               </div>
             </div>
@@ -1486,7 +1492,7 @@
 
           <!-- Calculate + Reset Button Row -->
           <div style="display: flex; gap: 10px; margin-top: 0.75rem; margin-bottom: 0.5rem;">
-            <button type="button" id="yieldCalcBtn" onclick="runYieldCalculationWithAnimation()" style="display: flex; align-items: center; gap: 8px; padding: 10px 22px; background: linear-gradient(135deg, var(--primary-forest), var(--leaf-green)); color: #fff; border: none; border-radius: var(--radius-md); font-family: var(--font-display); font-size: 0.92rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 14px rgba(46,125,78,0.35); transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(46,125,78,0.5)'" onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 14px rgba(46,125,78,0.35)'">
+            <button type="button" id="yieldSensitivityCalcBtn" onclick="runYieldCalculationWithAnimation(this)" style="display: flex; align-items: center; gap: 8px; padding: 10px 22px; background: linear-gradient(135deg, var(--primary-forest), var(--leaf-green)); color: #fff; border: none; border-radius: var(--radius-md); font-family: var(--font-display); font-size: 0.92rem; font-weight: 700; cursor: pointer; box-shadow: 0 4px 14px rgba(46,125,78,0.35); transition: all 0.2s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(46,125,78,0.5)'" onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 14px rgba(46,125,78,0.35)'">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
               Calculate Yield &amp; Economics
             </button>
@@ -1829,18 +1835,227 @@
       </section>
 
 
+
+
+    </main>
+
+    <aside id="aiChatWidget" class="ai-chat-widget" aria-label="CropShield AI assistant">
+      <section id="aiChatPanel" class="ai-chat-panel hidden" aria-labelledby="aiChatTitle">
+        <header class="ai-chat-header">
+          <div class="ai-chat-brand-mark" aria-hidden="true">&#10022;</div>
+          <div class="ai-chat-heading"><h2 id="aiChatTitle">CropShield AI</h2><span>Crop advisory assistant</span></div>
+          <div class="ai-chat-window-actions">
+            <button type="button" class="ai-chat-window-button" onclick="minimizeAssistantChat()" aria-label="Minimize chat" title="Minimize">&#8722;</button>
+            <button type="button" class="ai-chat-window-button" onclick="closeAssistantChat()" aria-label="Close chat" title="Close">&#215;</button>
+          </div>
+        </header>
+        <div id="aiChatMessages" class="ai-chat-messages" role="log" aria-live="polite" aria-relevant="additions text"></div>
+        <form id="aiChatForm" class="ai-chat-compose" onsubmit="handleAssistantChatSubmit(event)">
+          <label class="visually-hidden" for="aiChatInput">Ask CropShield AI about agriculture</label>
+          <input id="aiChatInput" type="text" maxlength="1200" autocomplete="off" placeholder="Ask about crops, soil, or yield&#8230;" required>
+          <button id="aiChatSend" type="submit" aria-label="Send message" title="Send message">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+          </button>
+        </form>
+      </section>
+      <button id="aiChatLauncher" class="ai-chat-launcher" type="button" onclick="openAssistantChat()" aria-label="Open CropShield AI chat" title="Ask CropShield AI">
+        <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8A8.5 8.5 0 0 1 8.7 3.9a8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8z"/></svg>
+      </button>
+    </aside>
+  </div>
+
+
+
+  <div id="adminView" class="app-layout admin-app-layout hidden">
+    <header class="app-header admin-header">
+      <div class="header-left"><div class="header-logo-icon">CS</div><div class="header-brand"><h2>CropShield AI Admin</h2></div></div>
+      <div class="header-right"><span class="user-name" id="adminUserLabel"></span><button type="button" class="btn-logout" onclick="handleLogout()" title="Log out">Logout</button></div>
+    </header>
+    <div class="admin-layout">
+      <aside class="admin-sidebar" aria-label="Admin navigation">
+        <div class="admin-sidebar-title">Administration</div>
+        <button class="admin-nav active" onclick="switchAdminSection('overview')">Overview</button>
+        <button class="admin-nav" onclick="switchAdminSection('users')">User Management</button>
+        <button class="admin-nav" onclick="switchAdminSection('feedback')">Feedback &amp; Metrics</button>
+        <button class="admin-nav" onclick="switchAdminSection('rag')">RAG Evaluation</button>
+        <button class="admin-nav" onclick="switchAdminSection('ml')">ML Model Performance</button>
+        <button class="admin-nav" onclick="switchAdminSection('dataset')">Dataset Management</button>
+        <button class="admin-nav" onclick="switchAdminSection('health')">System Health &amp; Logs</button>
+        <button class="admin-nav admin-nav-secondary" onclick="closeAdminPanel()">Back to User Dashboard</button>
+        <button class="admin-nav admin-nav-secondary" onclick="handleLogout()">Logout</button>
+      </aside>
+      <main class="main-content admin-content">
+        <section id="admin-pane-overview" class="admin-page">
+          <div class="page-hero-header"><div><h3>Admin Overview</h3><p>Live values are read from the application database and saved reports.</p></div></div>
+          <div id="adminOverviewStatus" class="admin-status" aria-live="polite">Loading...</div>
+          <div id="adminOverviewCards" class="admin-card-grid"></div>
+          <div class="card"><h4>Current system health</h4><div id="adminOverviewHealth" class="admin-data-list"></div></div>
+          <div class="card"><h4>Latest completed evaluation</h4><div id="adminOverviewEvaluation" class="admin-data-list"></div></div>
+          <div class="card"><h4>Recent activity</h4><p id="adminActivityNotice" class="admin-muted">Loading...</p></div>
+        </section>
+        <section id="admin-pane-users" class="admin-page hidden">
+          <div class="page-hero-header"><div><h3>User Management</h3><p>Account details from the registered user database. Credentials and tokens are never returned.</p></div></div>
+          <div class="admin-toolbar"><input id="adminUserSearch" type="search" placeholder="Search name or email" oninput="filterAdminUsers()"><select id="adminRoleFilter" onchange="filterAdminUsers()"><option value="">All roles</option><option>admin</option><option>specialist</option><option>agronomist</option><option>officer</option></select></div>
+          <div id="adminUsersStatus" class="admin-status" aria-live="polite"></div>
+          <div class="card admin-table-wrap"><table class="admin-table"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Registered</th><th>Last login</th></tr></thead><tbody id="adminUsersBody"></tbody></table></div>
+        </section>
+        <section id="admin-pane-rag" class="admin-page hidden">
+          <div class="page-hero-header"><div><h3>RAGAS Evaluation</h3><p>RAGAS evaluates answer faithfulness and context utilization against retrieved crop cases.</p></div></div>
+          <div class="card admin-query-calculator">
+            <div class="card-header"><div class="card-title-group"><span class="card-icon">&#128300;</span><h4>Single Query Evaluation Calculator</h4></div><span class="pill-green">Live Retrieval + LLM Evaluation</span></div>
+            <p class="admin-muted">Choose a labeled benchmark query. The application retrieves real cases, calculates ranking metrics, then evaluates the generated answer and contexts with RAGAS and DeepEval.</p>
+            <div id="adminQueryEvalForm" class="admin-query-eval-form">
+              <div class="admin-query-field admin-query-wide"><label for="adminEvalBenchmarkQuery">Labeled benchmark query</label><select id="adminEvalBenchmarkQuery" onchange="showAdminBenchmarkLabels()"><option value="">Loading benchmark queries…</option></select><small id="adminEvalRelevantLabels" class="admin-muted"></small></div>
+              <div class="admin-query-field"><label for="adminEvalTopK">Results to evaluate (K)</label><select id="adminEvalTopK"><option>3</option><option selected>5</option><option>10</option></select></div>
+              <button id="runAdminQueryEvaluation" class="btn-primary-auth admin-eval-button admin-query-wide" type="button" onclick="runAdminQueryEvaluation()">Calculate query metrics</button>
+            </div>
+            <p class="admin-query-note">RAGAS and DeepEval send the selected query, generated advisory, and retrieved case context to the configured LLM judge. Scores require installed packages and a reachable judge provider. Benchmark crop labels are used as ground truth for retrieval scores.</p>
+            <div id="adminQueryEvalStatus" class="admin-status" aria-live="polite"></div>
+            <div id="adminQueryRetrievalMetrics" class="admin-card-grid" aria-live="polite"></div>
+            <div class="admin-llm-eval-grid">
+              <section class="card"><h4>RAGAS</h4><p id="adminRagasQueryStatus" class="admin-muted"></p><div id="adminRagasQueryMetrics" class="admin-card-grid"></div></section>
+              <section class="card"><h4>DeepEval</h4><p id="adminDeepEvalStatus" class="admin-muted"></p><div id="adminDeepEvalMetrics" class="admin-card-grid"></div></section>
+            </div>
+            <div id="adminQueryCases" class="admin-query-cases"></div>
+          </div>
+          <div id="adminRagStatus" class="admin-status" aria-live="polite">Loading...</div><div id="adminRagResults" class="admin-card-grid"></div>
+          <p class="admin-muted">Uses the local benchmark and hybrid retriever; no external LLM calls are required. Relevance is labeled by crop in <code>evaluation/test_queries.json</code>.</p>
+        </section>
+        <section id="admin-pane-ml" class="admin-page hidden">
+          <div class="page-hero-header"><div><h3>ML Model Performance</h3><p>Saved evaluation metrics and current model loading state.</p></div></div>
+          <div id="adminMlStatus" class="admin-status" aria-live="polite">Loading...</div><div id="adminMlResults" class="admin-card-grid"></div>
+        </section>
+        <section id="admin-pane-dataset" class="admin-page hidden">
+          <div class="page-hero-header"><div><h3>Dataset Management</h3><p>Read-only inspection of the available agricultural dataset.</p></div></div>
+          <div id="adminDatasetStatus" class="admin-status" aria-live="polite">Loading...</div><div id="adminDatasetSummary" class="admin-card-grid"></div><div class="card admin-table-wrap"><table class="admin-table"><thead><tr><th>Column</th><th>Missing values</th></tr></thead><tbody id="adminDatasetColumns"></tbody></table></div>
+        </section>
+        <section id="admin-pane-health" class="admin-page hidden">
+          <div class="page-hero-header"><div><h3>System Health &amp; Logs</h3><p>Current dependency checks and available operational telemetry.</p></div></div>
+          <div id="adminHealthStatus" class="admin-status" aria-live="polite">Loading...</div><div id="adminHealthResults" class="admin-data-list"></div>
+        </section>
       <!-- ===================================================================== -->
       <!-- TAB 8: FEEDBACK & SYSTEM EVALUATION                                   -->
       <!-- ===================================================================== -->
-      <section id="pane-feedback" class="tab-pane hidden">
+      <section id="pane-feedback" class="admin-page hidden">
         <div class="page-hero-header" style="display: flex; justify-content: space-between; align-items: flex-end;">
           <div>
-            <h3>Continuous Quality Feedback & Benchmark Evaluation</h3>
-            <p>Evaluate system precision, retrieval hit rates, and submit qualitative specialist feedback.</p>
+            <h3>Feedback &amp; Metrics</h3>
+            <p>Review submitted specialist feedback and available saved evaluation metrics.</p>
           </div>
-          <button type="button" class="btn-primary-auth" style="width: auto; padding: 10px 22px;" onclick="triggerRunEvaluation(event)">
-            <span>⚡ Run Automated Benchmark</span>
-          </button>
+        </div>
+        <!-- Crop-Specific Evaluation Calculator -->
+        <div class="card" style="margin-bottom: 1.75rem;">
+          <div class="card-header">
+            <div class="card-title-group">
+              <span class="card-icon">🔬</span>
+              <h4 style="font-family: var(--font-display); font-size: 1.2rem; color: var(--primary-forest);">Crop-Specific Precision & Accuracy Calculator</h4>
+            </div>
+            <span class="pill-green">Live Computed</span>
+          </div>
+          <p style="font-size: 0.86rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+            Enter any crop to instantly calculate live <strong>Precision@K, Recall, MRR, Hit Rate</strong> from hybrid RAG retrieval and <strong>Yield R², MAE, Suitability Accuracy</strong> from trained ML models.
+          </p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 12px; align-items: flex-end; flex-wrap: wrap;">
+            <div class="form-group custom-select-wrap" style="margin: 0;">
+              <label for="cropEvalCrop" style="font-size: 0.78rem;">Target Crop</label>
+              <select id="cropEvalCrop">
+                <option>Rice</option>
+                <option>Wheat</option>
+                <option>Maize</option>
+                <option selected>Cotton</option>
+                <option>Sugarcane</option>
+                <option>Chickpea</option>
+                <option>Groundnut</option>
+                <option>Soybean</option>
+                <option>Mustard</option>
+                <option>Barley</option>
+                <option>Millets</option>
+                <option>Jute</option>
+              </select>
+            </div>
+            <div class="form-group custom-select-wrap" style="margin: 0;">
+              <label for="cropEvalState" style="font-size: 0.78rem;">State</label>
+              <select id="cropEvalState">
+                <option>Andhra Pradesh</option>
+                <option>Assam</option>
+                <option>Bihar</option>
+                <option>Gujarat</option>
+                <option>Haryana</option>
+                <option>Karnataka</option>
+                <option>Madhya Pradesh</option>
+                <option>Maharashtra</option>
+                <option>Odisha</option>
+                <option>Punjab</option>
+                <option>Rajasthan</option>
+                <option>Tamil Nadu</option>
+                <option>Telangana</option>
+                <option>Uttar Pradesh</option>
+                <option>West Bengal</option>
+              </select>
+            </div>
+            <div class="form-group custom-select-wrap" style="margin: 0;">
+              <label for="cropEvalSeason" style="font-size: 0.78rem;">Season</label>
+              <select id="cropEvalSeason">
+                <option>Kharif</option>
+                <option>Rabi</option>
+                <option>Whole Year</option>
+                <option>Summer</option>
+              </select>
+            </div>
+            <button type="button" id="cropEvalBtn" onclick="runCropEvaluation()" style="padding: 10px 20px; background: linear-gradient(135deg, var(--primary-forest), var(--leaf-green)); color: #fff; border: none; border-radius: var(--radius-md); font-family: var(--font-display); font-size: 0.88rem; font-weight: 700; cursor: pointer; white-space: nowrap; box-shadow: 0 4px 14px rgba(46,125,78,0.35); transition: all 0.2s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform=''">
+              🔬 Calculate Scores
+            </button>
+          </div>
+
+          <!-- Crop Eval Results (shown after calculation) -->
+          <div id="cropEvalResults" style="display: none; margin-top: 1.5rem;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1rem;">
+              <div id="cropEvalBadge" style="display: inline-flex; align-items: center; gap: 6px; background: rgba(57,217,138,0.15); border: 1px solid rgba(57,217,138,0.4); border-radius: 20px; padding: 4px 14px; font-size: 0.78rem; font-weight: 700; color: var(--leaf-green);">
+                📊 CROP: COTTON • STATE: GUJARAT • SEASON: KHARIF
+              </div>
+              <span id="cropEvalLatency" style="font-size: 0.75rem; color: var(--text-muted);">⏱ 238ms</span>
+              <span id="cropEvalCasesCount" style="font-size: 0.75rem; color: var(--text-muted);">📋 119 historical cases</span>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+              <!-- RAG Retrieval Card -->
+              <div class="card" style="padding: 1rem 1.1rem;">
+                <div class="stat-header" style="margin-bottom: 0.75rem;">
+                  <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-secondary);">Retrieval Quality (Hybrid RAG)</span>
+                  <span class="pill-green" style="font-size: 0.68rem;">EMPIRICAL</span>
+                </div>
+                <div class="judge-metric-row"><span>Precision@1:</span> <strong id="cePrecision1">1.000</strong></div>
+                <div class="judge-metric-row"><span>Precision@3:</span> <strong id="cePrecision3">1.000</strong></div>
+                <div class="judge-metric-row"><span>Precision@5:</span> <strong id="cePrecision5">1.000</strong></div>
+                <div class="judge-metric-row"><span>Recall@5:</span> <strong id="ceRecall5">0.500</strong></div>
+                <div class="judge-metric-row"><span>Mean Reciprocal Rank:</span> <strong id="ceMRR">1.000</strong></div>
+                <div class="judge-metric-row"><span>Hit Rate@5:</span> <strong id="ceHitRate">1.000</strong></div>
+              </div>
+              <!-- ML Accuracy Card -->
+              <div class="card" style="padding: 1rem 1.1rem;">
+                <div class="stat-header" style="margin-bottom: 0.75rem;">
+                  <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-secondary);">Machine Learning Accuracy</span>
+                  <span class="pill-green" style="font-size: 0.68rem;">CALCULATED</span>
+                </div>
+                <div class="judge-metric-row"><span>Yield Model R²:</span> <strong id="ceYieldR2">0.9177</strong></div>
+                <div class="judge-metric-row"><span>Mean Absolute Error:</span> <strong id="ceMAE">0.171 t/ha</strong></div>
+                <div class="judge-metric-row"><span>Root Mean Sq Error:</span> <strong id="ceRMSE">0.209 t/ha</strong></div>
+                <div class="judge-metric-row"><span>Suitability Accuracy:</span> <strong id="ceSuitAcc">0.840</strong></div>
+                <div class="judge-metric-row"><span>Weighted F1 Score:</span> <strong id="ceSuitF1">0.790</strong></div>
+              </div>
+              <!-- Live Prediction Card -->
+              <div class="card" style="padding: 1rem 1.1rem;">
+                <div class="stat-header" style="margin-bottom: 0.75rem;">
+                  <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-secondary);">Security &amp; Latency</span>
+                  <span class="pill-green" style="font-size: 0.68rem;">ACTIVE</span>
+                </div>
+                <div class="judge-metric-row"><span>Predicted Yield:</span> <strong id="cePredYield">2.11 t/ha</strong></div>
+                <div class="judge-metric-row"><span>80% CI Range:</span> <strong id="ceCIRange">1.80 – 2.42</strong></div>
+                <div class="judge-metric-row"><span>Suitability Class:</span> <strong id="ceSuitClass" style="color: var(--leaf-green);">Suitable</strong></div>
+                <div class="judge-metric-row"><span>Guardrail Accuracy:</span> <strong id="ceGuardrail">100.0%</strong></div>
+                <div class="judge-metric-row"><span>Query Latency:</span> <strong id="ceLatencyMs">238.9 ms</strong></div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Evaluation Grid -->
@@ -1850,12 +2065,12 @@
               <span>Retrieval Quality (Hybrid RAG)</span>
               <span class="pill-green">EMPIRICAL</span>
             </div>
-            <div class="judge-metric-row"><span>Precision@1:</span> <strong id="evalP1">0.90</strong></div>
-            <div class="judge-metric-row"><span>Precision@3:</span> <strong id="evalP3">0.85</strong></div>
-            <div class="judge-metric-row"><span>Precision@5:</span> <strong id="evalP5">0.83</strong></div>
-            <div class="judge-metric-row"><span>Recall@5:</span> <strong id="evalRecall5">0.42</strong></div>
-            <div class="judge-metric-row"><span>Mean Reciprocal Rank (MRR):</span> <strong id="evalMRR">0.925</strong></div>
-            <div class="judge-metric-row"><span>Hit Rate@5:</span> <strong id="evalHitRate">0.950</strong></div>
+            <div class="judge-metric-row"><span>Precision@1:</span> <strong id="evalP1">Not available</strong></div>
+            <div class="judge-metric-row"><span>Precision@3:</span> <strong id="evalP3">Not available</strong></div>
+            <div class="judge-metric-row"><span>Precision@5:</span> <strong id="evalP5">Not available</strong></div>
+            <div class="judge-metric-row"><span>Recall@5:</span> <strong id="evalRecall5">Not available</strong></div>
+            <div class="judge-metric-row"><span>Mean Reciprocal Rank (MRR):</span> <strong id="evalMRR">Not available</strong></div>
+            <div class="judge-metric-row"><span>Hit Rate@5:</span> <strong id="evalHitRate">Not available</strong></div>
           </div>
 
           <div class="card">
@@ -1863,11 +2078,11 @@
               <span>Machine Learning Accuracy</span>
               <span class="pill-green">CALCULATED</span>
             </div>
-            <div class="judge-metric-row"><span>Yield Model R²:</span> <strong id="evalYieldR2">0.9876</strong></div>
-            <div class="judge-metric-row"><span>Mean Absolute Error:</span> <strong id="evalYieldMAE">0.499 t/ha</strong></div>
-            <div class="judge-metric-row"><span>Root Mean Sq Error:</span> <strong id="evalYieldRMSE">1.686 t/ha</strong></div>
-            <div class="judge-metric-row"><span>Suitability Accuracy:</span> <strong id="evalSuitAcc">0.553</strong></div>
-            <div class="judge-metric-row"><span>Weighted F1 Score:</span> <strong id="evalSuitF1">0.474</strong></div>
+            <div class="judge-metric-row"><span>Yield Model R²:</span> <strong id="evalYieldR2">Not available</strong></div>
+            <div class="judge-metric-row"><span>Mean Absolute Error:</span> <strong id="evalYieldMAE">Not available</strong></div>
+            <div class="judge-metric-row"><span>Root Mean Sq Error:</span> <strong id="evalYieldRMSE">Not available</strong></div>
+            <div class="judge-metric-row"><span>Suitability Accuracy:</span> <strong id="evalSuitAcc">Not available</strong></div>
+            <div class="judge-metric-row"><span>Weighted F1 Score:</span> <strong id="evalSuitF1">Not available</strong></div>
           </div>
 
           <div class="card">
@@ -1875,13 +2090,21 @@
               <span>Security & Latency</span>
               <span class="pill-green">ACTIVE</span>
             </div>
-            <div class="judge-metric-row"><span>Guardrail Accuracy:</span> <strong id="evalGuardrailRate">100.0%</strong></div>
-            <div class="judge-metric-row"><span>Injection Defense:</span> <strong id="evalInjectionRate">100.0%</strong></div>
-            <div class="judge-metric-row"><span>Average Latency:</span> <strong id="evalLatency">83 ms</strong></div>
-            <div class="judge-metric-row"><span>Success Rate:</span> <strong id="evalSuccessRate">100.0%</strong></div>
-            <div class="judge-metric-row"><span>Benchmark Queries:</span> <strong id="evalTotalQueries">20</strong></div>
+            <div class="judge-metric-row"><span>Guardrail Accuracy:</span> <strong id="evalGuardrailRate">Not available</strong></div>
+            <div class="judge-metric-row"><span>Injection Defense:</span> <strong id="evalInjectionRate">Not available</strong></div>
+            <div class="judge-metric-row"><span>Average Latency:</span> <strong id="evalLatency">Not available</strong></div>
+            <div class="judge-metric-row"><span>Success Rate:</span> <strong id="evalSuccessRate">Not available</strong></div>
+            <div class="judge-metric-row"><span>Benchmark Queries:</span> <strong id="evalTotalQueries">Not available</strong></div>
           </div>
         </div>
+
+        <div id="adminFeedbackStatus" class="admin-status" aria-live="polite">Feedback is visible to authorized administrators.</div>
+        <div class="admin-toolbar">
+          <label>Feedback date <input id="adminFeedbackDate" type="date" onchange="filterAdminFeedback()"></label>
+          <select id="adminFeedbackType" onchange="filterAdminFeedback()"><option value="">All feedback</option><option value="up">Positive</option><option value="down">Negative</option></select>
+        </div>
+        <p id="adminFeedbackTrend" class="admin-muted"></p>
+        <div id="adminFeedbackRecords" class="admin-feedback-list"></div>
 
         <!-- Feedback Form -->
         <div class="card feedback-card" style="margin-top: 2rem; max-width: 680px;">
@@ -1909,8 +2132,8 @@
           <div id="feedbackAck" class="feedback-ack hidden">Thank you for your feedback! Data saved to persistent registry.</div>
         </div>
       </section>
-
-    </main>
+      </main>
+    </div>
   </div>
 
   <!-- Detail Modal for Historical Case Inspection -->
@@ -1927,7 +2150,6 @@
         <!-- Injected details -->
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn-modal-primary" onclick="closeCaseDetailModal()">Done</button>
       </div>
     </div>
   </div>

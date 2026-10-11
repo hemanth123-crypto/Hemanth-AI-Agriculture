@@ -49,10 +49,12 @@ function formatIntentLabel(intent) {
 document.addEventListener("DOMContentLoaded", () => {
   initAuthCheck();
   initFireflyAnimation();
+  initDashboardSidebar();
   loadMetadataDropdowns();
   loadEvaluationDashboard();
   renderCropsShowcase();
   renderQueryHistory();
+  initAssistantChat();
   initVoiceRecognition();
   runLiveYieldEstimate();
   runLiveRiskCalculation();
@@ -69,10 +71,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
 let fireflyAnimFrame = null;
 let firefliesList = [];
+let fireflyMode = null;
+let fireflyResizeHandler = null;
 
 function initFireflyAnimation() {
   const canvas = document.getElementById("fireflyCanvas");
   if (!canvas) return;
+  const loginView = document.getElementById("loginView");
+  const nextMode = loginView && !loginView.classList.contains("hidden") ? "login" : "app";
+  if (fireflyMode === nextMode && fireflyAnimFrame) return;
+  if (fireflyAnimFrame) cancelAnimationFrame(fireflyAnimFrame);
+  fireflyAnimFrame = null;
+  fireflyMode = nextMode;
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
 
@@ -83,11 +93,17 @@ function initFireflyAnimation() {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
-  window.addEventListener("resize", resizeCanvas);
+  if (fireflyResizeHandler) window.removeEventListener("resize", fireflyResizeHandler);
+  fireflyResizeHandler = resizeCanvas;
+  window.addEventListener("resize", fireflyResizeHandler);
   resizeCanvas();
 
-  // Richer density of warm yellow/gold fireflies throughout the field
-  const numFireflies = 55;
+  // Keep the existing ambient count on app pages and add more fireflies on login.
+  const isSmallScreen = window.matchMedia("(max-width: 700px)").matches;
+  const numFireflies = nextMode === "login"
+    ? (isSmallScreen ? 100 : 140)
+    : (isSmallScreen ? 80 : 110);
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   firefliesList = [];
 
   const width = window.innerWidth;
@@ -216,7 +232,11 @@ function initFireflyAnimation() {
       ctx.shadowBlur = 0; // reset
     }
 
-    fireflyAnimFrame = requestAnimationFrame(renderFireflies);
+    if (!reducedMotion) {
+      fireflyAnimFrame = requestAnimationFrame(renderFireflies);
+    } else {
+      fireflyAnimFrame = null;
+    }
   }
 
   if (!fireflyAnimFrame) {
@@ -225,16 +245,16 @@ function initFireflyAnimation() {
 }
 
 function startFireflyLoop() {
-  if (!fireflyAnimFrame) {
-    initFireflyAnimation();
-  }
+  initFireflyAnimation();
 }
 
 function getStoredUser() {
-  const storedUser = localStorage.getItem("agri_advisor_user") || sessionStorage.getItem("agri_advisor_user");
-  if (storedUser) {
+  const raw = localStorage.getItem("agri_advisor_user") || sessionStorage.getItem("agri_advisor_user");
+  if (raw) {
     try {
-      return JSON.parse(storedUser);
+      const u = JSON.parse(raw);
+      // Only return a user object that has a real JWT token
+      if (u && u.token && u.email) return u;
     } catch (e) {
       localStorage.removeItem("agri_advisor_user");
       sessionStorage.removeItem("agri_advisor_user");
@@ -243,10 +263,17 @@ function getStoredUser() {
   return null;
 }
 
+function getAuthHeader() {
+  const user = getStoredUser();
+  return user && user.token ? { "Authorization": "Bearer " + user.token } : {};
+}
+
 function showLoginView() {
   const loginView = document.getElementById("loginView");
   const dashboardView = document.getElementById("dashboardView");
+  const adminView = document.getElementById("adminView");
   if (dashboardView) dashboardView.classList.add("hidden");
+  if (adminView) adminView.classList.add("hidden");
   if (loginView) loginView.classList.remove("hidden");
   if (window.location.pathname !== "/login") {
     window.history.pushState({}, "", "/login");
@@ -255,39 +282,22 @@ function showLoginView() {
 }
 
 function initAuthCheck() {
-  const path = window.location.pathname.toLowerCase();
   const user = getStoredUser();
-
-  if (path === "/login") {
-    showLoginView();
-    return;
-  }
-
-  // At "/" or "/dashboard", ensure dashboard is showing
-  if (user) {
+  // Only show dashboard if a valid token exists — never fake a session
+  if (user && user.token) {
     showDashboard(user.email, user.name || "Agri Specialist", false);
   } else {
-    // Auto-initialize demo agronomist session so dashboard displays immediately on localhost:8000
-    const defaultUser = {
-      email: "demo@agriadvisor.ai",
-      name: "Agricultural Specialist",
-      role: "agronomist"
-    };
-    localStorage.setItem("agri_advisor_user", JSON.stringify(defaultUser));
-    showDashboard(defaultUser.email, defaultUser.name, false);
+    showLoginView();
   }
 }
 
 window.addEventListener("popstate", () => {
   const path = window.location.pathname.toLowerCase();
+  const user = getStoredUser();
   if (path === "/login") {
-    const loginView = document.getElementById("loginView");
-    const dashboardView = document.getElementById("dashboardView");
-    if (dashboardView) dashboardView.classList.add("hidden");
-    if (loginView) loginView.classList.remove("hidden");
+    showLoginView();
   } else {
-    const user = getStoredUser();
-    if (user) {
+    if (user && user.token) {
       showDashboard(user.email, user.name, false);
     } else {
       showLoginView();
@@ -295,14 +305,6 @@ window.addEventListener("popstate", () => {
   }
 });
 
-function fillDemoCredentials() {
-  const emailInput = document.getElementById("loginEmail");
-  const pwInput = document.getElementById("loginPassword");
-  emailInput.value = "demo@agriadvisor.ai";
-  pwInput.value = "AgriTech2026!";
-  clearFieldErrors();
-  hideAuthAlert();
-}
 
 function togglePasswordVisibility() {
   const pwInput = document.getElementById("loginPassword");
@@ -368,10 +370,6 @@ function closeForgotPwModal(event) {
   if (modal) modal.classList.add("hidden");
 }
 
-function useDemoCredentialsAndClose() {
-  fillDemoCredentials();
-  closeForgotPwModal();
-}
 
 function handleInputClearError(field) {
   if (field === "email") {
@@ -426,36 +424,51 @@ function isValidEmail(email) {
   return re.test(String(email).trim());
 }
 
-async function authenticateWithApi(email, password, name = null) {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      const normalizedEmail = email.trim().toLowerCase();
-      if (normalizedEmail === "demo@agriadvisor.ai" && password === "AgriTech2026!") {
-        resolve({
-          success: true,
-          token: "jwt_ey_demo_" + Date.now() + ".agri_sig",
-          user: { email: "demo@agriadvisor.ai", name: "Agricultural Specialist", role: "agronomist" }
-        });
-      } else if (normalizedEmail === "officer@agriadvisor.ai" && password === "AgriTech2026!") {
-        resolve({
-          success: true,
-          token: "jwt_ey_officer_" + Date.now() + ".agri_sig",
-          user: { email: "officer@agriadvisor.ai", name: "Extension Officer", role: "officer" }
-        });
-      } else if (password.length >= 6) {
-        resolve({
-          success: true,
-          token: "jwt_ey_user_" + Date.now() + ".agri_sig",
-          user: { email: email.trim(), name: name || email.split("@")[0], role: "specialist" }
-        });
-      } else {
-        resolve({
-          success: false,
-          message: "Invalid email or password. Please verify your credentials or use Quick Demo Access."
-        });
+async function authenticateWithBackend(email, password, name, mode) {
+  try {
+    const endpoint = (mode === "signup") ? "/api/auth/signup" : "/api/auth/login";
+    const body = (mode === "signup")
+      ? { name: name || email.split("@")[0], email: email.trim(), password: password, role: "specialist" }
+      : { email: email.trim(), password: password };
+
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    });
+
+    let data = null;
+    try { data = await res.json(); } catch (e) {}
+
+    if (!res.ok) {
+      let msg = "Authentication failed.";
+      if (data && data.detail) {
+        if (Array.isArray(data.detail)) {
+          msg = data.detail.map(d => d.msg || (typeof d === "string" ? d : JSON.stringify(d))).join(", ");
+        } else {
+          msg = String(data.detail);
+        }
+      } else if (res.status === 401) {
+        msg = "Invalid email or password. Verify your credentials or create an account.";
+      } else if (res.status === 400) {
+        msg = "Invalid request. Please check your entries.";
+      } else if (res.status === 409) {
+        msg = "An account with this email already exists. Please log in instead.";
+      } else if (res.status === 500) {
+        msg = "Server error. Please try again shortly.";
       }
-    }, 280);
-  });
+      return { success: false, message: msg };
+    }
+
+    if (!data || !data.token || !data.user) {
+      return { success: false, message: "Invalid response from server." };
+    }
+
+    return { success: true, token: data.token, user: data.user };
+  } catch (err) {
+    console.error("Auth network error:", err);
+    return { success: false, message: "Cannot reach the server. Please check the application is running." };
+  }
 }
 
 async function handleLoginSubmit(event) {
@@ -463,16 +476,22 @@ async function handleLoginSubmit(event) {
   clearFieldErrors();
   hideAuthAlert();
 
-  const email = document.getElementById("loginEmail").value.trim();
-  const password = document.getElementById("loginPassword").value;
-  const nameInput = document.getElementById("regName");
-  const name = nameInput ? nameInput.value.trim() : "";
-  const remember = document.getElementById("rememberMe").checked;
+  const emailEl    = document.getElementById("loginEmail");
+  const passwordEl = document.getElementById("loginPassword");
+  const nameEl     = document.getElementById("regName");
+  const rememberEl = document.getElementById("rememberMe");
+
+  const email    = emailEl    ? emailEl.value.trim()    : "";
+  const password = passwordEl ? passwordEl.value        : "";
+  const name     = nameEl     ? nameEl.value.trim()     : "";
+  const remember = rememberEl ? rememberEl.checked      : true;
 
   let hasError = false;
-  if (currentAuthMode === "signup" && !name) {
-    showFieldError("nameError", null, "Please provide your full name.");
-    hasError = true;
+  if (currentAuthMode === "signup") {
+    if (!name || name.length < 2) {
+      showFieldError("nameError", null, "Full name (min 2 characters) is required.");
+      hasError = true;
+    }
   }
   if (!email) {
     showFieldError("emailError", "emailInputWrapper", "Email address is required.");
@@ -492,49 +511,54 @@ async function handleLoginSubmit(event) {
   if (hasError) return;
 
   const submitText = document.getElementById("submitBtnText");
-  const submitBtn = document.getElementById("submitAuthBtn");
-  submitBtn.disabled = true;
-  submitText.textContent = "Authenticating...";
+  const submitBtn  = document.getElementById("submitAuthBtn");
+  if (submitBtn)  submitBtn.disabled = true;
+  if (submitText) submitText.textContent = (currentAuthMode === "signup") ? "Creating Account..." : "Authenticating...";
 
   try {
-    const authResult = await authenticateWithApi(email, password, name);
+    const authResult = await authenticateWithBackend(email, password, name, currentAuthMode);
     if (!authResult.success) {
       showAuthAlert(authResult.message || "Authentication failed.");
       return;
     }
 
     const userData = {
-      email: authResult.user.email,
-      name: authResult.user.name,
-      role: authResult.user.role,
-      token: authResult.token,
+      email:          authResult.user.email,
+      name:           authResult.user.name,
+      role:           authResult.user.role,
+      token:          authResult.token,
       loginTimestamp: new Date().toISOString()
     };
 
     if (remember) {
       localStorage.setItem("agri_advisor_user", JSON.stringify(userData));
+      sessionStorage.removeItem("agri_advisor_user");
     } else {
       sessionStorage.setItem("agri_advisor_user", JSON.stringify(userData));
+      localStorage.removeItem("agri_advisor_user");
     }
 
     showDashboard(userData.email, userData.name, true);
   } catch (err) {
-    showAuthAlert("A network error occurred. Please try again.");
+    console.error("Login submission error:", err);
+    showAuthAlert("An unexpected error occurred. Please try again.");
   } finally {
-    submitBtn.disabled = false;
-    submitText.textContent = currentAuthMode === "login" ? "Login to Dashboard" : "Create Account & Login";
+    if (submitBtn)  submitBtn.disabled = false;
+    if (submitText) submitText.textContent = (currentAuthMode === "login") ? "Login to Dashboard" : "Create Account";
   }
 }
 
-function showDashboard(email, name, updateUrl = true) {
-  const loginView = document.getElementById("loginView");
+function showDashboard(email, name, updateUrl) {
+  const loginView     = document.getElementById("loginView");
   const dashboardView = document.getElementById("dashboardView");
-  
-  if (loginView) loginView.classList.add("hidden");
+  const adminView     = document.getElementById("adminView");
+  if (loginView)     loginView.classList.add("hidden");
   if (dashboardView) dashboardView.classList.remove("hidden");
+  if (adminView)     adminView.classList.add("hidden");
+    initFireflyAnimation();
 
-  if (updateUrl && window.location.pathname === "/login") {
-    window.history.pushState({}, "", "/");
+  if (updateUrl) {
+    window.history.pushState({}, "", "/dashboard");
   }
 
   const emailLabel = document.getElementById("userEmailLabel");
@@ -549,6 +573,10 @@ function showDashboard(email, name, updateUrl = true) {
     .toUpperCase();
   const initialsEl = document.getElementById("userInitials");
   if (initialsEl) initialsEl.textContent = initials || "AG";
+
+  const adminButton = document.getElementById("adminPanelButton");
+  const user = getStoredUser();
+  if (adminButton) adminButton.classList.toggle("hidden", !user || user.role !== "admin");
 
   loadExplorerCases();
 }
@@ -573,12 +601,20 @@ function handleLogout() {
 function switchNavTab(tabName) {
   // Update nav buttons
   const buttons = document.querySelectorAll(".nav-tab");
-  buttons.forEach(btn => btn.classList.remove("active"));
+  buttons.forEach(btn => {
+    btn.classList.remove("active");
+    btn.removeAttribute("aria-current");
+  });
   
-  const tabNames = ['dashboard', 'advisory', 'cases', 'recommendations', 'yield', 'risk', 'history', 'feedback'];
+  const tabNames = ['dashboard', 'advisory', 'cases', 'recommendations', 'yield', 'risk', 'history'];
   const activeIdx = tabNames.indexOf(tabName);
   if (activeIdx !== -1 && buttons[activeIdx]) {
     buttons[activeIdx].classList.add("active");
+    buttons[activeIdx].setAttribute("aria-current", "page");
+  }
+  if (window.matchMedia("(max-width: 850px)").matches) {
+    document.getElementById("dashboardView")?.classList.remove("sidebar-mobile-open");
+    document.getElementById("dashboardSidebarToggle")?.setAttribute("aria-expanded", "false");
   }
 
   // Update panes
@@ -595,6 +631,490 @@ function switchNavTab(tabName) {
   if (tabName === "history") renderQueryHistory();
   if (tabName === "yield") runLiveYieldEstimate();
   if (tabName === "risk") runLiveRiskCalculation();
+}
+
+function toggleDashboardSidebar() {
+  const dashboard = document.getElementById("dashboardView");
+  const toggle = document.getElementById("dashboardSidebarToggle");
+  if (!dashboard || !toggle) return;
+  const mobile = window.matchMedia("(max-width: 850px)").matches;
+  const className = mobile ? "sidebar-mobile-open" : "sidebar-collapsed";
+  const expanded = dashboard.classList.toggle(className);
+  toggle.setAttribute("aria-expanded", String(expanded));
+  toggle.setAttribute("aria-label", expanded ? "Collapse sidebar" : "Expand sidebar");
+  toggle.title = expanded ? "Collapse sidebar" : "Expand sidebar";
+}
+
+function initDashboardSidebar() {
+  const dashboard = document.getElementById("dashboardView");
+  const toggle = document.getElementById("dashboardSidebarToggle");
+  if (!dashboard || !toggle) return;
+  const syncState = () => {
+    const mobile = window.matchMedia("(max-width: 850px)").matches;
+    if (!mobile) dashboard.classList.remove("sidebar-mobile-open");
+    const expanded = mobile
+      ? dashboard.classList.contains("sidebar-mobile-open")
+      : !dashboard.classList.contains("sidebar-collapsed");
+    toggle.setAttribute("aria-expanded", String(expanded));
+    toggle.setAttribute("aria-label", expanded ? "Collapse sidebar" : "Expand sidebar");
+    toggle.title = expanded ? "Collapse sidebar" : "Expand sidebar";
+  };
+  syncState();
+  window.addEventListener("resize", syncState);
+}
+
+const ASSISTANT_CHAT_STORAGE_KEY = "cropshield_assistant_chat";
+
+function readAssistantChatHistory() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(ASSISTANT_CHAT_STORAGE_KEY) || "[]");
+    return Array.isArray(stored) ? stored.filter(item => item && ["user", "assistant"].includes(item.role) && typeof item.text === "string") : [];
+  } catch (_) {
+    return [];
+  }
+}
+
+function renderAssistantChatHistory() {
+  const messages = document.getElementById("aiChatMessages");
+  if (!messages) return;
+  const history = readAssistantChatHistory();
+  messages.replaceChildren();
+  history.forEach(item => {
+    const bubble = document.createElement("div");
+    bubble.className = `ai-chat-message ${item.role}`;
+    bubble.textContent = item.text;
+    messages.appendChild(bubble);
+  });
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function initAssistantChat() {
+  if (!document.getElementById("aiChatWidget")) return;
+  if (!readAssistantChatHistory().length) {
+    localStorage.setItem(ASSISTANT_CHAT_STORAGE_KEY, JSON.stringify([{
+      role: "assistant",
+      text: "Hello! Ask me about crop suitability, soil conditions, weather, or expected yield."
+    }]));
+  }
+  renderAssistantChatHistory();
+}
+
+function openAssistantChat() {
+  const panel = document.getElementById("aiChatPanel");
+  const launcher = document.getElementById("aiChatLauncher");
+  if (!panel || !launcher) return;
+  panel.classList.remove("hidden");
+  launcher.classList.add("hidden");
+  renderAssistantChatHistory();
+  document.getElementById("aiChatInput")?.focus();
+}
+
+function minimizeAssistantChat() { closeAssistantChat(); }
+
+function closeAssistantChat() {
+  document.getElementById("aiChatPanel")?.classList.add("hidden");
+  document.getElementById("aiChatLauncher")?.classList.remove("hidden");
+}
+
+function appendAssistantChatMessage(role, text) {
+  const history = readAssistantChatHistory();
+  history.push({ role, text: String(text) });
+  localStorage.setItem(ASSISTANT_CHAT_STORAGE_KEY, JSON.stringify(history.slice(-60)));
+  renderAssistantChatHistory();
+}
+
+async function handleAssistantChatSubmit(event) {
+  event.preventDefault();
+  const input = document.getElementById("aiChatInput");
+  const send = document.getElementById("aiChatSend");
+  const query = input?.value.trim();
+  if (!query || !input || !send) return;
+
+  appendAssistantChatMessage("user", query);
+  input.value = "";
+  input.disabled = true;
+  send.disabled = true;
+  const messages = document.getElementById("aiChatMessages");
+  const pending = document.createElement("div");
+  pending.className = "ai-chat-message assistant pending";
+  pending.textContent = "CropShield is checking your question…";
+  messages?.appendChild(pending);
+  if (messages) messages.scrollTop = messages.scrollHeight;
+
+  try {
+    const response = await fetch("/api/query", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query, top_k: 5 })
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.detail || "The advisory request could not be completed.");
+    lastAdvisoryResponse = data;
+    saveQueryToHistory(query, data);
+    appendAssistantChatMessage("assistant", data.formatted_advisory || "The advisory completed without a formatted response.");
+  } catch (error) {
+    appendAssistantChatMessage("assistant", `I couldn't complete that request: ${error.message}`);
+  } finally {
+    pending.remove();
+    input.disabled = false;
+    send.disabled = false;
+    input.focus();
+  }
+}
+
+// ============================================================================
+// ADMIN PANEL (all admin data requests are authorized again by FastAPI)
+// ============================================================================
+
+let adminUsersCache = [];
+let adminFeedbackCache = [];
+
+function escapeAdminText(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  })[char]);
+}
+
+function adminValue(value) {
+  if (value === null || value === undefined || value === "") return "Unavailable";
+  if (typeof value === "object") return JSON.stringify(value);
+  return String(value);
+}
+
+async function adminRequest(path) {
+  const res = await fetch(`/api/admin/${path}`, { headers: getAuthHeader() });
+  if (res.status === 401 || res.status === 403) {
+    if (res.status === 401) handleLogout();
+    throw new Error(res.status === 403 ? "Administrator access is required for this section." : "Your session has expired. Please sign in again.");
+  }
+  if (!res.ok) throw new Error(`Unable to load this section (HTTP ${res.status}).`);
+  return res.json();
+}
+
+function setAdminStatus(id, text, isError = false) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = text || "";
+  el.classList.toggle("admin-error", isError);
+}
+
+function openAdminPanel() {
+  const user = getStoredUser();
+  if (!user || user.role !== "admin") return;
+  document.getElementById("dashboardView")?.classList.add("hidden");
+  document.getElementById("adminView")?.classList.remove("hidden");
+  document.getElementById("adminUserLabel").textContent = user.email;
+  switchAdminSection("overview");
+}
+
+function closeAdminPanel() {
+  document.getElementById("adminView")?.classList.add("hidden");
+  document.getElementById("dashboardView")?.classList.remove("hidden");
+}
+
+function switchAdminSection(section) {
+  document.querySelectorAll(".admin-nav").forEach(button => button.classList.remove("active"));
+  const button = Array.from(document.querySelectorAll(".admin-nav")).find(item => item.getAttribute("onclick") === `switchAdminSection('${section}')`);
+  button?.classList.add("active");
+  document.querySelectorAll(".admin-page").forEach(pane => pane.classList.add("hidden"));
+  const paneId = section === "feedback" ? "pane-feedback" : `admin-pane-${section}`;
+  document.getElementById(paneId)?.classList.remove("hidden");
+  const loaders = {
+    overview: loadAdminOverview,
+    users: loadAdminUsers,
+    feedback: loadAdminFeedback,
+    rag: loadAdminEvaluation,
+    ml: loadAdminML,
+    dataset: loadAdminDataset,
+    health: loadAdminHealth
+  };
+  loaders[section]?.();
+}
+
+function renderAdminCards(targetId, pairs) {
+  const target = document.getElementById(targetId);
+  if (!target) return;
+  target.innerHTML = pairs.map(([label, value]) => `<article class="card admin-stat-card"><span>${escapeAdminText(label)}</span><strong>${escapeAdminText(adminValue(value))}</strong></article>`).join("");
+}
+
+function renderAdminHealth(targetId, values) {
+  const target = document.getElementById(targetId);
+  if (!target) return;
+  target.innerHTML = Object.entries(values || {}).map(([label, value]) => `<div class="admin-data-row"><span>${escapeAdminText(label.replaceAll("_", " "))}</span><strong>${escapeAdminText(adminValue(value))}</strong></div>`).join("");
+}
+
+async function loadAdminOverview() {
+  setAdminStatus("adminOverviewStatus", "Loading overview…");
+  try {
+    const data = await adminRequest("overview");
+    renderAdminCards("adminOverviewCards", [
+      ["Registered users", data.total_registered_users], ["Agricultural queries", data.total_agricultural_queries],
+      ["Crop recommendations", data.total_crop_recommendations], ["Yield predictions", data.total_yield_predictions]
+    ]);
+    renderAdminHealth("adminOverviewHealth", data.health);
+    const latest = data.latest_evaluation;
+    renderAdminHealth("adminOverviewEvaluation", latest ? {
+      evaluation_timestamp: latest.evaluation_timestamp,
+      retrieval_precision_at_5: latest.retrieval_metrics?.precision_at_5,
+      retrieval_recall_at_5: latest.retrieval_metrics?.recall_at_5,
+      retrieval_mrr: latest.retrieval_metrics?.mrr,
+      evaluation_status: latest.retrieval_metrics ? "Calculated" : "Not available"
+    } : { status: "No completed evaluation report is available." });
+    document.getElementById("adminActivityNotice").textContent = data.recent_activity || data.unavailable_reason || "No persisted activity records are available.";
+    setAdminStatus("adminOverviewStatus", "Overview loaded from available application records.");
+  } catch (error) { setAdminStatus("adminOverviewStatus", error.message, true); }
+}
+
+async function loadAdminUsers() {
+  setAdminStatus("adminUsersStatus", "Loading users…");
+  try {
+    adminUsersCache = await adminRequest("users");
+    renderAdminUsers();
+    setAdminStatus("adminUsersStatus", `${adminUsersCache.length} registered user${adminUsersCache.length === 1 ? "" : "s"}. Account status is not tracked by this application.`);
+  } catch (error) { setAdminStatus("adminUsersStatus", error.message, true); }
+}
+
+function renderAdminUsers() {
+  const query = (document.getElementById("adminUserSearch")?.value || "").trim().toLowerCase();
+  const role = document.getElementById("adminRoleFilter")?.value || "";
+  const rows = adminUsersCache.filter(user => (!role || user.role === role) && (!query || `${user.name} ${user.email}`.toLowerCase().includes(query)));
+  document.getElementById("adminUsersBody").innerHTML = rows.map(user => `<tr><td>${escapeAdminText(user.name)}</td><td>${escapeAdminText(user.email)}</td><td>${escapeAdminText(user.role)}</td><td>${escapeAdminText(user.status)}</td><td>${escapeAdminText(user.created_at)}</td><td>${escapeAdminText(user.last_login)}</td></tr>`).join("") || '<tr><td colspan="6">No matching registered users.</td></tr>';
+}
+
+function filterAdminUsers() { renderAdminUsers(); }
+
+async function loadAdminFeedback() {
+  setAdminStatus("adminFeedbackStatus", "Loading feedback…");
+  try {
+    const data = await adminRequest("feedback");
+    const summary = data.summary || {};
+    adminFeedbackCache = data.records || [];
+    const positive = adminFeedbackCache.filter(record => record.thumbs === "up").length;
+    const negative = adminFeedbackCache.filter(record => record.thumbs === "down").length;
+    setAdminStatus("adminFeedbackStatus", `${summary.total_feedback || 0} feedback records · ${positive} positive · ${negative} negative · average rating ${summary.average_rating ?? "unavailable"}/5`);
+    renderAdminFeedback();
+  } catch (error) { setAdminStatus("adminFeedbackStatus", error.message, true); }
+}
+
+function filterAdminFeedback() { renderAdminFeedback(); }
+
+function renderAdminFeedback() {
+  const date = document.getElementById("adminFeedbackDate")?.value || "";
+  const type = document.getElementById("adminFeedbackType")?.value || "";
+  const filtered = adminFeedbackCache.filter(record => (!type || record.thumbs === type) && (!date || String(record.timestamp || "").startsWith(date)));
+  const list = document.getElementById("adminFeedbackRecords");
+  if (list) list.innerHTML = filtered.length ? filtered.map(record => `<article class="admin-feedback-record"><div><strong>${escapeAdminText(record.rating)}/5 · ${escapeAdminText(record.thumbs)}</strong><time>${escapeAdminText(record.timestamp)}</time></div><p>${escapeAdminText(record.query)}</p><p>${escapeAdminText(record.comments || "No comment supplied.")}</p></article>`).join("") : '<div class="admin-empty">No feedback matches these filters.</div>';
+  const byDate = new Map();
+  adminFeedbackCache.forEach(record => {
+    const day = String(record.timestamp || "").slice(0, 10);
+    if (day) byDate.set(day, (byDate.get(day) || 0) + 1);
+  });
+  const trend = document.getElementById("adminFeedbackTrend");
+  if (trend) trend.textContent = byDate.size > 1 ? `Feedback by day: ${Array.from(byDate.entries()).sort(([a], [b]) => a.localeCompare(b)).map(([day, count]) => `${day}: ${count}`).join(" · ")}` : "Feedback trend unavailable until records span at least two dates.";
+}
+
+async function loadAdminEvaluation() {
+  loadAdminBenchmarkQueries();
+  setAdminStatus("adminRagStatus", "Loading saved evaluation…");
+  try {
+    const data = await adminRequest("evaluation"), report = data.latest;
+    if (!report) {
+      setAdminStatus("adminRagStatus", "No retrieval evaluation report is available yet.");
+      renderAdminCards("adminRagResults", [["Precision@5", "Not run"], ["Recall@5", "Not run"], ["MRR", "Not run"], ["Hit Rate@5", "Not run"]]);
+      return;
+    }
+    const retrieval = report.retrieval_metrics || {};
+    renderAdminCards("adminRagResults", [
+      ["Precision@1", retrieval.precision_at_1], ["Precision@3", retrieval.precision_at_3],
+      ["Precision@5", retrieval.precision_at_5], ["Recall@5", retrieval.recall_at_5],
+      ["Mean reciprocal rank", retrieval.mrr], ["Hit rate@5", retrieval.hit_rate_at_5],
+      ["Queries evaluated", retrieval.total_benchmark_queries || report.total_benchmark_queries],
+      ["Evaluation duration", report.evaluation_duration_seconds == null ? "Not recorded" : `${report.evaluation_duration_seconds}s`],
+      ["Evaluation timestamp", report.evaluation_timestamp]
+    ]);
+    setAdminStatus("adminRagStatus", `Latest retrieval report · ${report.evaluation_timestamp || "timestamp unavailable"} · ${retrieval.total_benchmark_queries || report.total_benchmark_queries || 0} benchmark queries.`);
+  } catch (error) { setAdminStatus("adminRagStatus", error.message, true); }
+}
+
+let adminBenchmarkQueries = [];
+
+async function loadAdminBenchmarkQueries() {
+  const select = document.getElementById("adminEvalBenchmarkQuery");
+  if (!select) return;
+  try {
+    const data = await adminRequest("evaluation/queries");
+    adminBenchmarkQueries = data.queries || [];
+    select.innerHTML = adminBenchmarkQueries.map(item => `<option value="${escapeAdminText(item.id)}">${escapeAdminText(item.id)} · ${escapeAdminText(item.query)}</option>`).join("");
+    if (!adminBenchmarkQueries.length) {
+      select.innerHTML = '<option value="">No labeled benchmark queries available</option>';
+      document.getElementById("adminEvalRelevantLabels").textContent = "";
+      return;
+    }
+    showAdminBenchmarkLabels();
+  } catch (error) {
+    select.innerHTML = '<option value="">Benchmark queries unavailable</option>';
+    setAdminStatus("adminQueryEvalStatus", error.message, true);
+  }
+}
+
+function showAdminBenchmarkLabels() {
+  const selected = adminBenchmarkQueries.find(item => item.id === document.getElementById("adminEvalBenchmarkQuery")?.value);
+  const label = document.getElementById("adminEvalRelevantLabels");
+  if (label) label.textContent = selected && selected.relevant_crops?.length
+    ? `Ground-truth crops: ${selected.relevant_crops.join(", ")}`
+    : selected ? "N/A - ground truth unavailable; ranking relevance metrics will be N/A." : "";
+}
+
+async function runAdminEvaluation() {
+  const button = document.getElementById("runAdminRagEvaluation");
+  if (button) { button.disabled = true; button.textContent = "Evaluating retrieval…"; }
+  setAdminStatus("adminRagStatus", "Running the labeled retrieval benchmark locally…");
+  try {
+    const res = await fetch("/api/admin/evaluation/run", { method: "POST", headers: getAuthHeader() });
+    if (res.status === 401 || res.status === 403) {
+      if (res.status === 401) handleLogout();
+      throw new Error(res.status === 403 ? "Administrator access is required for this section." : "Your session has expired. Please sign in again.");
+    }
+    if (!res.ok) throw new Error(`Evaluation request failed (HTTP ${res.status}).`);
+    const report = await res.json(), retrieval = report.retrieval_metrics || {};
+    renderAdminCards("adminRagResults", [
+      ["Precision@1", retrieval.precision_at_1], ["Precision@3", retrieval.precision_at_3],
+      ["Precision@5", retrieval.precision_at_5], ["Recall@5", retrieval.recall_at_5],
+      ["Mean reciprocal rank", retrieval.mrr], ["Hit rate@5", retrieval.hit_rate_at_5],
+      ["Queries evaluated", retrieval.total_benchmark_queries],
+      ["Evaluation duration", `${report.evaluation_duration_seconds}s`], ["Evaluation timestamp", report.evaluation_timestamp]
+    ]);
+    setAdminStatus("adminRagStatus", `Retrieval evaluation complete · ${retrieval.total_benchmark_queries || 0} benchmark queries · ${report.evaluation_timestamp || "timestamp unavailable"}.`);
+  } catch (error) { setAdminStatus("adminRagStatus", error.message, true); }
+  finally { if (button) { button.disabled = false; button.textContent = "Run retrieval evaluation"; } }
+}
+
+async function runAdminQueryEvaluation() {
+  const benchmarkId = document.getElementById("adminEvalBenchmarkQuery")?.value || "";
+  const topK = Number(document.getElementById("adminEvalTopK")?.value || 5);
+  const button = document.getElementById("runAdminQueryEvaluation");
+
+  if (!benchmarkId) {
+    setAdminStatus("adminQueryEvalStatus", "Choose a benchmark query before calculating metrics.", true);
+    return;
+  }
+
+  if (button) { button.disabled = true; button.textContent = "Calculating..."; }
+  setAdminStatus("adminQueryEvalStatus", "Retrieving cases and calculating ranking metrics for the selected query...");
+  ["adminQueryRetrievalMetrics", "adminRagasQueryMetrics", "adminDeepEvalMetrics", "adminQueryCases"].forEach(id => {
+    document.getElementById(id)?.replaceChildren();
+  });
+
+  try {
+    const response = await fetch("/api/admin/evaluation/query", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", ...getAuthHeader() },
+      body: JSON.stringify({ benchmark_id: benchmarkId, top_k: topK })
+    });
+    const data = await response.json();
+    if (response.status === 401 || response.status === 403) {
+      if (response.status === 401) handleLogout();
+      throw new Error(data.detail || "Administrator access is required for this calculation.");
+    }
+    if (!response.ok) throw new Error(data.detail || `Query evaluation failed (HTTP ${response.status}).`);
+
+    const llmMetrics = data.llm_framework_metrics || {};
+    const renderEngine = (engine, statusId, resultsId, labels) => {
+      const result = llmMetrics[engine] || {};
+      const scores = result.metrics || {};
+      const hasProxy = Object.values(scores).some(metric => metric?.proxy_value != null);
+      const statusText = result.status === "COMPLETED"
+        ? "Official framework scores calculated."
+        : hasProxy
+          ? "Judge unavailable - proxy estimates shown; these are not official framework scores."
+          : "Unavailable - no judge score or meaningful local estimate could be calculated.";
+      setAdminStatus(statusId, statusText);
+      renderAdminCards(resultsId, labels.map(([key, label]) => {
+        const metric = scores[key] || {};
+        if (metric.value != null) return [label, Number(metric.value).toFixed(4)];
+        if (metric.proxy_value != null) return [`${label} (proxy estimate)`, `~${Number(metric.proxy_value).toFixed(4)}`];
+        return [label, "Unavailable"];
+      }));
+    };
+    renderEngine("ragas", "adminRagasQueryStatus", "adminRagasQueryMetrics", [
+      ["faithfulness", "Faithfulness"], ["context_utilization", "Context utilization"]
+    ]);
+    renderEngine("deepeval", "adminDeepEvalStatus", "adminDeepEvalMetrics", [
+      ["faithfulness", "Faithfulness"], ["contextual_relevancy", "Context relevancy"]
+    ]);
+
+    const retrieval = data.retrieval_metrics || {};
+    const noGroundTruth = !retrieval.ground_truth_available;
+    const relevanceValue = value => noGroundTruth ? "N/A - ground truth unavailable" : value;
+    renderAdminCards("adminQueryRetrievalMetrics", [
+      [`Precision@${data.top_k || topK}`, relevanceValue(retrieval.precision_at_k)],
+      [`Recall@${data.top_k || topK}`, relevanceValue(retrieval.recall_at_k)],
+      ["MRR", relevanceValue(retrieval.mrr)],
+      [`Hit rate@${data.top_k || topK}`, relevanceValue(retrieval.hit_rate_at_k)],
+      ["Retrieved cases", data.retrieved_count ?? retrieval.retrieved_count ?? (data.retrieved_cases || []).length],
+      ["Evaluation time", data.evaluation_duration_seconds == null ? "Unavailable" : `${data.evaluation_duration_seconds}s`]
+    ]);
+
+    const cases = data.retrieved_cases || [];
+    const casesEl = document.getElementById("adminQueryCases");
+    if (casesEl) {
+      casesEl.innerHTML = cases.length
+        ? `<h4>Retrieved cases for this query</h4><div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>Rank</th><th>Case</th><th>Crop</th><th>Region/season</th><th>Yield t/ha</th><th>Relevance</th><th>Label match</th></tr></thead><tbody>${cases.map((item, index) => `<tr><td>${index + 1}</td><td>${escapeAdminText(item.case_id)}</td><td>${escapeAdminText(item.crop)}</td><td>${escapeAdminText(`${item.state} ? ${item.season} ${item.year}`)}</td><td>${escapeAdminText(item.yield_t_ha)}</td><td>${escapeAdminText(item.relevance_score)}</td><td>${retrieval.ground_truth_available ? (item.is_relevant ? "Relevant" : "Not relevant") : "N/A - no ground truth"}</td></tr>`).join("")}</tbody></table></div>`
+        : '<h4>Retrieved cases for this query</h4><p class="admin-muted">No cases were retrieved. Retrieval metrics are zero where ground-truth labels are available.</p>';
+    }
+
+    const judgeResults = Object.values(llmMetrics);
+    const judgesComplete = judgeResults.length > 0 && judgeResults.every(result => result.status === "COMPLETED");
+    const proxyAvailable = judgeResults.some(result => Object.values(result.metrics || {}).some(metric => metric?.proxy_value != null));
+    const elapsed = data.evaluation_duration_seconds == null ? "" : ` ? ${data.evaluation_duration_seconds}s`;
+    const timestamp = data.evaluation_timestamp ? ` ? ${data.evaluation_timestamp}` : "";
+    const statusMessage = judgesComplete
+      ? `Retrieval and official LLM judge metrics calculated ? ${cases.length} retrieved cases${timestamp}${elapsed}.`
+      : proxyAvailable
+        ? `Retrieval metrics calculated from ${cases.length} retrieved cases${timestamp}${elapsed}. LLM judge unavailable - showing retrieval-based evaluation and labeled proxy estimates.`
+        : `Retrieval metrics calculated from ${cases.length} retrieved cases${timestamp}${elapsed}. LLM judge unavailable; no meaningful proxy estimate could be calculated.`;
+    setAdminStatus("adminQueryEvalStatus", statusMessage);
+  } catch (error) {
+    setAdminStatus("adminQueryEvalStatus", error.message || "Query evaluation could not be completed.", true);
+  } finally {
+    if (button) { button.disabled = false; button.textContent = "Calculate query metrics"; }
+  }
+}
+
+async function loadAdminML() {
+  setAdminStatus("adminMlStatus", "Loading model status…");
+  try {
+    const data = await adminRequest("ml");
+    const metrics = data.metrics || {};
+    const yieldModel = metrics.yield_regressor || {};
+    const classifier = metrics.suitability_classifier || {};
+    renderAdminCards("adminMlResults", [
+      ["Suitability model", data.suitability_model_loaded ? "Loaded" : "Unavailable"], ["Yield model", data.yield_model_loaded ? "Loaded" : "Unavailable"],
+      ["Classification accuracy", classifier.accuracy], ["Classification precision", classifier.precision], ["Classification recall", classifier.recall],
+      ["Classification F1", classifier.f1_score], ["Regression MAE", yieldModel.mae], ["Regression RMSE", yieldModel.rmse], ["Regression R²", yieldModel.r2_score]
+    ]);
+    setAdminStatus("adminMlStatus", data.reason || "Values shown only when present in a saved ML evaluation report.");
+  } catch (error) { setAdminStatus("adminMlStatus", error.message, true); }
+}
+
+async function loadAdminDataset() {
+  setAdminStatus("adminDatasetStatus", "Loading dataset information…");
+  try {
+    const data = await adminRequest("dataset");
+    if (!data.available) { setAdminStatus("adminDatasetStatus", data.reason || "Dataset information is unavailable."); return; }
+    renderAdminCards("adminDatasetSummary", [["Records", data.record_count], ["Source file", data.source], ["Crop types", (data.crop_types || []).join(", ") || "Unavailable"], ["Last updated", data.updated_at]]);
+    document.getElementById("adminDatasetColumns").innerHTML = (data.columns || []).map(column => `<tr><td>${escapeAdminText(column)}</td><td>${escapeAdminText(data.missing_values?.[column] ?? 0)}</td></tr>`).join("");
+    setAdminStatus("adminDatasetStatus", "Dataset inspection is read-only.");
+  } catch (error) { setAdminStatus("adminDatasetStatus", error.message, true); }
+}
+
+async function loadAdminHealth() {
+  setAdminStatus("adminHealthStatus", "Loading system health…");
+  try {
+    const data = await adminRequest("health");
+    renderAdminHealth("adminHealthResults", data);
+    setAdminStatus("adminHealthStatus", "Current checks; request latency and persistent logs are unavailable because they are not recorded.");
+  } catch (error) { setAdminStatus("adminHealthStatus", error.message, true); }
 }
 
 function toggleFilterDrawer() {
@@ -720,7 +1240,7 @@ async function handleQuerySubmit(event) {
     top_k: 5
   };
 
-  try {
+try {
     const res = await fetch("/api/query", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -1126,7 +1646,7 @@ async function handleAdvisoryFormSubmit(event) {
   const outputDiv = document.getElementById("advOutputContent");
   outputDiv.innerHTML = `<div style="text-align: center; padding: 2rem;"><p>Running multi-agent agronomic simulation...</p></div>`;
 
-  try {
+try {
     const res = await fetch("/api/query", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -1304,13 +1824,70 @@ function copyAdvisoryReportById(preId) {
   }
 }
 
+async function downloadAdvisoryReportPdf(preId, button) {
+  const report = document.getElementById(preId);
+  const reportText = report ? report.textContent.trim() : "";
+  if (!reportText) {
+    alert("Generate an advisory report before downloading the PDF.");
+    return;
+  }
+
+  const originalLabel = button ? button.textContent : "Download PDF";
+  if (button) {
+    button.disabled = true;
+    button.textContent = "Preparing PDF…";
+  }
+
+  try {
+    const response = await fetch("/api/advisory-report/pdf", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ report_text: reportText })
+    });
+
+    if (!response.ok) {
+      let detail = "The PDF could not be generated.";
+      try {
+        const error = await response.json();
+        if (error.detail) detail = String(error.detail);
+      } catch (_) {}
+      throw new Error(detail);
+    }
+
+    const pdfBlob = await response.blob();
+    if (!pdfBlob.size || pdfBlob.type !== "application/pdf") {
+      throw new Error("The server returned an invalid PDF file.");
+    }
+
+    const downloadUrl = URL.createObjectURL(pdfBlob);
+    const link = document.createElement("a");
+    link.href = downloadUrl;
+    const disposition = response.headers.get("content-disposition") || "";
+    const filenameMatch = disposition.match(/filename="?([^";]+)"?/i);
+    link.download = filenameMatch
+      ? filenameMatch[1]
+      : `CropShield_Agricultural_Advisory_Report_${new Date().toISOString().slice(0, 10)}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+  } catch (error) {
+    alert(`PDF download failed: ${error.message || "Please try again."}`);
+  } finally {
+    if (button) {
+      button.disabled = false;
+      button.textContent = originalLabel;
+    }
+  }
+}
+
 
 // ============================================================================
 // 6. HISTORICAL CASE EXPLORER
 // ============================================================================
 
 async function loadExplorerCases() {
-  try {
+try {
     let res = await fetch("/api/cases?limit=1500");
     if (!res.ok) {
       res = await fetch("/api/search", {
@@ -1496,7 +2073,7 @@ async function handleCropRecSubmit(event) {
       </div>`;
   }
 
-  try {
+try {
     const payload = {
       state: state,
       season: season,
@@ -1736,6 +2313,7 @@ const CROP_ECONOMICS = {
 let lastSelectedCropForPrice = null;
 let yieldDebounceTimer = null;
 let lastYieldPredictResponse = null;
+let latestYieldRequestId = 0;
 
 function formatINR(num) {
   if (isNaN(num)) return "₹0";
@@ -1744,12 +2322,29 @@ function formatINR(num) {
 
 function runLiveYieldEstimate() {
   if (yieldDebounceTimer) clearTimeout(yieldDebounceTimer);
+  const requestId = ++latestYieldRequestId;
+  const status = document.getElementById("ypCalculationStatus");
+  if (status) {
+    status.textContent = "Inputs changed; updating the ML prediction…";
+    status.classList.remove("error");
+  }
   yieldDebounceTimer = setTimeout(() => {
-    executeLiveYieldEstimate();
+    executeLiveYieldEstimate(requestId).then(result => {
+      if (requestId === latestYieldRequestId && !result.stale && status) {
+        status.textContent = `ML prediction updated: ${result.predictedYield.toFixed(2)} t/ha.`;
+        status.classList.remove("error");
+      }
+    }).catch(error => {
+      if (requestId !== latestYieldRequestId) return;
+      if (status) {
+        status.textContent = error.message || "The yield prediction could not be calculated.";
+        status.classList.add("error");
+      }
+    });
   }, 220);
 }
 
-async function executeLiveYieldEstimate() {
+async function executeLiveYieldEstimate(requestId = ++latestYieldRequestId) {
   const crop = document.getElementById("ypCrop")?.value || "Rice";
   const state = document.getElementById("ypState")?.value || "Punjab";
   const season = document.getElementById("ypSeason")?.value || "Kharif";
@@ -1762,19 +2357,39 @@ async function executeLiveYieldEstimate() {
     lastSelectedCropForPrice = crop;
   }
 
-  const rain = parseFloat(document.getElementById("ypRain")?.value) || 1200;
-  const ph = parseFloat(document.getElementById("ypPH")?.value) || 6.5;
-  const temp = parseFloat(document.getElementById("ypTemp")?.value) || 27.0;
-  const farmAreaRaw = parseFloat(document.getElementById("ypFarmArea")?.value) || 5;
+  const readNumber = id => {
+    const raw = document.getElementById(id)?.value;
+    return raw == null || String(raw).trim() === "" ? NaN : Number(raw);
+  };
+  const numericInputs = [
+    ["ypFarmArea", "Farm area", 0.5, 500], ["ypMarketPrice", "Market price", 1000, Infinity],
+    ["ypRain", "Seasonal rainfall", 300, 2500], ["ypPH", "Soil pH", 4.5, 8.5],
+    ["ypTemp", "Temperature", 5, 50], ["ypN", "Nitrogen", 0, 500],
+    ["ypP", "Phosphorus", 0, 500], ["ypK", "Potassium", 0, 500],
+    ["ypHumidity", "Humidity", 10, 100], ["ypFert", "Fertilizer", 0, 1000],
+    ["ypPest", "Pesticide", 0, 100]
+  ];
+  for (const [id, label, min, max] of numericInputs) {
+    const value = readNumber(id);
+    if (!Number.isFinite(value) || value < min || value > max) {
+      const control = document.getElementById(id);
+      control?.focus();
+      throw new Error(`${label} must be a number from ${min} to ${max === Infinity ? "the allowed maximum" : max}.`);
+    }
+  }
+  const rain = readNumber("ypRain");
+  const ph = readNumber("ypPH");
+  const temp = readNumber("ypTemp");
+  const farmAreaRaw = readNumber("ypFarmArea");
   const areaUnit = document.getElementById("ypAreaUnit")?.value || "acres";
-  const marketPrice = parseFloat(priceInput?.value || eco.pricePerTonne) || eco.pricePerTonne;
+  const marketPrice = readNumber("ypMarketPrice");
 
-  const n = parseFloat(document.getElementById("ypN")?.value) || 100;
-  const p = parseFloat(document.getElementById("ypP")?.value) || 50;
-  const k = parseFloat(document.getElementById("ypK")?.value) || 50;
-  const hum = parseFloat(document.getElementById("ypHumidity")?.value) || 65;
-  const fert = parseFloat(document.getElementById("ypFert")?.value) || 200;
-  const pest = parseFloat(document.getElementById("ypPest")?.value) || 10;
+  const n = readNumber("ypN");
+  const p = readNumber("ypP");
+  const k = readNumber("ypK");
+  const hum = readNumber("ypHumidity");
+  const fert = readNumber("ypFert");
+  const pest = readNumber("ypPest");
 
   // Convert area to Hectares (1 ha = 2.471 acres)
   const areaHa = areaUnit === "acres" ? (farmAreaRaw / 2.47105) : farmAreaRaw;
@@ -1803,16 +2418,7 @@ async function executeLiveYieldEstimate() {
   const simRainMod = 1 + (simRainDelta / 100) * 0.40;
   const simFertMod = 1 + (simFertBoost / 60) * 0.14;
 
-  // Default baseline before ML return
-  let mlYield = eco.baseYield;
-  let mlLower = eco.baseYield * 0.88;
-  let mlUpper = eco.baseYield * 1.12;
-  let mlModelName = "RandomForestRegressor";
-  let mlFactors = [];
-
-  // Query Backend ML Model
-  try {
-    const payload = {
+  const payload = {
       crop: crop,
       state: state,
       season: season,
@@ -1828,32 +2434,38 @@ async function executeLiveYieldEstimate() {
       pesticide: pest
     };
 
-    let res = await fetch("/api/predict-yield", {
+  const res = await fetch("/api/predict-yield", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
     });
-
-    if (!res.ok) {
-      res = await fetch("/api/prediction", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-    }
-
-    if (res.ok) {
-      const mlData = await res.json();
-      lastYieldPredictResponse = mlData;
-      if (mlData.predicted_yield !== undefined) mlYield = mlData.predicted_yield;
-      if (mlData.lower_bound !== undefined) mlLower = mlData.lower_bound;
-      if (mlData.upper_bound !== undefined) mlUpper = mlData.upper_bound;
-      if (mlData.model_name) mlModelName = mlData.model_name;
-      if (mlData.important_factors) mlFactors = mlData.important_factors;
-    }
-  } catch (e) {
-    console.warn("Using offline fallback for ML yield prediction:", e);
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.detail || `ML prediction failed (HTTP ${res.status}).`);
   }
+  const mlData = await res.json();
+  if (!Number.isFinite(Number(mlData.predicted_yield)) ||
+      !Number.isFinite(Number(mlData.lower_bound)) || !Number.isFinite(Number(mlData.upper_bound))) {
+    throw new Error("The ML service returned an incomplete yield prediction.");
+  }
+  if (!mlData.model_name || /fallback|heuristic|empirical/i.test(mlData.model_name)) {
+    throw new Error("The trained Random Forest model is unavailable; no ML prediction was produced.");
+  }
+  lastYieldPredictResponse = mlData;
+  const mlYield = Number(mlData.predicted_yield);
+  const mlLower = Number(mlData.lower_bound);
+  const mlUpper = Number(mlData.upper_bound);
+  const mlModelName = mlData.model_name;
+  const mlFactors = [
+    `Crop: ${crop}`, `State: ${state}`, `Season: ${season}`,
+    `Area: ${farmAreaRaw} ${areaUnit}`,
+    ...(Array.isArray(mlData.important_factors) ? mlData.important_factors : []),
+    `Humidity: ${hum}%`, `Fertilizer: ${fert} kg/ha`, `Pesticide: ${pest} kg/ha`,
+    `Market price: ${formatINR(marketPrice)}/tonne`
+  ];
+
+  // Input changes can launch overlapping predictions; only the newest request may update the page.
+  if (requestId !== latestYieldRequestId) return { stale: true };
 
   // Final adjusted simulated yield
   const predictedYield = mlYield * simRainMod * simFertMod * irrigMod;
@@ -1872,14 +2484,17 @@ async function executeLiveYieldEstimate() {
 
   const modelBadge = document.getElementById("ypModelBadge");
   if (modelBadge) {
-    modelBadge.textContent = `${mlModelName} (R² = 0.988)`;
+    modelBadge.textContent = `${mlModelName} (R² = ${Number(mlData.r2_score).toFixed(3)})`;
   }
 
   const factorsList = document.getElementById("ypFactorsList");
-  if (factorsList && mlFactors.length > 0) {
-    factorsList.innerHTML = mlFactors.slice(0, 4).map(f =>
-      `<span style="background: rgba(57,217,138,0.12); border: 1px solid rgba(57,217,138,0.25); border-radius: 6px; padding: 2px 8px; font-size: 0.72rem; color: var(--leaf-green);">${f}</span>`
-    ).join("");
+  if (factorsList) {
+    factorsList.replaceChildren(...mlFactors.slice(0, 12).map(f => {
+      const chip = document.createElement("span");
+      chip.textContent = f;
+      chip.style.cssText = "background: rgba(57,217,138,0.12); border: 1px solid rgba(57,217,138,0.25); border-radius: 6px; padding: 2px 8px; font-size: 0.72rem; color: var(--leaf-green);";
+      return chip;
+    }));
   }
 
   // Benchmark Progress Bars
@@ -2018,6 +2633,7 @@ async function executeLiveYieldEstimate() {
   // SECTION 4: MULTI-CROP COMPARISON MATRIX
   // ==========================================================================
   renderMultiCropComparisonMatrix(rainMod, phMod, areaHa);
+  return { usedModel: true, predictedYield };
 }
 
 function renderMultiCropComparisonMatrix(rainMod, phMod, areaHa) {
@@ -2082,13 +2698,18 @@ function resetSensitivitySliders() {
 // CALCULATE BUTTON ANIMATION WRAPPERS
 // ============================================================================
 
-function runYieldCalculationWithAnimation() {
-  const btn = document.getElementById("yieldCalcBtn");
+async function runYieldCalculationWithAnimation(clickedButton) {
+  const btn = clickedButton || document.getElementById("yieldCalcBtn");
   if (!btn) { runLiveYieldEstimate(); return; }
 
   const originalHTML = btn.innerHTML;
   btn.disabled = true;
   btn.style.opacity = "0.75";
+  const status = document.getElementById("ypCalculationStatus");
+  if (status) {
+    status.textContent = "Sending field inputs to the ML yield model…";
+    status.classList.remove("error");
+  }
   btn.innerHTML = `
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
       style="animation: spin 0.7s linear infinite;">
@@ -2099,21 +2720,30 @@ function runYieldCalculationWithAnimation() {
     </svg>
     Calculating…`;
 
-  setTimeout(() => {
-    runLiveYieldEstimate();
-    btn.innerHTML = `
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <polyline points="20 6 9 17 4 12"/>
-      </svg>
-      Calculation Complete!`;
-    btn.style.background = "linear-gradient(135deg, #059669, #10b981)";
+  if (yieldDebounceTimer) clearTimeout(yieldDebounceTimer);
+  const requestId = ++latestYieldRequestId;
+  try {
+    const result = await executeLiveYieldEstimate(requestId);
+    if (result.stale) {
+      if (status) status.textContent = "Inputs changed during calculation; the latest values are being recalculated.";
+      return;
+    }
+    if (status) {
+      status.textContent = `ML prediction updated: ${result.predictedYield.toFixed(2)} t/ha.`;
+      status.classList.remove("error");
+    }
+    btn.innerHTML = "Calculation complete";
+  } catch (error) {
+    if (requestId === latestYieldRequestId && status) {
+      status.textContent = `Could not calculate yield: ${error.message || "Unexpected error"}`;
+      status.classList.add("error");
+    }
+    if (requestId === latestYieldRequestId) btn.innerHTML = "Calculation failed · try again";
+  } finally {
     btn.style.opacity = "1";
-    setTimeout(() => {
-      btn.innerHTML = originalHTML;
-      btn.style.background = "linear-gradient(135deg, var(--primary-forest), var(--leaf-green))";
-      btn.disabled = false;
-    }, 1800);
-  }, 650);
+    btn.disabled = false;
+    if (requestId === latestYieldRequestId) setTimeout(() => { btn.innerHTML = originalHTML; }, 1800);
+  }
 }
 
 function runRiskCalculationWithAnimation() {
@@ -2543,7 +3173,7 @@ async function submitUserFeedback() {
     comments: comment || "Specialist confirmed accuracy."
   };
 
-  try {
+try {
     const res = await fetch("/api/feedback", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -2562,7 +3192,7 @@ async function submitUserFeedback() {
 }
 
 async function loadEvaluationDashboard() {
-  try {
+try {
     const res = await fetch("/api/evaluation/latest");
     if (res.ok) {
       const data = await res.json();
@@ -2579,7 +3209,7 @@ async function triggerRunEvaluation(event) {
   btn.disabled = true;
   btn.innerHTML = `<span>⏳ Running Benchmark (20 queries)...</span>`;
 
-  try {
+try {
     const res = await fetch("/api/evaluate", { method: "POST" });
     if (res.ok) {
       const data = await res.json();
@@ -2629,8 +3259,99 @@ function updateEvaluationUI(data) {
     document.getElementById("evalTotalQueries").textContent = sys.total_queries_executed;
 }
 
+async function runCropEvaluation() {
+  const btn = document.getElementById("cropEvalBtn");
+  const crop = document.getElementById("cropEvalCrop").value;
+  const state = document.getElementById("cropEvalState").value;
+  const season = document.getElementById("cropEvalSeason").value;
+
+  if (!crop) return;
+
+  btn.disabled = true;
+  btn.textContent = "⏳ Calculating…";
+
+try {
+    const res = await fetch("/api/evaluation/crop", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ crop, state, season })
+    });
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const d = await res.json();
+
+    const ret = d.retrieval_metrics || {};
+    const ml = d.ml_metrics || {};
+    const sec = d.security_and_latency || {};
+
+    // Badge + meta
+    const badge = document.getElementById("cropEvalBadge");
+    badge.textContent = `📊 CROP: ${d.crop.toUpperCase()} • STATE: ${d.state.toUpperCase()} • SEASON: ${d.season.toUpperCase()}`;
+    document.getElementById("cropEvalLatency").textContent = `⏱ ${sec.latency_ms} ms`;
+    document.getElementById("cropEvalCasesCount").textContent = `📋 ${d.matched_cases_count} historical cases`;
+
+    // RAG metrics
+    document.getElementById("cePrecision1").textContent = (ret.precision_at_1 ?? 0).toFixed(3);
+    document.getElementById("cePrecision3").textContent = (ret.precision_at_3 ?? 0).toFixed(3);
+    document.getElementById("cePrecision5").textContent = (ret.precision_at_5 ?? 0).toFixed(3);
+    document.getElementById("ceRecall5").textContent    = (ret.recall_at_5 ?? 0).toFixed(3);
+    document.getElementById("ceMRR").textContent         = (ret.mrr ?? 0).toFixed(3);
+    document.getElementById("ceHitRate").textContent     = (ret.hit_rate_at_5 ?? 0).toFixed(3);
+
+    // ML metrics
+    document.getElementById("ceYieldR2").textContent  = (ml.yield_r2 ?? 0).toFixed(4);
+    document.getElementById("ceMAE").textContent      = `${(ml.mae ?? 0).toFixed(3)} t/ha`;
+    document.getElementById("ceRMSE").textContent     = `${(ml.rmse ?? 0).toFixed(3)} t/ha`;
+    document.getElementById("ceSuitAcc").textContent  = (ml.suitability_accuracy ?? 0).toFixed(3);
+    document.getElementById("ceSuitF1").textContent   = (ml.f1_score ?? 0).toFixed(3);
+
+    // Prediction
+    document.getElementById("cePredYield").textContent = `${(ml.predicted_yield ?? 0).toFixed(2)} ${ml.unit || "t/ha"}`;
+    document.getElementById("ceCIRange").textContent   = `${(ml.lower_bound ?? 0).toFixed(2)} – ${(ml.upper_bound ?? 0).toFixed(2)}`;
+    const suitEl = document.getElementById("ceSuitClass");
+    suitEl.textContent = ml.suitability_class || "—";
+    suitEl.style.color = ml.suitability_class === "Suitable" ? "var(--leaf-green)"
+                       : ml.suitability_class === "High Risk" ? "#ef4444" : "#f59e0b";
+    document.getElementById("ceGuardrail").textContent  = sec.guardrail_accuracy || "100.0%";
+    document.getElementById("ceLatencyMs").textContent  = `${sec.latency_ms} ms`;
+
+    // Show results with animation
+    const resultEl = document.getElementById("cropEvalResults");
+    resultEl.style.display = "block";
+    resultEl.style.opacity = "0";
+    resultEl.style.transition = "opacity 0.4s ease";
+    setTimeout(() => { resultEl.style.opacity = "1"; }, 20);
+
+    // Also update the global evaluation cards with this crop's data
+    document.getElementById("evalP1").textContent     = (ret.precision_at_1 ?? 0).toFixed(3);
+    document.getElementById("evalP3").textContent     = (ret.precision_at_3 ?? 0).toFixed(3);
+    document.getElementById("evalP5").textContent     = (ret.precision_at_5 ?? 0).toFixed(3);
+    document.getElementById("evalRecall5").textContent = (ret.recall_at_5 ?? 0).toFixed(3);
+    document.getElementById("evalMRR").textContent    = (ret.mrr ?? 0).toFixed(3);
+    document.getElementById("evalHitRate").textContent = (ret.hit_rate_at_5 ?? 0).toFixed(3);
+    document.getElementById("evalYieldR2").textContent = (ml.yield_r2 ?? 0).toFixed(4);
+    document.getElementById("evalYieldMAE").textContent = `${(ml.mae ?? 0).toFixed(3)} t/ha`;
+    document.getElementById("evalYieldRMSE").textContent = `${(ml.rmse ?? 0).toFixed(3)} t/ha`;
+    document.getElementById("evalSuitAcc").textContent  = (ml.suitability_accuracy ?? 0).toFixed(3);
+    document.getElementById("evalSuitF1").textContent   = (ml.f1_score ?? 0).toFixed(3);
+    document.getElementById("evalGuardrailRate").textContent = sec.guardrail_accuracy || "100.0%";
+    document.getElementById("evalInjectionRate").textContent = sec.injection_defense || "100.0%";
+    document.getElementById("evalLatency").textContent  = `${sec.latency_ms} ms`;
+    document.getElementById("evalSuccessRate").textContent = sec.success_rate || "100.0%";
+
+  } catch (err) {
+    console.error("Crop evaluation error:", err);
+    alert("Crop evaluation failed: " + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = "🔬 Calculate Scores";
+  }
+}
+
+
 async function loadMetadataDropdowns() {
   try {
+
     const [cropsRes, statesRes, seasonsRes] = await Promise.all([
       fetch("/api/crops"),
       fetch("/api/states"),

@@ -231,5 +231,95 @@
     "rating": 5,
     "thumbs": "up",
     "comments": ""
+  },
+  {
+    "feedback_id": "FB_cd25f53f",
+    "timestamp": "2026-10-07T15:17:57.852997+00:00",
+    "query": "Advisory Studio Feedback",
+    "recommendation": "Manual Input",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "down",
+    "comments": "Specialist confirmed accuracy."
+  },
+  {
+    "feedback_id": "FB_791aa2a3",
+    "timestamp": "2026-10-08T12:39:25.557869+00:00",
+    "query": "Rice in AP",
+    "recommendation": "Rice",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": "Accurate recommendation."
+  },
+  {
+    "feedback_id": "FB_bdc74617",
+    "timestamp": "2026-10-08T14:14:02.639240+00:00",
+    "query": "Advisory Studio Feedback",
+    "recommendation": "Manual Input",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "down",
+    "comments": "Specialist confirmed accuracy."
+  },
+  {
+    "feedback_id": "FB_388b18c6",
+    "timestamp": "2026-10-09T13:32:03.636943+00:00",
+    "query": "Rice in AP",
+    "recommendation": "Rice",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": "Accurate recommendation."
+  },
+  {
+    "feedback_id": "FB_c7747ab7",
+    "timestamp": "2026-10-09T13:32:56.314819+00:00",
+    "query": "Rice in AP",
+    "recommendation": "Rice",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": "Accurate recommendation."
+  },
+  {
+    "feedback_id": "FB_c8ffbb41",
+    "timestamp": "2026-10-09T13:56:03.685318+00:00",
+    "query": "Rice in AP",
+    "recommendation": "Rice",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": "Accurate recommendation."
+  },
+  {
+    "feedback_id": "FB_b110c7be",
+    "timestamp": "2026-10-09T19:23:47.798850+00:00",
+    "query": "Rice in AP",
+    "recommendation": "Rice",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": "Accurate recommendation."
+  },
+  {
+    "feedback_id": "FB_5011278d",
+    "timestamp": "2026-10-09T20:12:01.354004+00:00",
+    "query": "Rice in AP",
+    "recommendation": "Rice",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": "Accurate recommendation."
+  },
+  {
+    "feedback_id": "FB_833c45c3",
+    "timestamp": "2026-10-09T20:26:07.390160+00:00",
+    "query": "Rice in AP",
+    "recommendation": "Rice",
+    "retrieved_cases": [],
+    "rating": 5,
+    "thumbs": "up",
+    "comments": "Accurate recommendation."
   }
 ]

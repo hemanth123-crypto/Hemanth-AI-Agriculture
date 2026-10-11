@@ -1,6 +1,6 @@
 # AI-Powered Agriculture Crop Advisory Assistant - Automated Evaluation Report
 
-**Generated:** 2026-10-07 14:03:18 UTC  
+**Generated:** 2026-10-08 14:14:15 UTC  
 **Total Benchmark Queries:** 20  
 **Evaluation Protocol:** End-to-End System Evaluation (Section 28)
 
@@ -9,7 +9,7 @@
 ## 1. System Performance Summary
 | Metric | Value |
 |---|---|
-| **Average Latency** | `122.82 ms` |
+| **Average Latency** | `170.0 ms` |
 | **Success Rate** | `100.0%` |
 | **Error Rate** | `0.0%` |
 | **Benchmark Queries Executed** | `20` |
@@ -30,20 +30,7 @@
 
 ---
 
-## 3. RAG Quality & DeepEval Metrics
-| Metric | Status / Score | Description |
-|---|---|---|
-| **Faithfulness** | `NOT AVAILABLE` | Grounding of recommendations in historical evidence |
-| **Answer Relevancy** | `NOT AVAILABLE` | Directness in addressing user's agricultural query |
-| **Contextual Relevancy** | `NOT AVAILABLE` | Noise-free retrieval of regional weather/soil records |
-| **Contextual Precision** | `NOT AVAILABLE` | Signal-to-noise ratio in retrieved context |
-| **Contextual Recall** | `NOT AVAILABLE` | Comprehensiveness of retrieved historical cases |
-
-> *Note: External DeepEval metrics requiring commercial OpenAI API keys are explicitly noted as `NOT AVAILABLE` when running completely offline per Section 28 rules.*
-
----
-
-## 4. Machine Learning Model Evaluation
+## 3. Machine Learning Model Evaluation
 ### A. Crop Suitability Classifier (RandomForestClassifier)
 - **Accuracy:** `0.5533`
 - **Precision (Weighted):** `0.5086`
@@ -60,7 +47,7 @@
 
 ---
 
-## 5. LLM-as-a-Judge Evaluation
+## 4. LLM-as-a-Judge Evaluation
 *Evaluates groundedness, safety compliance, and recommendation clarity.*
 
 | Dimension | Score (0.00 - 1.00) |
@@ -71,7 +58,7 @@
 
 ---
 
-## 6. Guardrail & Security Evaluation
+## 5. Guardrail & Security Evaluation
 *Tested against adversarial prompt injections, negative rainfall, extreme pH, and domain boundary deviations.*
 
 | Security Check | Result |
@@ -83,6 +70,6 @@
 
 ---
 
-## 7. Conclusion & Governance
+## 6. Conclusion & Governance
 All metrics in this report represent empirically evaluated tests on local benchmark queries and offline dataset splits.
 No evaluation scores or historical cases were artificially fabricated.

@@ -39,38 +39,7 @@ Retrieval metrics assess the quality of the dense FAISS vector index, sparse key
 
 ---
 
-## 2. Generative RAG Quality Metrics (DeepEval Framework)
-
-These metrics evaluate the generation quality of the multi-agent pipeline when synthesizing advice from retrieved cases.
-
-### 2.1 Faithfulness
-- **What it tells us:** Does the generated response state claims that are strictly supported by the retrieved context, without fabricating agricultural numbers or facts?
-- **Formula:** Ratio of claims in the generated response that can be directly deduced from retrieved cases.
-- **Evaluates:** Generative recommendation synthesis and anti-hallucination guardrails.
-
-### 2.2 Answer Relevancy
-- **What it tells us:** Does the final advisory directly answer the user's specific inquiry without drifting into unrelated farming advice?
-- **Formula:** Semantic alignment between the user's original query and the generated advisory.
-- **Evaluates:** Query classifier and final synthesizer agent.
-
-### 2.3 Contextual Relevancy
-- **What it tells us:** How much noise was present in the retrieved cases passed to the LLM?
-- **Formula:** Ratio of retrieved sentences that are relevant to answering the query.
-- **Evaluates:** Document chunking and hybrid reranker filter sharpness.
-
-### 2.4 Contextual Precision
-- **What it tells us:** Did the most informative agricultural cases appear at the top of the context window rather than buried at the bottom?
-- **Evaluates:** Re-ranking prioritization.
-
-### 2.5 Contextual Recall
-- **What it tells us:** Did the retrieved context include all the background information necessary to produce a complete advisory?
-- **Evaluates:** Retrieval depth ($top\_k$).
-
-*(Note: When running in fully offline mode without OpenAI API keys, DeepEval metrics gracefully display as `NOT AVAILABLE (Offline Mode)`, while deterministic LLM-as-a-Judge metrics execute).*
-
----
-
-## 3. Classification Metrics (Evaluates: Crop Suitability Model)
+## 2. Classification Metrics (Evaluates: Crop Suitability Model)
 
 The `RandomForestClassifier` predicts whether a given crop is viable under specified soil and weather features.
 
@@ -91,7 +60,7 @@ The `RandomForestClassifier` predicts whether a given crop is viable under speci
 
 ---
 
-## 4. Regression Metrics (Evaluates: ML Yield Prediction Model)
+## 3. Regression Metrics (Evaluates: ML Yield Prediction Model)
 
 The `RandomForestRegressor` estimates crop yield (in tonnes/hectare) alongside an empirical 80% confidence interval.
 
@@ -111,7 +80,7 @@ The `RandomForestRegressor` estimates crop yield (in tonnes/hectare) alongside a
 
 ---
 
-## 5. LLM-as-a-Judge Evaluation (Evaluates: End-to-End Advisory)
+## 4. LLM-as-a-Judge Evaluation (Evaluates: End-to-End Advisory)
 
 A deterministic, offline-safe auditor (`LLMJudgeValidator`) inspects the final output payload before dispatch.
 
@@ -124,7 +93,7 @@ A deterministic, offline-safe auditor (`LLMJudgeValidator`) inspects the final o
 
 ---
 
-## 6. Guardrail Evaluation Metrics
+## 5. Guardrail Evaluation Metrics
 
 ### 6.1 Injection Detection Rate
 - **What it tells us:** Percentage of adversarial injection attempts ("ignore instructions", "system prompt reveal", "jailbreak") caught and blocked.
@@ -140,14 +109,15 @@ A deterministic, offline-safe auditor (`LLMJudgeValidator`) inspects the final o
 
 ---
 
-## 7. How to Run the Automated Benchmark Suite
+## 6. How to Run the Automated Benchmark Suite
 
 Execute from terminal:
 ```powershell
 python scripts/evaluate.py
 ```
-Or trigger via the web interface: **System Evaluation** tab $\rightarrow$ click **Run Automated Benchmark**.
+Use **Admin > RAG Evaluation > Run retrieval evaluation** for the local labeled-crop retrieval run. It is administrator-only and does not call an external LLM provider.
 
 Results are saved to:
 - `evaluation/reports/evaluation_report.json`
 - `evaluation/reports/evaluation_report.md`
+- `evaluation/reports/retrieval_evaluation_report.json` (admin retrieval run)

@@ -73,7 +73,7 @@ flowchart TD
         UI -->|Submit Rating| FB[Feedback Store<br/><i>data/feedback/feedback.json</i>]:::evalCls
         FB --> RETRAIN[Feedback Processor & Fine-Tuning Trigger]:::evalCls
         
-        RESP -.-> EVAL[Evaluation Benchmark Engine<br/><i>Precision@K, MRR, R², MAE, DeepEval</i>]:::evalCls
+        RESP -.-> EVAL[Evaluation Benchmark Engine<br/><i>Precision@K, MRR, R², MAE, guardrails</i>]:::evalCls
         EVAL --> REPO[Evaluation Reports<br/><i>JSON + Markdown</i>]:::evalCls
     end
 ```

@@ -17,6 +17,7 @@ from app.rag.retriever import case_retriever
 from app.ml.model_loader import model_manager
 
 # Import API route modules
+from app.api.routes_auth import router as auth_router
 from app.api.routes_query import router as query_router
 from app.api.routes_search import router as search_router
 from app.api.routes_recommendation import router as rec_router
@@ -25,6 +26,9 @@ from app.api.routes_analysis import router as analysis_router
 from app.api.routes_feedback import router as feedback_router
 from app.api.routes_evaluation import router as eval_router
 from app.api.routes_health import router as health_router
+from app.api.routes_admin import router as admin_router
+from app.api.routes_advisory_report import router as advisory_report_router
+from app.auth.database import init_user_db
 
 logger = get_logger("main")
 
@@ -32,6 +36,12 @@ logger = get_logger("main")
 async def lifespan(app: FastAPI):
     """Lifecycle startup and shutdown management."""
     logger.info("Starting AI-Powered Agriculture Crop Advisory Assistant microservice...")
+    
+    # Initialize the user database and optional operator-configured account
+    try:
+        init_user_db()
+    except Exception as e:
+        logger.error(f"Failed to initialize user database: {e}")
     
     # Check and initialize vector retriever
     ready = case_retriever.initialize()
@@ -82,6 +92,9 @@ app.add_middleware(
 
 # Register API routers
 app.include_router(health_router)
+app.include_router(admin_router)
+app.include_router(advisory_report_router)
+app.include_router(auth_router)
 app.include_router(query_router)
 app.include_router(search_router)
 app.include_router(rec_router)
