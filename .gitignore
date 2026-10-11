@@ -46,7 +46,6 @@ ENV/
 *.log
 scratch/
 .system_generated/
-.deepeval/
 data/*.db
 data/*.sqlite*
 ~$*.pptx
